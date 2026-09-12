@@ -1,635 +1,2154 @@
 /**
- * Innovexa Technologies — cinematic particle assembly
- * FRONTEND ONLY
+ * Innovexa Technologies — Particle Logo Splash
+ * ------------------------------------------------------------
+ * PARTICLE LOGO ASSEMBLY
  *
- * The visible logo is NEVER rendered as an image.
- * logo.jpg is loaded invisibly only as a pixel-sampling source.
+ * The real logo image is used ONLY as a pixel source.
+ * The actual <img> is never displayed.
  *
- * Sequence:
- * 0.0–0.4s  scattered particles
- * 0.4–2.7s  particles assemble the complete X + swoosh
- * 2.7–3.1s logo settles / brightens
- * 3.1–3.9s Innovation Technology assembles
- * 3.9–4.6s hold
- * 4.6s+     smooth splash exit
+ * Particles:
+ *  1. Start scattered around the screen
+ *  2. Fly toward the real logo pixels
+ *  3. Assemble the complete logo
+ *  4. Lock permanently into exact positions
+ *  5. Snap to a crisp, fully rendered version of the real logo
+ *     (drawn directly onto the same canvas, so it always looks
+ *     sharp instead of a field of dots)
+ *  6. Hold the completed logo
+ *  7. Exit the splash
+ *
+ * IMPORTANT:
+ * HTML IDs expected:
+ *
+ *   #splashScreen
+ *   #splashCanvas
+ *   #splashLogo
+ *   #splashName
  */
 
 (function () {
-  'use strict';
 
-  var splash = document.getElementById('splashScreen');
-  var canvas = document.getElementById('splashCanvas');
-  var sourceLogo = document.getElementById('splashLogo');
-  var name = document.getElementById('splashName');
+    'use strict';
 
-  if (!splash || !canvas || !sourceLogo) return;
 
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
 
-  if (!ctx) return;
+    var splash =
+        document.getElementById('splashScreen');
 
-  document.documentElement.classList.add('splash-active');
+    if (!splash) return;
 
-  var W = 0, H = 0, DPR = 1;
-  var particles = [];
-  var connections = [];
-  var finished = false;
-  var startTime = 0;
-  var raf = 0;
+    var canvas =
+        document.getElementById('splashCanvas');
 
-  var LOGO_TIME = 2500;
-  var LOGO_HOLD = 350;
-  var TEXT_TIME = 850;
-  var FINAL_HOLD = 600;
+    var logoEl =
+        document.getElementById('splashLogo');
 
-  function resize() {
-    W = window.innerWidth;
-    H = window.innerHeight;
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var nameEl =
+        document.getElementById('splashName');
 
-    canvas.width = Math.floor(W * DPR);
-    canvas.height = Math.floor(H * DPR);
-    canvas.style.width = W + 'px';
-    canvas.style.height = H + 'px';
 
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  }
+    /* =========================================================
+       BLACKOUT (APPLIED IMMEDIATELY)
+       ---------------------------------------------------------
+       The splash background is made fully black right from the
+       start — before particles even begin scattering — by
+       hiding the gradient / grid layers and setting the splash
+       screen's background to solid black. Particles then
+       animate on top of a black background the whole time,
+       through assembly and into the final sharp logo.
+    ========================================================= */
 
-  resize();
-  window.addEventListener('resize', resize, { passive: true });
+    if (splash) {
 
-  function ease(t) {
-    t = Math.max(0, Math.min(1, t));
-    return t * t * (3 - 2 * t);
-  }
+        splash.style.backgroundColor =
+            '#000000';
 
-  function easeOutQuint(t) {
-    t = Math.max(0, Math.min(1, t));
-    return 1 - Math.pow(1 - t, 5);
-  }
+    }
 
-  function bluePixel(r, g, b) {
-    return (
-      b > 55 &&
-      b > r * 1.12 &&
-      b > g * 0.84 &&
-      (g + b) > 125
-    );
-  }
+    var initialBgEl =
+        splash.querySelector(
+            '.splash-bg'
+        );
 
-  /*
-   * The source image contains the exact X + swoosh in the upper
-   * portion and the company text below it. We deliberately sample
-   * ONLY the emblem area, so the final particle logo is the exact
-   * X + swoosh and never accidentally includes the source JPG text.
-   */
-  function getLogoTargets() {
-    var off = document.createElement('canvas');
-    var size = 900;
-    off.width = size;
-    off.height = size;
+    if (initialBgEl) {
 
-    var octx = off.getContext('2d', { willReadFrequently: true });
-    octx.drawImage(sourceLogo, 0, 0, size, size);
+        initialBgEl.style.opacity =
+            '0';
 
-    var data = octx.getImageData(0, 0, size, size).data;
+    }
 
-    /* Source logo emblem crop: approximately x=130..1120,
-       y=270..735 on the original 1254×1254 artwork. */
-    var sx0 = 92;
-    var sx1 = 805;
-    var sy0 = 195;
-    var sy1 = 530;
+    var initialGridEl =
+        splash.querySelector(
+            '.splash-grid'
+        );
 
-    var minX = size, minY = size, maxX = -1, maxY = -1;
+    if (initialGridEl) {
 
-    for (var y = sy0; y <= sy1; y += 1) {
-      for (var x = sx0; x <= sx1; x += 1) {
-        var i = (y * size + x) * 4;
+        initialGridEl.style.opacity =
+            '0';
 
-        if (bluePixel(data[i], data[i + 1], data[i + 2])) {
-          if (x < minX) minX = x;
-          if (x > maxX) maxX = x;
-          if (y < minY) minY = y;
-          if (y > maxY) maxY = y;
+    }
+
+
+    /* =========================================================
+       SESSION
+    ========================================================= */
+
+    var SESSION_KEY =
+        'innovexaSplashShown';
+
+    var alreadyShown = false;
+
+    try {
+
+        alreadyShown =
+            sessionStorage.getItem(
+                SESSION_KEY
+            ) === '1';
+
+    } catch (error) {
+
+        alreadyShown = false;
+
+    }
+
+
+    if (alreadyShown) {
+
+        if (splash.parentNode) {
+
+            splash.parentNode.removeChild(
+                splash
+            );
+
         }
-      }
+
+        return;
+
     }
 
-    if (maxX < 0) return [];
 
-    var width = maxX - minX || 1;
-    var height = maxY - minY || 1;
-    var points = [];
+    document.documentElement.classList.add(
+        'splash-active'
+    );
 
-    /* Dense sampling. No random deletion.
-       Every visible blue region receives particles. */
-    var stride = W < 600 ? 2.25 : 1.45;
 
-    for (var py = minY; py <= maxY; py += stride) {
-      for (var px = minX; px <= maxX; px += stride) {
-        var p = (Math.floor(py) * size + Math.floor(px)) * 4;
-        var r = data[p], g = data[p + 1], b = data[p + 2];
+    /* =========================================================
+       STATE
+    ========================================================= */
 
-        if (!bluePixel(r, g, b)) continue;
+    var finished = false;
 
-        points.push({
-          x: (px - minX) / width,
-          y: (py - minY) / height,
-          r: r,
-          g: g,
-          b: b
-        });
-      }
+    var animationStarted = false;
+
+    var resizeTimer = null;
+
+
+    /* =========================================================
+       SESSION MARK
+    ========================================================= */
+
+    function markSessionSeen() {
+
+        try {
+
+            sessionStorage.setItem(
+                SESSION_KEY,
+                '1'
+            );
+
+        } catch (error) {
+
+            /* Ignore storage errors */
+
+        }
+
     }
 
-    return points;
-  }
 
-  function getTextTargets(text, fontSize, weight, tracking) {
-    var off = document.createElement('canvas');
-    var octx = off.getContext('2d', { willReadFrequently: true });
+    /* =========================================================
+       FINISH
+    ========================================================= */
 
-    var font = weight + ' ' + fontSize + 'px Inter, Arial, sans-serif';
-    octx.font = font;
+    function finishSplash() {
 
-    var measured = octx.measureText(text).width + 60;
-    off.width = Math.ceil(measured);
-    off.height = Math.ceil(fontSize * 1.55);
+        if (finished) return;
 
-    octx.font = font;
-    octx.textBaseline = 'middle';
-    octx.textAlign = 'left';
-    octx.fillStyle = '#ffffff';
+        finished = true;
 
-    /* Small tracking is applied by drawing letters individually. */
-    octx.clearRect(0, 0, off.width, off.height);
+        document.documentElement.classList.remove(
+            'splash-active'
+        );
 
-    var x = 30;
-    var y = off.height / 2;
+        splash.classList.add(
+            'is-leaving'
+        );
 
-    for (var i = 0; i < text.length; i++) {
-      var ch = text[i];
-      octx.fillText(ch, x, y);
-      x += octx.measureText(ch).width + tracking;
+        markSessionSeen();
+
+        window.setTimeout(
+            function () {
+
+                if (splash.parentNode) {
+
+                    splash.parentNode.removeChild(
+                        splash
+                    );
+
+                }
+
+            },
+            850
+        );
+
     }
 
-    var data = octx.getImageData(0, 0, off.width, off.height).data;
-    var points = [];
-    var stride = W < 600 ? 2.5 : 2;
 
-    for (var py = 0; py < off.height; py += stride) {
-      for (var px = 0; px < off.width; px += stride) {
-        var p = (Math.floor(py) * off.width + Math.floor(px)) * 4;
+    /* =========================================================
+       SAFETY TIMER
+    ========================================================= */
 
-        if (data[p + 3] < 110) continue;
+    var safetyTimer =
+        window.setTimeout(
+            finishSplash,
+            15000
+        );
 
-        points.push({
-          x: px / off.width,
-          y: py / off.height,
-          r: 238,
-          g: 242,
-          b: 247
-        });
-      }
+
+    /* =========================================================
+       HIDE REAL IMAGE
+       ---------------------------------------------------------
+       The <img> is only ever used as a pixel source for
+       sampling and as the source drawn onto the canvas at the
+       end. It is never itself made visible.
+    ========================================================= */
+
+    if (logoEl) {
+
+        logoEl.style.opacity = '0';
+
+        logoEl.style.visibility =
+            'hidden';
+
+        logoEl.style.pointerEvents =
+            'none';
+
     }
 
-    return points;
-  }
 
-  function makeParticles() {
-    var logoTargets = getLogoTargets();
+    /* =========================================================
+       FALLBACK
+    ========================================================= */
 
-    if (!logoTargets.length) return false;
+    function fallbackSimple() {
 
-    var logoW = Math.min(
-      W * (W < 600 ? 0.82 : 0.42),
-      W < 600 ? 410 : 560
-    );
+        if (canvas && canvas.parentNode) {
 
-    var logoH = logoW * 0.64;
+            canvas.parentNode.removeChild(
+                canvas
+            );
 
-    var logoLeft = (W - logoW) / 2;
-    var logoTop = H * 0.5 - logoH * 0.82;
+        }
 
-    var logoParticles = logoTargets.map(function (t, index) {
-      var angle = Math.random() * Math.PI * 2;
-      var radius = Math.min(W, H) * (0.18 + Math.random() * 0.48);
+        window.setTimeout(
+            function () {
 
-      return {
-        group: 'logo',
+                window.clearTimeout(
+                    safetyTimer
+                );
 
-        sx: Math.random() * W + Math.cos(angle) * radius * 0.12,
-        sy: Math.random() * H + Math.sin(angle) * radius * 0.12,
+                finishSplash();
 
-        tx: logoLeft + t.x * logoW,
-        ty: logoTop + t.y * logoH,
+            },
+            900
+        );
 
-        r: 0.82 + Math.random() * 1.18,
-        alpha: 0.56 + Math.random() * 0.38,
+    }
 
-        cr: t.r,
-        cg: t.g,
-        cb: t.b,
 
-        phase: Math.random() * Math.PI * 2,
-        drift: 5 + Math.random() * 12,
+    /* =========================================================
+       REDUCED MOTION
+    ========================================================= */
 
-        delay: Math.random() * 220,
+    var reducedMotion = false;
 
-        _x: 0,
-        _y: 0,
-        _t: 0
-      };
-    });
+    try {
 
-    /* Text is created after the logo settles.
-       It is still made entirely from particles. */
-    var textSize = Math.max(
-      22,
-      Math.min(34, W * 0.036)
-    );
+        reducedMotion =
+            window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches;
 
-    var innovation = getTextTargets(
-      'Innovation',
-      textSize,
-      600,
-      Math.max(0.3, textSize * 0.035)
-    );
+    } catch (error) {
 
-    var technology = getTextTargets(
-      'Technology',
-      textSize,
-      600,
-      Math.max(0.3, textSize * 0.035)
-    );
+        reducedMotion = false;
 
-    var textMaxWidth = Math.max(
-      innovation.length,
-      technology.length
-    );
+    }
 
-    var textScale = Math.min(
-      1,
-      (W * 0.76) / Math.max(1, textMaxWidth * 2.05)
-    );
 
-    var textW = Math.min(W * 0.72, 500);
-    var textH = textSize * 1.35;
+    if (reducedMotion) {
 
-    function addText(points, offsetX, color) {
-      return points.map(function (t, index) {
-        var angle = Math.random() * Math.PI * 2;
-        var radius = Math.min(W, H) * (0.12 + Math.random() * 0.42);
+        if (canvas && canvas.parentNode) {
+
+            canvas.parentNode.removeChild(
+                canvas
+            );
+
+        }
+
+        if (nameEl) {
+
+            nameEl.style.opacity = '1';
+
+        }
+
+        window.setTimeout(
+            function () {
+
+                window.clearTimeout(
+                    safetyTimer
+                );
+
+                finishSplash();
+
+            },
+            900
+        );
+
+        return;
+
+    }
+
+
+    /* =========================================================
+       CANVAS CHECK
+    ========================================================= */
+
+    if (
+        !canvas ||
+        typeof canvas.getContext !== 'function'
+    ) {
+
+        fallbackSimple();
+
+        return;
+
+    }
+
+
+    var ctx =
+        canvas.getContext(
+            '2d',
+            {
+                alpha: true,
+                desynchronized: true
+            }
+        );
+
+
+    if (!ctx) {
+
+        fallbackSimple();
+
+        return;
+
+    }
+
+
+    /* =========================================================
+       DPR
+    ========================================================= */
+
+    var dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+
+    /* =========================================================
+       VIEWPORT
+    ========================================================= */
+
+    var viewportWidth = 0;
+
+    var viewportHeight = 0;
+
+
+    function resizeCanvas() {
+
+        viewportWidth =
+            window.innerWidth;
+
+        viewportHeight =
+            window.innerHeight;
+
+        canvas.width =
+            Math.round(
+                viewportWidth * dpr
+            );
+
+        canvas.height =
+            Math.round(
+                viewportHeight * dpr
+            );
+
+        canvas.style.width =
+            viewportWidth + 'px';
+
+        canvas.style.height =
+            viewportHeight + 'px';
+
+        ctx.setTransform(
+            dpr,
+            0,
+            0,
+            dpr,
+            0,
+            0
+        );
+
+    }
+
+
+    resizeCanvas();
+
+
+    /* =========================================================
+       IMAGE PIXEL TEST
+       ---------------------------------------------------------
+       We intentionally DO NOT classify pixels according to
+       "symbol", "Innovexa", or "Technologies".
+
+       Every visible pixel belongs to the logo.
+
+       This prevents text from disappearing because of incorrect
+       hard-coded Y percentages.
+    ========================================================= */
+
+    function isVisibleLogoPixel(
+        r,
+        g,
+        b,
+        a
+    ) {
+
+        if (a < 45) {
+
+            return false;
+
+        }
+
+        /*
+         * Transparent / nearly transparent.
+         */
+        if (
+            r < 10 &&
+            g < 10 &&
+            b < 10 &&
+            a < 80
+        ) {
+
+            return false;
+
+        }
+
+        /*
+         * Ignore a near-black background.
+         *
+         * This is intentionally not overly aggressive,
+         * otherwise dark logo pixels could disappear.
+         */
+        if (
+            r < 15 &&
+            g < 15 &&
+            b < 18
+        ) {
+
+            return false;
+
+        }
+
+        /*
+         * Luminance.
+         */
+        var brightness =
+            (
+                0.299 * r +
+                0.587 * g +
+                0.114 * b
+            );
+
+        return brightness > 20;
+
+    }
+
+
+    /* =========================================================
+       SHUFFLE
+    ========================================================= */
+
+    function shuffle(array) {
+
+        for (
+            var i = array.length - 1;
+            i > 0;
+            i--
+        ) {
+
+            var j =
+                Math.floor(
+                    Math.random() * (i + 1)
+                );
+
+            var temp =
+                array[i];
+
+            array[i] =
+                array[j];
+
+            array[j] =
+                temp;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       SAMPLE LOGO
+       ---------------------------------------------------------
+       IMPORTANT FIX:
+       We sample the logo in its ORIGINAL aspect ratio.
+
+       More importantly:
+       - no artificial symbol/text regions
+       - no random omission of text
+       - more points are retained around thin strokes
+    ========================================================= */
+
+    function sampleLogoPoints(
+        img,
+        targetCount
+    ) {
+
+        var naturalWidth =
+            img.naturalWidth ||
+            img.width;
+
+        var naturalHeight =
+            img.naturalHeight ||
+            img.height;
+
+
+        if (
+            !naturalWidth ||
+            !naturalHeight
+        ) {
+
+            return null;
+
+        }
+
+
+        /*
+         * Large sampling surface.
+         */
+        var sampleSize = 1600;
+
+
+        var off =
+            document.createElement(
+                'canvas'
+            );
+
+        off.width =
+            sampleSize;
+
+        off.height =
+            sampleSize;
+
+
+        var octx =
+            off.getContext(
+                '2d',
+                {
+                    willReadFrequently: true
+                }
+            );
+
+
+        if (!octx) {
+
+            return null;
+
+        }
+
+
+        /*
+         * Original aspect ratio.
+         */
+        var aspect =
+            naturalWidth /
+            naturalHeight;
+
+
+        var drawWidth;
+
+        var drawHeight;
+
+
+        if (aspect >= 1) {
+
+            drawWidth =
+                sampleSize;
+
+            drawHeight =
+                sampleSize /
+                aspect;
+
+        } else {
+
+            drawHeight =
+                sampleSize;
+
+            drawWidth =
+                sampleSize *
+                aspect;
+
+        }
+
+
+        var offsetX =
+            (
+                sampleSize -
+                drawWidth
+            ) / 2;
+
+
+        var offsetY =
+            (
+                sampleSize -
+                drawHeight
+            ) / 2;
+
+
+        try {
+
+            octx.clearRect(
+                0,
+                0,
+                sampleSize,
+                sampleSize
+            );
+
+            /*
+             * IMPORTANT:
+             * High quality scaling.
+             */
+            octx.imageSmoothingEnabled =
+                true;
+
+            octx.imageSmoothingQuality =
+                'high';
+
+            octx.drawImage(
+                img,
+                offsetX,
+                offsetY,
+                drawWidth,
+                drawHeight
+            );
+
+        } catch (error) {
+
+            return null;
+
+        }
+
+
+        var imageData;
+
+
+        try {
+
+            imageData =
+                octx.getImageData(
+                    0,
+                    0,
+                    sampleSize,
+                    sampleSize
+                ).data;
+
+        } catch (error) {
+
+            return null;
+
+        }
+
+
+        var visiblePixels = [];
+
+
+        /* =====================================================
+           COLLECT EVERY VISIBLE PIXEL
+        ===================================================== */
+
+        for (
+            var y = 0;
+            y < sampleSize;
+            y++
+        ) {
+
+            for (
+                var x = 0;
+                x < sampleSize;
+                x++
+            ) {
+
+                /*
+                 * Only inspect image area.
+                 */
+                if (
+                    x < offsetX ||
+                    x > offsetX + drawWidth ||
+                    y < offsetY ||
+                    y > offsetY + drawHeight
+                ) {
+
+                    continue;
+
+                }
+
+
+                var index =
+                    (
+                        y *
+                        sampleSize +
+                        x
+                    ) * 4;
+
+
+                var r =
+                    imageData[index];
+
+                var g =
+                    imageData[index + 1];
+
+                var b =
+                    imageData[index + 2];
+
+                var a =
+                    imageData[index + 3];
+
+
+                if (
+                    !isVisibleLogoPixel(
+                        r,
+                        g,
+                        b,
+                        a
+                    )
+                ) {
+
+                    continue;
+
+                }
+
+
+                /*
+                 * Normalize coordinates relative
+                 * to original logo.
+                 */
+                var nx =
+                    (
+                        x -
+                        offsetX
+                    ) /
+                    drawWidth;
+
+
+                var ny =
+                    (
+                        y -
+                        offsetY
+                    ) /
+                    drawHeight;
+
+
+                if (
+                    nx < 0 ||
+                    nx > 1 ||
+                    ny < 0 ||
+                    ny > 1
+                ) {
+
+                    continue;
+
+                }
+
+
+                visiblePixels.push({
+
+                    nx: nx,
+
+                    ny: ny,
+
+                    r: r,
+
+                    g: g,
+
+                    b: b,
+
+                    a: a
+
+                });
+
+            }
+
+        }
+
+
+        if (
+            visiblePixels.length === 0
+        ) {
+
+            return null;
+
+        }
+
+
+        /*
+         * -----------------------------------------------------
+         * IMPORTANT TEXT VISIBILITY FIX
+         *
+         * Instead of simply taking random pixels, divide the
+         * logo into a fine grid.
+         *
+         * Every part of the logo gets representation.
+         *
+         * This prevents:
+         *
+         *     INNOVEXA
+         *
+         * or
+         *
+         *     TECHNOLOGIES
+         *
+         * from becoming too thin / disappearing.
+         * -----------------------------------------------------
+         */
+
+        var gridColumns = 80;
+
+        var gridRows = 80;
+
+        var buckets = new Array(
+            gridColumns *
+            gridRows
+        );
+
+
+        for (
+            var bIndex = 0;
+            bIndex < buckets.length;
+            bIndex++
+        ) {
+
+            buckets[bIndex] = [];
+
+        }
+
+
+        for (
+            var p = 0;
+            p < visiblePixels.length;
+            p++
+        ) {
+
+            var pixel =
+                visiblePixels[p];
+
+
+            var gx =
+                Math.min(
+                    gridColumns - 1,
+                    Math.floor(
+                        pixel.nx *
+                        gridColumns
+                    )
+                );
+
+
+            var gy =
+                Math.min(
+                    gridRows - 1,
+                    Math.floor(
+                        pixel.ny *
+                        gridRows
+                    )
+                );
+
+
+            buckets[
+                gy *
+                gridColumns +
+                gx
+            ].push(pixel);
+
+        }
+
+
+        /*
+         * Shuffle individual buckets.
+         */
+        for (
+            var q = 0;
+            q < buckets.length;
+            q++
+        ) {
+
+            if (
+                buckets[q].length > 1
+            ) {
+
+                shuffle(
+                    buckets[q]
+                );
+
+            }
+
+        }
+
+
+        var result = [];
+
+
+        /*
+         * First pass:
+         * Take at least one point from every occupied cell.
+         *
+         * This is the main text visibility fix.
+         */
+        for (
+            var cell = 0;
+            cell < buckets.length;
+            cell++
+        ) {
+
+            if (
+                buckets[cell].length
+            ) {
+
+                result.push(
+                    buckets[cell][0]
+                );
+
+            }
+
+        }
+
+
+        /*
+         * Remaining points.
+         */
+        var remaining =
+            visiblePixels.slice();
+
+
+        shuffle(
+            remaining
+        );
+
+
+        /*
+         * Add points until desired density.
+         */
+        var needed =
+            Math.max(
+                0,
+                targetCount -
+                result.length
+            );
+
+
+        for (
+            var rIndex = 0;
+            rIndex < remaining.length &&
+            rIndex < needed;
+            rIndex++
+        ) {
+
+            result.push(
+                remaining[rIndex]
+            );
+
+        }
+
+
+        /*
+         * If logo has fewer actual pixels than
+         * target count, do NOT invent shape.
+         *
+         * We duplicate actual logo points with
+         * tiny offsets only when necessary.
+         */
+        if (
+            result.length <
+            Math.min(
+                targetCount,
+                visiblePixels.length
+            )
+        ) {
+
+            /*
+             * Already covered by the sampling above.
+             */
+
+        }
+
+
+        /*
+         * Final shuffle determines assembly order.
+         */
+        shuffle(result);
+
+
+        return result;
+
+    }
+
+
+    /* =========================================================
+       EASING
+    ========================================================= */
+
+    function easeOutCubic(t) {
+
+        return 1 -
+            Math.pow(
+                1 - t,
+                3
+            );
+
+    }
+
+
+    function easeInOutCubic(t) {
+
+        if (t < 0.5) {
+
+            return 4 *
+                t *
+                t *
+                t;
+
+        }
+
+        return 1 -
+            Math.pow(
+                -2 * t + 2,
+                3
+            ) / 2;
+
+    }
+
+
+    /* =========================================================
+       LOGO GEOMETRY
+    ========================================================= */
+
+    function calculateLogoGeometry(img) {
+
+        var vw =
+            window.innerWidth;
+
+        var vh =
+            window.innerHeight;
+
+
+        var isMobile =
+            vw <= 640;
+
+        var isTablet =
+            vw > 640 &&
+            vw <= 1024;
+
+
+        var naturalWidth =
+            img.naturalWidth ||
+            img.width;
+
+        var naturalHeight =
+            img.naturalHeight ||
+            img.height;
+
+
+        var aspect =
+            naturalWidth /
+            naturalHeight;
+
+
+        var maxWidth;
+
+
+        if (isMobile) {
+
+            maxWidth =
+                Math.min(
+                    vw * 0.90,
+                    470
+                );
+
+        }
+
+        else if (isTablet) {
+
+            maxWidth =
+                Math.min(
+                    vw * 0.72,
+                    650
+                );
+
+        }
+
+        else {
+
+            maxWidth =
+                Math.min(
+                    vw * 0.58,
+                    760
+                );
+
+        }
+
+
+        var width =
+            maxWidth;
+
+
+        var height =
+            width /
+            aspect;
+
+
+        /*
+         * Prevent logo becoming too tall.
+         */
+        var maxHeight =
+            isMobile
+                ? vh * 0.72
+                : vh * 0.68;
+
+
+        if (
+            height >
+            maxHeight
+        ) {
+
+            height =
+                maxHeight;
+
+            width =
+                height *
+                aspect;
+
+        }
+
+
+        /*
+         * Slightly above exact center so the logo
+         * feels visually centered.
+         */
+        var centerX =
+            vw / 2;
+
+
+        var centerY =
+            vh / 2 -
+            (
+                isMobile
+                    ? 0
+                    : 8
+            );
+
 
         return {
-          group: 'text',
 
-          sx: Math.random() * W + Math.cos(angle) * radius * 0.08,
-          sy: Math.random() * H + Math.sin(angle) * radius * 0.08,
+            width: width,
 
-          tx:
-            (W - textW) / 2 +
-            offsetX +
-            t.x * textW * textScale,
+            height: height,
 
-          ty:
-            logoTop +
-            logoH +
-            42 +
-            t.y * textH,
+            centerX: centerX,
 
-          r: 0.7 + Math.random() * 1.05,
-          alpha: 0.48 + Math.random() * 0.42,
+            centerY: centerY
 
-          cr: color[0],
-          cg: color[1],
-          cb: color[2],
-
-          phase: Math.random() * Math.PI * 2,
-          drift: 3 + Math.random() * 7,
-
-          delay: Math.random() * 130,
-
-          _x: 0,
-          _y: 0,
-          _t: 0
         };
-      });
+
     }
 
-    /* Center each word. */
-    var innovationWidth = textW * textScale;
-    var technologyWidth = textW * textScale;
 
-    var textParticles = [];
+    /* =========================================================
+       PARTICLE CREATION
+    ========================================================= */
 
-    textParticles = textParticles.concat(
-      addText(
-        innovation,
-        (textW - innovationWidth) * 0.5,
-        [238, 242, 247]
-      )
-    );
-
-    textParticles = textParticles.concat(
-      addText(
-        technology,
-        (textW - technologyWidth) * 0.5,
-        [47, 134, 255]
-      )
-    );
-
-    particles = logoParticles.concat(textParticles);
-
-    return true;
-  }
-
-  function buildConnections() {
-    var links = [];
-    var grid = Object.create(null);
-    var cell = 7;
-
-    particles.forEach(function (p, index) {
-      var gx = Math.floor(p.tx / cell);
-      var gy = Math.floor(p.ty / cell);
-      var key = gx + ':' + gy;
-
-      if (!grid[key]) grid[key] = [];
-      grid[key].push(index);
-    });
-
-    particles.forEach(function (p, index) {
-      var gx = Math.floor(p.tx / cell);
-      var gy = Math.floor(p.ty / cell);
-
-      for (var yy = -1; yy <= 1; yy++) {
-        for (var xx = -1; xx <= 1; xx++) {
-          var key = (gx + xx) + ':' + (gy + yy);
-          var bucket = grid[key];
-
-          if (!bucket) continue;
-
-          bucket.forEach(function (otherIndex) {
-            if (otherIndex <= index) return;
-
-            var q = particles[otherIndex];
-
-            if (p.group !== q.group) return;
-
-            var dx = p.tx - q.tx;
-            var dy = p.ty - q.ty;
-            var distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance <= 6.2) {
-              links.push({
-                a: index,
-                b: otherIndex
-              });
-            }
-          });
-        }
-      }
-    });
-
-    return links;
-  }
-
-  function drawConnections(now) {
-    connections.forEach(function (link) {
-      var a = particles[link.a];
-      var b = particles[link.b];
-
-      var progress = Math.min(a._t, b._t);
-
-      if (progress < 0.08) return;
-
-      var strength = Math.pow(progress, 2.6);
-
-      ctx.beginPath();
-      ctx.moveTo(a._x, a._y);
-      ctx.lineTo(b._x, b._y);
-
-      var r = Math.round((a.cr + b.cr) / 2);
-      var g = Math.round((a.cg + b.cg) / 2);
-      var bl = Math.round((a.cb + b.cb) / 2);
-
-      ctx.strokeStyle =
-        'rgba(' +
-        r + ',' +
-        g + ',' +
-        bl + ',' +
-        (0.025 + strength * 0.22) +
-        ')';
-
-      ctx.lineWidth =
-        0.35 +
-        strength * 0.42;
-
-      ctx.stroke();
-    });
-  }
-
-  function drawParticle(p, x, y, alpha, assembled) {
-    ctx.beginPath();
-
-    ctx.fillStyle =
-      'rgba(' +
-      p.cr + ',' +
-      p.cg + ',' +
-      p.cb + ',' +
-      alpha +
-      ')';
-
-    ctx.arc(
-      x,
-      y,
-      p.r * (assembled ? 1.05 : 1),
-      0,
-      Math.PI * 2
-    );
-
-    ctx.fill();
-
-    if (assembled && p.r > 1.2) {
-      ctx.beginPath();
-
-      ctx.fillStyle =
-        'rgba(' +
-        p.cr + ',' +
-        p.cg + ',' +
-        p.cb + ',' +
-        (alpha * 0.055) +
-        ')';
-
-      ctx.arc(
-        x,
-        y,
-        p.r * 4.5,
-        0,
-        Math.PI * 2
-      );
-
-      ctx.fill();
-    }
-  }
-
-  function removeSplash() {
-    if (finished) return;
-
-    finished = true;
-    cancelAnimationFrame(raf);
-
-    splash.classList.add('is-leaving');
-    document.documentElement.classList.remove('splash-active');
-
-    window.setTimeout(function () {
-      if (splash.parentNode) splash.parentNode.removeChild(splash);
-    }, 850);
-  }
-
-  function render(now) {
-    if (finished) return;
-
-    var elapsed = now - startTime;
-
-    ctx.clearRect(0, 0, W, H);
-
-    particles.forEach(function (p) {
-      var isLogo = p.group === 'logo';
-
-      var localStart = isLogo ? 250 : LOGO_TIME + LOGO_HOLD;
-      var localDuration = isLogo ? LOGO_TIME : TEXT_TIME;
-
-      var raw =
-        (elapsed - localStart - p.delay) /
-        (localDuration - p.delay);
-
-      var t = Math.max(0, Math.min(1, raw));
-      var e = easeOutQuint(t);
-
-      var remaining = 1 - t;
-
-      var sway =
-        Math.sin(
-          p.phase + elapsed * 0.00125
-        ) *
-        p.drift *
-        remaining;
-
-      var swayY =
-        Math.cos(
-          p.phase + elapsed * 0.00105
-        ) *
-        p.drift *
-        remaining;
-
-      var x =
-        p.sx +
-        (p.tx - p.sx) * e +
-        sway;
-
-      var y =
-        p.sy +
-        (p.ty - p.sy) * e +
-        swayY;
-
-      if (t >= 1) {
-        x = p.tx;
-        y = p.ty;
-      }
-
-      p._x = x;
-      p._y = y;
-      p._t = t;
-
-      var alpha = p.alpha;
-
-      if (t < 0.12) {
-        alpha *= t / 0.12;
-      }
-
-      if (!isLogo && elapsed < LOGO_TIME + LOGO_HOLD) {
-        alpha = 0;
-      }
-
-      drawParticle(
-        p,
-        x,
-        y,
-        alpha,
-        t > 0.78
-      );
-    });
-
-    drawConnections(now);
-
-    /* Logo completed. */
-    if (elapsed >= LOGO_TIME + 80) {
-      splash.classList.add('logo-ready');
-    }
-
-    /* Text completed. */
-    if (elapsed >= LOGO_TIME + LOGO_HOLD + TEXT_TIME * 0.72) {
-      if (name) name.classList.add('is-visible');
-    }
-
-    /* End. */
-    if (
-      elapsed >=
-      LOGO_TIME +
-      LOGO_HOLD +
-      TEXT_TIME +
-      FINAL_HOLD
+    function createParticles(
+        points,
+        img
     ) {
-      removeSplash();
-      return;
+
+        var geometry =
+            calculateLogoGeometry(
+                img
+            );
+
+
+        var particles =
+            [];
+
+
+        for (
+            var i = 0;
+            i < points.length;
+            i++
+        ) {
+
+            var point =
+                points[i];
+
+
+            /*
+             * EXACT FINAL POSITION.
+             */
+            var targetX =
+                geometry.centerX +
+                (
+                    point.nx -
+                    0.5
+                ) *
+                geometry.width;
+
+
+            var targetY =
+                geometry.centerY +
+                (
+                    point.ny -
+                    0.5
+                ) *
+                geometry.height;
+
+
+            /*
+             * Wide scattered starting field.
+             */
+            var startX =
+                -50 +
+                Math.random() *
+                (
+                    window.innerWidth +
+                    100
+                );
+
+
+            var startY =
+                -50 +
+                Math.random() *
+                (
+                    window.innerHeight +
+                    100
+                );
+
+
+            /*
+             * Particle size.
+             *
+             * Text gets slightly stronger.
+             */
+            var size =
+                1.25 +
+                Math.random() *
+                1.25;
+
+
+            /*
+             * Every particle keeps original
+             * logo color.
+             */
+            var color =
+                'rgb(' +
+                point.r +
+                ',' +
+                point.g +
+                ',' +
+                point.b +
+                ')';
+
+
+            /*
+             * Curved path strength.
+             */
+            var curve =
+                (
+                    Math.random() -
+                    0.5
+                ) *
+                120;
+
+
+            particles.push({
+
+                x: startX,
+
+                y: startY,
+
+                startX: startX,
+
+                startY: startY,
+
+                targetX: targetX,
+
+                targetY: targetY,
+
+                size: size,
+
+                color: color,
+
+                alpha:
+                    0.78 +
+                    Math.random() *
+                    0.22,
+
+                curve: curve,
+
+                delay:
+                    Math.random() *
+                    420,
+
+                phase:
+                    Math.random() *
+                    Math.PI *
+                    2,
+
+                speed:
+                    100 +
+                    Math.random() *
+                    120
+
+            });
+
+        }
+
+
+        return particles;
+
     }
 
-    raf = requestAnimationFrame(render);
-  }
 
-  function start() {
-    if (!makeParticles()) return;
+    /* =========================================================
+       DRAW PARTICLE
+    ========================================================= */
 
-    connections = buildConnections();
+    function drawParticle(
+        particle,
+        x,
+        y,
+        radius,
+        alpha
+    ) {
 
-    startTime = performance.now();
+        ctx.beginPath();
 
-    if (reduced) {
-      particles.forEach(function (p) {
-        p.sx = p.tx;
-        p.sy = p.ty;
-      });
+        ctx.fillStyle =
+            particle.color;
 
-      splash.classList.add('logo-ready');
+        ctx.globalAlpha =
+            alpha;
 
-      if (name) name.classList.add('is-visible');
+        ctx.arc(
+            x,
+            y,
+            radius,
+            0,
+            Math.PI * 2
+        );
 
-      render(startTime + 5000);
+        ctx.fill();
 
-      window.setTimeout(removeSplash, 1400);
-      return;
     }
 
-    raf = requestAnimationFrame(render);
-  }
 
-  /*
-   * The source image is ONLY loaded for pixel sampling.
-   * It has opacity:0 in CSS and is never drawn to the splash.
-   */
-  if (sourceLogo.complete) {
-    start();
-  } else {
-    sourceLogo.addEventListener('load', start, { once: true });
-  }
+    /* =========================================================
+       FINAL LOGO — SHARP IMAGE SNAP
+       ---------------------------------------------------------
+       This is the key fix.
 
-  /* Safety fallback. */
-  window.setTimeout(function () {
-    if (!finished && !particles.length) {
-      removeSplash();
+       Once the particles finish settling, we stop drawing
+       hundreds of tiny dots (which will always look grainy,
+       no matter how tightly they pack together) and instead
+       draw the REAL logo image directly onto the SAME canvas,
+       at the exact same position/size the particles just
+       assembled into.
+
+       Nothing new becomes visible (no <img> tag, no second
+       element) — the canvas itself simply renders a crisp,
+       fully anti-aliased copy of the logo in place of the
+       particle cloud, so the on-screen result looks like the
+       particles themselves "sharpened" into the final logo.
+    ========================================================= */
+
+    function drawFinalLogoImage(img) {
+
+        var geometry =
+            calculateLogoGeometry(
+                img
+            );
+
+        var drawX =
+            geometry.centerX -
+            geometry.width / 2;
+
+        var drawY =
+            geometry.centerY -
+            geometry.height / 2;
+
+        ctx.clearRect(
+            0,
+            0,
+            window.innerWidth,
+            window.innerHeight
+        );
+
+        ctx.globalCompositeOperation =
+            'source-over';
+
+        ctx.globalAlpha = 1;
+
+        ctx.imageSmoothingEnabled =
+            true;
+
+        ctx.imageSmoothingQuality =
+            'high';
+
+        ctx.drawImage(
+            img,
+            drawX,
+            drawY,
+            geometry.width,
+            geometry.height
+        );
+
+        ctx.globalAlpha = 1;
+
     }
-  }, 6500);
+
+
+    /* =========================================================
+       PARTICLE ANIMATION
+    ========================================================= */
+
+    function runParticles(
+        points,
+        img
+    ) {
+
+        if (
+            animationStarted ||
+            finished
+        ) {
+
+            return;
+
+        }
+
+
+        animationStarted = true;
+
+
+        var particles =
+            createParticles(
+                points,
+                img
+            );
+
+
+        if (
+            !particles ||
+            !particles.length
+        ) {
+
+            fallbackSimple();
+
+            return;
+
+        }
+
+
+        /* =====================================================
+           TIMING
+        ===================================================== */
+
+        var scatterHold =
+            280;
+
+
+        var travelDuration =
+            2300;
+
+
+        var settleDuration =
+            900;
+
+
+        var finalHold =
+            1500;
+
+
+        var startTime =
+            null;
+
+
+        var completed =
+            false;
+
+
+        /* =====================================================
+           FRAME
+        ===================================================== */
+
+        function frame(now) {
+
+            if (finished) {
+
+                return;
+
+            }
+
+
+            if (startTime === null) {
+
+                startTime =
+                    now;
+
+            }
+
+
+            var elapsed =
+                now -
+                startTime;
+
+
+            var width =
+                window.innerWidth;
+
+            var height =
+                window.innerHeight;
+
+
+            /*
+             * -------------------------------------------------
+             * FINAL LOCK
+             * -------------------------------------------------
+             * Checked BEFORE drawing particles for this frame,
+             * so the very first frame at/after completion draws
+             * the crisp real logo instead of one last dotty
+             * particle frame.
+             */
+
+            var logoCompleteAt =
+                scatterHold +
+                travelDuration +
+                settleDuration;
+
+
+            if (
+                elapsed >=
+                logoCompleteAt
+            ) {
+
+                drawFinalLogoImage(
+                    img
+                );
+
+
+                /*
+                 * Hold complete logo.
+                 */
+                if (
+                    elapsed >=
+                    logoCompleteAt +
+                    finalHold
+                ) {
+
+                    if (!completed) {
+
+                        completed = true;
+
+                        onAssembled();
+
+                    }
+
+                    return;
+
+                }
+
+
+                requestAnimationFrame(
+                    frame
+                );
+
+                return;
+
+            }
+
+
+            ctx.clearRect(
+                0,
+                0,
+                width,
+                height
+            );
+
+
+            ctx.globalCompositeOperation =
+                'source-over';
+
+
+            /*
+             * -------------------------------------------------
+             * PARTICLES
+             * -------------------------------------------------
+             */
+
+            for (
+                var i = 0;
+                i < particles.length;
+                i++
+            ) {
+
+                var p =
+                    particles[i];
+
+
+                /*
+                 * Individual delay.
+                 */
+                var local =
+                    elapsed -
+                    scatterHold -
+                    p.delay;
+
+
+                var travelT;
+
+
+                if (local <= 0) {
+
+                    travelT = 0;
+
+                }
+
+                else {
+
+                    travelT =
+                        Math.min(
+                            1,
+                            local /
+                            travelDuration
+                        );
+
+                }
+
+
+                var travelEase =
+                    easeOutCubic(
+                        travelT
+                    );
+
+
+                /*
+                 * -------------------------------------------------
+                 * BEZIER CURVE
+                 * -------------------------------------------------
+                 */
+
+                var dx =
+                    p.targetX -
+                    p.startX;
+
+
+                var dy =
+                    p.targetY -
+                    p.startY;
+
+
+                var distance =
+                    Math.sqrt(
+                        dx * dx +
+                        dy * dy
+                    ) || 1;
+
+
+                var middleX =
+                    (
+                        p.startX +
+                        p.targetX
+                    ) / 2;
+
+
+                var middleY =
+                    (
+                        p.startY +
+                        p.targetY
+                    ) / 2;
+
+
+                var controlX =
+                    middleX +
+                    (
+                        -dy /
+                        distance
+                    ) *
+                    p.curve;
+
+
+                var controlY =
+                    middleY +
+                    (
+                        dx /
+                        distance
+                    ) *
+                    p.curve;
+
+
+                var inverse =
+                    1 -
+                    travelEase;
+
+
+                var x =
+                    inverse *
+                    inverse *
+                    p.startX +
+
+                    2 *
+                    inverse *
+                    travelEase *
+                    controlX +
+
+                    travelEase *
+                    travelEase *
+                    p.targetX;
+
+
+                var y =
+                    inverse *
+                    inverse *
+                    p.startY +
+
+                    2 *
+                    inverse *
+                    travelEase *
+                    controlY +
+
+                    travelEase *
+                    travelEase *
+                    p.targetY;
+
+
+                /*
+                 * -------------------------------------------------
+                 * SETTLE
+                 * -------------------------------------------------
+                 *
+                 * This phase brings particles to their exact
+                 * final positions before the sharp-image snap
+                 * takes over.
+                 */
+
+                var settleStart =
+                    scatterHold +
+                    travelDuration;
+
+
+                var settleT =
+                    Math.max(
+                        0,
+                        Math.min(
+                            1,
+                            (
+                                elapsed -
+                                settleStart
+                            ) /
+                            settleDuration
+                        )
+                    );
+
+
+                if (settleT > 0) {
+
+                    var settleEase =
+                        easeInOutCubic(
+                            settleT
+                        );
+
+
+                    x +=
+                        (
+                            p.targetX -
+                            x
+                        ) *
+                        settleEase;
+
+
+                    y +=
+                        (
+                            p.targetY -
+                            y
+                        ) *
+                        settleEase;
+
+                }
+
+
+                /*
+                 * -------------------------------------------------
+                 * HARD LOCK
+                 * -------------------------------------------------
+                 */
+
+                if (
+                    settleT >= 1
+                ) {
+
+                    x =
+                        p.targetX;
+
+                    y =
+                        p.targetY;
+
+                }
+
+
+                /*
+                 * -------------------------------------------------
+                 * APPEARANCE
+                 * -------------------------------------------------
+                 */
+
+                var alpha =
+                    Math.min(
+                        1,
+                        Math.max(
+                            0,
+                            elapsed /
+                            scatterHold
+                        )
+                    );
+
+
+                alpha *=
+                    p.alpha;
+
+
+                /*
+                 * Slightly larger particles as
+                 * the logo completes.
+                 */
+                var finalBoost =
+                    settleT *
+                    0.55;
+
+
+                /*
+                 * Tiny movement ONLY while particles
+                 * are travelling.
+                 */
+                var microMove =
+                    travelT < 1
+                        ? Math.sin(
+                            now /
+                            p.speed +
+                            p.phase
+                        ) *
+                        0.15
+                        : 0;
+
+
+                var radius =
+                    Math.max(
+                        0.65,
+                        p.size +
+                        finalBoost +
+                        microMove
+                    );
+
+
+                drawParticle(
+                    p,
+                    x,
+                    y,
+                    radius,
+                    alpha
+                );
+
+            }
+
+
+            ctx.globalAlpha = 1;
+
+
+            requestAnimationFrame(
+                frame
+            );
+
+        }
+
+
+        requestAnimationFrame(
+            frame
+        );
+
+    }
+
+
+    /* =========================================================
+       ASSEMBLED
+    ========================================================= */
+
+    function onAssembled() {
+
+        if (finished) return;
+
+
+        /*
+         * Do NOT use the HTML logo here.
+         *
+         * The canvas itself now contains the crisp final
+         * logo image, drawn by drawFinalLogoImage().
+         */
+        if (nameEl) {
+
+            nameEl.style.opacity =
+                '0';
+
+        }
+
+
+        window.setTimeout(
+            function () {
+
+                if (finished) return;
+
+                window.clearTimeout(
+                    safetyTimer
+                );
+
+                finishSplash();
+
+            },
+            900
+        );
+
+    }
+
+
+    /* =========================================================
+       IMAGE LOAD
+    ========================================================= */
+
+    var img =
+        new Image();
+
+
+    img.onload =
+        function () {
+
+            if (finished) return;
+
+
+            var width =
+                window.innerWidth;
+
+
+            /*
+             * Particle count.
+             *
+             * Higher density = clearer text.
+             */
+            var targetCount;
+
+
+            if (width <= 480) {
+
+                targetCount =
+                    3200;
+
+            }
+
+            else if (width <= 640) {
+
+                targetCount =
+                    4000;
+
+            }
+
+            else if (width <= 1024) {
+
+                targetCount =
+                    5200;
+
+            }
+
+            else {
+
+                targetCount =
+                    6800;
+
+            }
+
+
+            var points =
+                sampleLogoPoints(
+                    img,
+                    targetCount
+                );
+
+
+            if (
+                !points ||
+                !points.length
+            ) {
+
+                fallbackSimple();
+
+                return;
+
+            }
+
+
+            /*
+             * Wait one browser frame so the canvas
+             * is fully ready.
+             */
+            requestAnimationFrame(
+                function () {
+
+                    if (finished) return;
+
+                    runParticles(
+                        points,
+                        img
+                    );
+
+                }
+            );
+
+        };
+
+
+    /* =========================================================
+       IMAGE ERROR
+    ========================================================= */
+
+    img.onerror =
+        function () {
+
+            fallbackSimple();
+
+        };
+
+
+    /* =========================================================
+       SOURCE
+    ========================================================= */
+
+    if (
+        logoEl &&
+        logoEl.getAttribute('src')
+    ) {
+
+        /*
+         * IMPORTANT:
+         * Use the same source as the hidden
+         * splash logo.
+         */
+        img.src =
+            logoEl.getAttribute(
+                'src'
+            );
+
+    }
+
+    else {
+
+        fallbackSimple();
+
+        return;
+
+    }
+
+
+    /* =========================================================
+       RESIZE
+       ---------------------------------------------------------
+       We do NOT rebuild the particle animation during resize.
+       This prevents particles from suddenly jumping.
+    ========================================================= */
+
+    window.addEventListener(
+        'resize',
+        function () {
+
+            clearTimeout(
+                resizeTimer
+            );
+
+
+            resizeTimer =
+                window.setTimeout(
+                    function () {
+
+                        resizeCanvas();
+
+                    },
+                    120
+                );
+
+        }
+    );
+
+
+    /* =========================================================
+       VISIBILITY
+    ========================================================= */
+
+    document.addEventListener(
+        'visibilitychange',
+        function () {
+
+            if (
+                document.hidden &&
+                !finished
+            ) {
+
+                window.clearTimeout(
+                    safetyTimer
+                );
+
+
+                safetyTimer =
+                    window.setTimeout(
+                        finishSplash,
+                        12000
+                    );
+
+            }
+
+        }
+    );
+
+
 })();
