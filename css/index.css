@@ -1198,110 +1198,492 @@ body.is-leaving{ opacity: 0; }
    Particle-assembly intro, shown once per session on Home.
    Logic lives in js/splash.js; this only defines appearance.
    ========================================================== */
+/* ==========================================================
+   CINEMATIC SPLASH — REAL PARTICLE LOGO ASSEMBLY
+   ========================================================== */
+
 html.splash-active,
-html.splash-active body{
+html.splash-active body {
   overflow: hidden;
-  height: 100%;
 }
 
-.splash-screen{
+
+/* ==========================================================
+   SPLASH CONTAINER
+   ========================================================== */
+
+.splash-screen {
   position: fixed;
   inset: 0;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-void);
-  overflow: hidden;
+  z-index: 9999;
+
+  background: #02040a;
+
+  display: grid;
+  place-items: center;
+
   opacity: 1;
-  transform: scale(1);
-  transition: opacity 650ms var(--ease), transform 650ms var(--ease);
+  visibility: visible;
+
+  overflow: hidden;
+
+  transition:
+    opacity .85s cubic-bezier(.22, 1, .36, 1),
+    filter .85s ease,
+    transform .85s cubic-bezier(.22, 1, .36, 1);
 }
-.splash-screen.is-leaving{
+
+
+.splash-screen.is-leaving {
+
   opacity: 0;
-  transform: scale(1.035);
+
+  filter: blur(12px);
+
+  transform: scale(1.02);
+
   pointer-events: none;
 }
-.splash-screen[hidden]{ display: none; }
 
-.splash-bg{
+
+/* ==========================================================
+   PREMIUM DARK BACKGROUND
+   ========================================================== */
+
+.splash-bg {
+
   position: absolute;
-  inset: 0;
-  z-index: 0;
+
+  inset: -10%;
+
   background:
-    radial-gradient(ellipse 640px 480px at 50% 42%, rgba(47,107,255,0.16), transparent 62%),
-    radial-gradient(ellipse 900px 600px at 85% 100%, rgba(47,107,255,0.08), transparent 60%),
-    radial-gradient(ellipse 900px 600px at 10% 0%, rgba(47,107,255,0.08), transparent 60%);
-  filter: blur(2px);
-}
-.splash-grid{
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, rgba(0,0,0,0.35), transparent 75%);
-  opacity: 0.4;
-}
-.splash-canvas{
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  transition: opacity 420ms var(--ease);
-}
-.splash-canvas.is-fading{ opacity: 0; }
 
-.splash-stage{
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(31, 101, 220, .20),
+      transparent 24%
+    ),
+
+    radial-gradient(
+      circle at 18% 24%,
+      rgba(16, 47, 110, .16),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 84% 74%,
+      rgba(12, 61, 145, .13),
+      transparent 30%
+    ),
+
+    linear-gradient(
+      145deg,
+      #010207 0%,
+      #07101e 48%,
+      #02040a 100%
+    );
+
+  filter: blur(24px);
+
+  transform: scale(1.06);
+}
+
+
+/* ==========================================================
+   DARK VIGNETTE
+   ========================================================== */
+
+.splash-vignette {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+
+    radial-gradient(
+      ellipse at center,
+      transparent 12%,
+      rgba(0, 0, 0, .24) 55%,
+      rgba(0, 0, 0, .84) 100%
+    );
+}
+
+
+/* ==========================================================
+   VERY SUBTLE NOISE
+   ========================================================== */
+
+.splash-noise {
+
+  position: absolute;
+
+  inset: 0;
+
+  opacity: .025;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+}
+
+
+/* ==========================================================
+   PARTICLE CANVAS
+   ========================================================== */
+
+.splash-canvas {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+}
+
+
+/* ==========================================================
+   CENTER STAGE
+   ========================================================== */
+
+.splash-stage {
+
   position: relative;
+
   z-index: 2;
+
+  width: min(94vw, 680px);
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
-  gap: 22px;
-  transform: translateY(-18px);
+
+  justify-content: center;
+
+  pointer-events: none;
+
+  transform: translateY(-10px);
 }
-.splash-logo{
-  width: min(220px, 42vw);
-  height: min(220px, 42vw);
-  object-fit: contain;
-  border-radius: 20px;
+
+
+/* ==========================================================
+   LOGO AREA
+   ========================================================== */
+
+.splash-mark-shell {
+
+  position: relative;
+
+  width: min(82vw, 540px);
+
+  height: min(58vw, 385px);
+
+  display: grid;
+
+  place-items: center;
+}
+
+
+/* ==========================================================
+   INVISIBLE SOURCE LOGO
+   JavaScript reads the actual logo pixels.
+   ========================================================== */
+
+.splash-source-logo {
+
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
   opacity: 0;
-  transform: scale(0.94);
-  mix-blend-mode: screen;
-  transition: opacity 480ms var(--ease), transform 480ms var(--ease);
+
+  pointer-events: none;
 }
-.splash-logo.is-visible{
-  opacity: 1;
+
+
+/* ==========================================================
+   STATIC EMBLEM
+   Used only at extremely low opacity after assembly
+   and for reduced-motion users.
+   ========================================================== */
+
+.splash-static-mark {
+
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  opacity: 0;
+
+  transform: scale(.985);
+
+  filter:
+    brightness(1.12)
+    drop-shadow(
+      0 0 24px
+      rgba(47, 128, 255, .18)
+    );
+
+  transition:
+    opacity .42s ease,
+    transform .65s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+/* ==========================================================
+   BLUE ATMOSPHERIC HALO
+   ========================================================== */
+
+.splash-halo {
+
+  position: absolute;
+
+  width: 54%;
+  height: 54%;
+
+  border-radius: 50%;
+
+  background:
+    rgba(39, 113, 235, .10);
+
+  filter: blur(46px);
+
+  opacity: .58;
+
+  transform: scale(.72);
+
+  transition:
+    transform 1s cubic-bezier(.22, 1, .36, 1),
+    opacity 1s ease;
+}
+
+
+/* ==========================================================
+   FINAL LOGO GLOW
+   ========================================================== */
+
+.splash-logo-glow {
+
+  position: absolute;
+
+  width: 72%;
+  height: 38%;
+
+  border-radius: 50%;
+
+  background:
+    rgba(46, 125, 255, .22);
+
+  filter: blur(42px);
+
+  opacity: 0;
+
+  transition:
+    opacity .9s ease;
+}
+
+
+/* ==========================================================
+   LOGO COMPLETE STATE
+   ========================================================== */
+
+.splash-screen.logo-ready
+.splash-halo {
+
+  transform: scale(1);
+
+  opacity: .92;
+}
+
+
+.splash-screen.logo-ready
+.splash-logo-glow {
+
+  opacity: .62;
+}
+
+
+/*
+ * Extremely subtle real-image reinforcement.
+ *
+ * Particles remain the actual visible logo.
+ * This is only 8% opacity to make the final silhouette
+ * exceptionally crisp without turning it into a fade-in.
+ */
+
+.splash-screen.logo-ready
+.splash-static-mark {
+
+  opacity: .08;
+
   transform: scale(1);
 }
-.splash-name{
-  margin: 0;
+
+
+/* ==========================================================
+   COMPANY NAME
+   ========================================================== */
+
+.splash-name {
+
+  margin: 2px 0 0;
+
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(1.1rem, 2.6vw, 1.4rem);
-  letter-spacing: 0.01em;
-  color: var(--silver-bright);
-  text-align: center;
-  opacity: 0;
-  transform: translateY(10px);
-  filter: blur(6px);
-  transition: opacity 560ms var(--ease), transform 560ms var(--ease), filter 560ms var(--ease);
-}
-.splash-name span{
-  color: var(--blue-300);
+
+  font-size:
+    clamp(
+      1.15rem,
+      2.6vw,
+      1.55rem
+    );
+
   font-weight: 600;
-  margin-left: 0.4em;
-}
-.splash-name.is-visible{
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
+
+  letter-spacing: .09em;
+
+  text-align: center;
+
+  opacity: 0;
+
+  filter: blur(9px);
+
+  transform:
+    translateY(12px);
+
+  transition:
+
+    opacity .7s ease,
+
+    filter .8s ease,
+
+    transform .8s
+      cubic-bezier(
+        .22,
+        1,
+        .36,
+        1
+      );
 }
 
-@media (max-width: 460px){
-  .splash-stage{ gap: 16px; }
+
+/* Innovation = Silver */
+
+.splash-name span {
+
+  color: #eef2f7;
+}
+
+
+/* Technology = Brand Blue */
+
+.splash-name b {
+
+  color: #2f86ff;
+
+  font-weight: 600;
+}
+
+
+.splash-name.is-visible {
+
+  opacity: 1;
+
+  filter: blur(0);
+
+  transform:
+    translateY(0);
+}
+
+
+/* ==========================================================
+   REDUCED MOTION
+   ========================================================== */
+
+.splash-screen.reduced-motion
+.splash-static-mark {
+
+  opacity: 1;
+
+  filter:
+    drop-shadow(
+      0 0 22px
+      rgba(47, 128, 255, .22)
+    );
+}
+
+
+.splash-screen.reduced-motion
+.splash-halo {
+
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+
+.splash-screen.reduced-motion
+.splash-logo-glow {
+
+  opacity: .55;
+}
+
+
+.splash-screen.reduced-motion
+.splash-name {
+
+  opacity: 1;
+
+  filter: none;
+
+  transform: none;
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 560px) {
+
+  .splash-mark-shell {
+
+    width: 88vw;
+
+    height: 62vw;
+  }
+
+
+  .splash-name {
+
+    font-size: 1.05rem;
+
+    letter-spacing: .065em;
+  }
+}
+
+
+/* ==========================================================
+   ACCESSIBILITY
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .splash-screen,
+  .splash-halo,
+  .splash-logo-glow,
+  .splash-static-mark,
+  .splash-name {
+
+    transition: none !important;
+  }
 }
 
 
