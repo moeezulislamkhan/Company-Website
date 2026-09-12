@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innovexa Technologies — Stack Cards Section</title>
+
+<style>
+
+/* =========================================================
+   INNOVEXA TECHNOLOGIES
+   STACK CARDS SECTION
+   (color scheme matched to site: navy + blue accent)
+   ========================================================= */
+
+:root{
+
+    --navy:#071827;
+    --navy-deep:#020b14;
+    --black:#01070d;
+    --off-white:#edf3f9;
+    --white:#ffffff;
+
+    --blue:#2d6df6;
+    --blue-light:#7aa9ff;
+
+    --text-soft:#a5b3c9;
+
+    --ease:cubic-bezier(.22,1,.36,1);
+
+    --max-width:1280px;
+
+    --font:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+}
+
+
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:
+        radial-gradient(circle at top, rgba(38, 69, 114, 0.18), transparent 30%),
+        linear-gradient(180deg, #01070d 0%, #071827 55%, #020b14 100%);
+    color:var(--white);
+    font-family:var(--font);
+    -webkit-font-smoothing:antialiased;
+}
+
+
+/* =========================================================
+   SECTION WRAPPER
+   ========================================================= */
+
+.stack-section{
+
+    position:relative;
+
+    width:100%;
+
+    background:
+        linear-gradient(180deg, rgba(2, 11, 20, 0.96) 0%, rgba(6, 15, 25, 0.98) 100%);
+    border-top:1px solid rgba(255,255,255,0.03);
+    border-bottom:1px solid rgba(255,255,255,0.03);
+
+    padding:
+        clamp(70px,9vw,120px) 0
+        40px;
+}
+
+
+.stack-heading{
+
+    width:
+        min(
+            var(--max-width),
+            calc(100% - 48px)
+        );
+
+    margin:0 auto
+        clamp(40px,6vw,64px);
+
+    text-align:center;
+}
+
+
+.stack-eyebrow{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    margin-bottom:16px;
+
+    padding:8px 15px;
+
+    border:1px solid rgba(37,99,235,.18);
+
+    border-radius:999px;
+
+    background:rgba(37,99,235,.06);
+
+    color:var(--blue);
+
+    font-size:.72rem;
+
+    font-weight:750;
+
+    letter-spacing:.14em;
+
+    text-transform:uppercase;
+}
+
+
+.stack-eyebrow::before{
+
+    content:"";
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:var(--blue);
+
+    box-shadow:0 0 0 5px rgba(37,99,235,.10);
+}
+
+
+.stack-heading h2{
+
+    margin:0 auto;
+
+    max-width:680px;
+
+    color:#f0f6ff;
+
+    font-size:clamp(2rem,4.5vw,3.2rem);
+
+    line-height:1.12;
+
+    letter-spacing:-.03em;
+
+    font-weight:750;
+}
+
+
+.stack-heading h2 span{
+
+    background:
+        linear-gradient(
+            100deg,
+            #f0f6ff 0%,
+            #b5cbff 30%,
+            #6ca2ff 60%,
+            #4d82ff 100%
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+
+.stack-heading p{
+
+    margin:16px auto 0;
+
+    max-width:600px;
+
+    color:rgba(214, 225, 239, 0.82);
+
+    font-size:clamp(.95rem,1.3vw,1.08rem);
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   STACK TRACK
+   (tall scroll track; each card pins via sticky and the
+   next card slides over it, creating the stack effect)
+   ========================================================= */
+
+.stack-track{
+
+    position:relative;
+
+    width:
+        min(
+            1100px,
+            calc(100% - 80px)
+        );
+
+    margin:0 auto;
+}
+
+
+.stack-card{
+
+    position:sticky;
+
+    top:
+        94px;
+
+    width:
+        min(
+            920px,
+            90%
+        );
+
+    margin:
+        0 auto
+        18px;
+
+    height:
+        min(560px,74vh);
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    padding:
+        clamp(28px,4vw,52px);
+
+    color:var(--white);
+
+    box-shadow:
+        0 28px 64px rgba(1,7,13,.45),
+        0 12px 24px rgba(1,7,13,.24);
+
+    will-change:transform;
+
+    transition:transform .1s linear;
+}
+
+
+/* subtle scale-down effect applied via JS as cards stack */
+
+.stack-card.is-stacked{
+
+    transform:scale(.97);
+}
+
+
+/* background gradient overlay for legibility, on top of
+   each card's own background color/image */
+
+.stack-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:1;
+
+    pointer-events:none;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(4,16,29,.05) 0%,
+            rgba(4,16,29,.15) 45%,
+            rgba(4,16,29,.72) 100%
+        );
+}
+
+
+.stack-card-inner{
+
+    position:relative;
+
+    z-index:2;
+
+    width:100%;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    gap:24px;
+}
+
+
+.stack-card-index{
+
+    position:absolute;
+
+    top:
+        clamp(20px,3vw,36px);
+
+    left:
+        clamp(20px,3vw,36px);
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-family:"IBM Plex Mono",monospace;
+
+    font-size:.78rem;
+
+    font-weight:500;
+
+    letter-spacing:.08em;
+
+    color:rgba(255,255,255,.75);
+}
+
+
+.stack-card-index span{
+
+    display:inline-block;
+
+    width:26px;
+    height:1px;
+
+    background:rgba(255,255,255,.5);
+}
+
+
+.stack-card-icon{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:56px;
+    height:56px;
+
+    flex:0 0 auto;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.14);
+
+    border:1px solid rgba(255,255,255,.28);
+
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    margin-bottom:14px;
+}
+
+
+.stack-card-icon svg{
+
+    width:26px;
+    height:26px;
+
+    stroke:var(--white);
+
+    fill:none;
+
+    stroke-width:1.8;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+}
+
+
+.stack-card-text{
+
+    max-width:640px;
+}
+
+
+.stack-card-tag{
+
+    display:inline-block;
+
+    margin-bottom:10px;
+
+    padding:5px 12px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.14);
+
+    border:1px solid rgba(255,255,255,.24);
+
+    font-size:.68rem;
+
+    font-weight:700;
+
+    letter-spacing:.1em;
+
+    text-transform:uppercase;
+
+    color:var(--white);
+}
+
+
+.stack-card-title{
+
+    margin:0;
+
+    font-size:clamp(1.5rem,2.6vw,2.2rem);
+
+    line-height:1.15;
+
+    letter-spacing:-.02em;
+
+    font-weight:700;
+}
+
+
+.stack-card-desc{
+
+    margin:12px 0 0;
+
+    max-width:520px;
+
+    font-size:clamp(.88rem,1.15vw,1rem);
+
+    line-height:1.65;
+
+    color:rgba(255,255,255,.82);
+}
+
+
+.stack-card-link{
+
+    flex:0 0 auto;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    padding:13px 22px;
+
+    border-radius:999px;
+
+    background:var(--white);
+
+    color:var(--navy);
+
+    font-size:.86rem;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    transition:transform .3s var(--ease),box-shadow .3s ease;
+}
+
+
+.stack-card-link svg{
+
+    width:15px;
+    height:15px;
+
+    transition:transform .3s var(--ease);
+}
+
+
+.stack-card-link:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.25);
+}
+
+
+.stack-card-link:hover svg{
+
+    transform:translateX(3px);
+}
+
+
+/* =========================================================
+   INDIVIDUAL CARD BACKGROUNDS
+   (color scheme derived from the site's navy/blue palette,
+   each card gets a distinct tone within that family)
+   ========================================================= */
+
+.stack-card[data-card="1"]{
+
+    background:
+        linear-gradient(135deg,#0b2545,#071525);
+}
+
+
+.stack-card[data-card="2"]{
+
+    background:
+        linear-gradient(135deg,#123a73,#081a30);
+}
+
+
+.stack-card[data-card="3"]{
+
+    background:
+        linear-gradient(135deg,#1746b0,#0a1f3d);
+}
+
+
+.stack-card[data-card="4"]{
+
+    background:
+        linear-gradient(135deg,#0e2c4f,#04101d);
+}
+
+
+.stack-card[data-card="5"]{
+
+    background:
+        linear-gradient(135deg,#2563eb,#071b33);
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media(max-width:900px){
+
+    .stack-card{
+
+        top:70px;
+
+        height:min(520px,72vh);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:640px){
+
+    .stack-section{
+
+        padding:50px 0 20px;
+    }
+
+
+    .stack-track{
+
+        width:calc(100% - 24px);
+    }
+
+
+    .stack-card{
+
+        width:100%;
+        top:56px;
+        height:auto;
+
+        min-height:420px;
+
+        margin-bottom:18px;
+
+        border-radius:22px;
+
+        padding:24px;
+
+        align-items:flex-end;
+    }
+
+
+    .stack-card-inner{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:16px;
+    }
+
+
+    .stack-card-link{
+
+        width:100%;
+
+        justify-content:center;
+    }
+
+
+    .stack-card-icon{
+
+        width:48px;
+        height:48px;
+
+        margin-bottom:10px;
+    }
+
+
+    .stack-card-icon svg{
+
+        width:22px;
+        height:22px;
+    }
+
+
+    .stack-card-title{
+
+        font-size:clamp(1.3rem,6vw,1.7rem);
+    }
+
+
+    .stack-card-desc{
+
+        font-size:.86rem;
+    }
+
+
+    .stack-card-index{
+
+        top:16px;
+        left:16px;
+
+        font-size:.68rem;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    .stack-card{
+
+        transition:none;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     STACK CARDS SECTION — SERVICES
+     ======================================================= -->
+
+<section class="stack-section" id="services">
+
+
+    <div class="stack-heading">
+
+        <div class="stack-eyebrow">What We Do</div>
+
+        <h2>Solutions built to move <span>your business forward</span></h2>
+
+        <p>
+            From idea to launch, Innovexa Technologies delivers
+            end-to-end digital solutions engineered for growth.
+        </p>
+
+    </div>
+
+
+    <div class="stack-track" id="stackTrack">
+
+
+        <!-- CARD 1 — WEB DEVELOPMENT -->
+
+        <article class="stack-card" data-card="1">
+
+            <span class="stack-card-index">
+                <span></span> 01 / 05
+            </span>
+
+            <div class="stack-card-inner">
+
+                <div class="stack-card-text">
+
+                    <div class="stack-card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 9h16"/><circle cx="7" cy="7" r=".6"/><circle cx="9.5" cy="7" r=".6"/></svg>
+                    </div>
+
+                    <span class="stack-card-tag">Web Development</span>
+
+                    <h3 class="stack-card-title">Fast, modern websites that convert</h3>
+
+                    <p class="stack-card-desc">
+                        We design and build responsive, high-performance
+                        websites and web apps tailored to your brand and
+                        your business goals.
+                    </p>
+
+                </div>
+
+                <a href="services.html#web-development" class="stack-card-link">
+                    Learn More
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 2 — APP DEVELOPMENT -->
+
+        <article class="stack-card" data-card="2">
+
+            <span class="stack-card-index">
+                <span></span> 02 / 05
+            </span>
+
+            <div class="stack-card-inner">
+
+                <div class="stack-card-text">
+
+                    <div class="stack-card-icon">
+                        <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+                    </div>
+
+                    <span class="stack-card-tag">App Development</span>
+
+                    <h3 class="stack-card-title">Mobile apps people actually use</h3>
+
+                    <p class="stack-card-desc">
+                        From concept to app store, we build smooth,
+                        scalable iOS and Android applications that keep
+                        users coming back.
+                    </p>
+
+                </div>
+
+                <a href="services.html#app-development" class="stack-card-link">
+                    Learn More
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 3 — AI & AUTOMATION -->
+
+        <article class="stack-card" data-card="3">
+
+            <span class="stack-card-index">
+                <span></span> 03 / 05
+            </span>
+
+            <div class="stack-card-inner">
+
+                <div class="stack-card-text">
+
+                    <div class="stack-card-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+                    </div>
+
+                    <span class="stack-card-tag">AI &amp; Automation</span>
+
+                    <h3 class="stack-card-title">Automate the work, scale the results</h3>
+
+                    <p class="stack-card-desc">
+                        We build intelligent automation and AI-driven
+                        workflows that cut manual effort and boost your
+                        team's output.
+                    </p>
+
+                </div>
+
+                <a href="services.html#ai-automation" class="stack-card-link">
+                    Learn More
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 4 — UI/UX DESIGN -->
+
+        <article class="stack-card" data-card="4">
+
+            <span class="stack-card-index">
+                <span></span> 04 / 05
+            </span>
+
+            <div class="stack-card-inner">
+
+                <div class="stack-card-text">
+
+                    <div class="stack-card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 16 12 3l9 13"/><rect x="7" y="16" width="10" height="5" rx="1.5"/></svg>
+                    </div>
+
+                    <span class="stack-card-tag">UI / UX Design</span>
+
+                    <h3 class="stack-card-title">Interfaces that feel effortless</h3>
+
+                    <p class="stack-card-desc">
+                        Clean, intuitive and research-backed design that
+                        makes every product easy to use and hard to
+                        forget.
+                    </p>
+
+                </div>
+
+                <a href="services.html#ui-ux-design" class="stack-card-link">
+                    Learn More
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- CARD 5 — SECURITY SOLUTIONS -->
+
+        <article class="stack-card" data-card="5">
+
+            <span class="stack-card-index">
+                <span></span> 05 / 05
+            </span>
+
+            <div class="stack-card-inner">
+
+                <div class="stack-card-text">
+
+                    <div class="stack-card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    </div>
+
+                    <span class="stack-card-tag">Security Solutions</span>
+
+                    <h3 class="stack-card-title">Protection built into every layer</h3>
+
+                    <p class="stack-card-desc">
+                        We secure your systems, data and infrastructure
+                        with proactive audits and enterprise-grade
+                        protection.
+                    </p>
+
+                </div>
+
+                <a href="services.html#security-solutions" class="stack-card-link">
+                    Learn More
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                </a>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+</section>
+
+
+
+<script>
+
+/* =========================================================
+   STACK CARDS ENGINE
+   Adds a subtle "scale down" effect to each card as the
+   next one scrolls over and pins on top of it.
+   ========================================================= */
+
+(function(){
+
+    "use strict";
+
+
+    const cards =
+        Array.from(
+            document.querySelectorAll(".stack-card")
+        );
+
+
+    if(!cards.length){
+
+        return;
+
+    }
+
+
+    function updateStack(){
+
+        const viewportHeight =
+            window.innerHeight;
+
+
+        cards.forEach(
+            function(card,index){
+
+                const rect =
+                    card.getBoundingClientRect();
+
+
+                const nextCard =
+                    cards[index + 1];
+
+
+                if(!nextCard){
+
+                    card.classList.remove("is-stacked");
+
+                    return;
+
+                }
+
+
+                const nextRect =
+                    nextCard.getBoundingClientRect();
+
+
+                /*
+                 * If the next card has scrolled up far
+                 * enough to start overlapping this one's
+                 * sticky position, treat this card as
+                 * "stacked" and shrink it slightly.
+                 */
+
+                const isBeingCovered =
+                    nextRect.top <= rect.top + 210 &&
+                    rect.top <= viewportHeight;
+
+
+                card.classList.toggle(
+                    "is-stacked",
+                    isBeingCovered
+                );
+
+            }
+        );
+
+    }
+
+
+    let ticking = false;
+
+
+    function onScroll(){
+
+        if(!ticking){
+
+            window.requestAnimationFrame(
+                function(){
+
+                    updateStack();
+
+                    ticking = false;
+
+                }
+            );
+
+
+            ticking = true;
+
+        }
+
+    }
+
+
+    window.addEventListener("scroll",onScroll,{passive:true});
+
+    window.addEventListener("resize",onScroll);
+
+
+    updateStack();
+
+})();
+
+</script>
+
+</body>
+</html>

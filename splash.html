@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <!-- ================= CINEMATIC SPLASH ================= -->
+<div class="splash-screen" id="splashScreen" role="presentation" aria-hidden="true">
+  <div class="splash-bg" aria-hidden="true"></div>
+  <div class="splash-vignette" aria-hidden="true"></div>
+  <div class="splash-noise" aria-hidden="true"></div>
+  <canvas class="splash-canvas" id="splashCanvas" aria-hidden="true"></canvas>
+  <div class="splash-stage">
+    <div class="splash-mark-shell">
+  <div class="splash-halo" aria-hidden="true"></div>
+
+  <!-- REAL SOURCE LOGO: used by JavaScript for exact particle targets -->
+  <img
+    class="splash-source-logo"
+    id="splashLogo"
+    src="assets/logo.jpg"
+    alt=""
+    aria-hidden="true"
+  >
+<div class="splash-logo-glow" aria-hidden="true"></div>
+</div>
+
+<p class="splash-name" id="splashName">
+  <span>Innovexa</span>
+  <b>Technologies</b>
+</p>
+  </div>
+</div>
+<script src="/js/splash.js"></script>
+</body>
+</html>
