@@ -116,3 +116,5 @@ Unchanged from the original: `js/script.js` validates client-side and POSTs to `
 - **Colors / fonts**: CSS variables at the top of `css/style.css` (`:root`) — unchanged from the original.
 - **Per-page copy**: lives directly in each page's HTML.
 - **Adding a page**: copy the header/footer block from an existing page, drop in your section markup, add a link in the navbar of all four pages (and the footer "Company" column).
+#   C o m p a n y - W e b s i t e  
+ 
