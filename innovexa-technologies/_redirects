@@ -1,9 +1,0 @@
-# Optional: Netlify clean-URL support (e.g. /about instead of /about.html)
-# Not required — internal links already use .html and work as-is.
-# Netlify auto-serves pretty-path URLs for .html files by default,
-# this file is only needed for extra control / fallback routing.
-
-/about      /about.html      200
-/services   /services.html   200
-/contact    /contact.html    200
-/*          /index.html      404
