@@ -1,0 +1,25 @@
+# Optional: enables clean URLs (e.g. /about instead of /about.html)
+# on Apache hosting (most cPanel / shared hosting). Not required —
+# the site's internal links use .html and work with or without this.
+#
+# To use: keep this file in your site root and make sure
+# mod_rewrite is enabled on your server (it is on most shared hosts).
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # If a request comes in for /about, /services, /contact (no extension)
+  # and a matching .html file exists, serve it without redirecting the URL.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
+  RewriteRule ^([^.]+)$ $1.html [NC,L]
+
+  # Optional: redirect /about.html -> /about for a fully clean URL bar.
+  # Uncomment if you want visitors to always see the extension-free URL.
+  # RewriteCond %{THE_REQUEST} \s/+([^.]+)\.html[\s?] [NC]
+  # RewriteRule ^ /%1 [R=301,L]
+</IfModule>
+
+# Friendly 404
+ErrorDocument 404 /index.html

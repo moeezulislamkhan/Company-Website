@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innovexa Technologies | Web, App &amp; Automation Solutions</title>
+<meta name="description" content="Innovexa Technologies is a digital solutions partner offering web development, app development, automation, security and UI/UX design. You grow, we make it happen.">
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= SPLASH SCREEN ================= -->
+<!-- Frontend-only, canvas-based particle assembly. Shown once per
+     browser session on the Home entry point (see js/splash.js). -->
+<div class="splash-screen" id="splashScreen" role="presentation" aria-hidden="true">
+  <div class="splash-bg" aria-hidden="true"></div>
+  <div class="splash-grid" aria-hidden="true"></div>
+  <canvas class="splash-canvas" id="splashCanvas" aria-hidden="true"></canvas>
+  <div class="splash-stage">
+    <img class="splash-logo" id="splashLogo" src="assets/logo.jpg" alt="" aria-hidden="true">
+    <p class="splash-name" id="splashName">Innovexa <span>Technologies</span></p>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.jpg" alt="Innovexa Technologies logo" class="brand-mark">
+      <span class="brand-text">Innovexa<span class="brand-accent">Technologies</span></span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="industries.html">Industries</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Get a Quote</a>
+    </nav>
+
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+  <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">Digital Partner &mdash; Web &middot; App &middot; Automation &middot; Security</p>
+      <h1>We build solutions that scale.<br><span class="accent-line">You grow. We make it happen.</span></h1>
+      <p class="hero-sub">Innovexa Technologies is your all-in-one digital partner for web development, software apps, system automation and premium security systems &mdash; built to move with your business, not just launch and sit still.</p>
+      <div class="hero-actions">
+        <a href="contact.html" class="btn btn-primary">
+          Start your project
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="services.html" class="btn btn-ghost">Explore services</a>
+      </div>
+      <ul class="hero-badges">
+        <li>100% satisfaction guaranteed</li>
+        <li>On-time project delivery</li>
+        <li>24/7 premium support</li>
+      </ul>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="code-window">
+        <div class="code-titlebar">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="code-filename">main.py &mdash; innovexa.tech</span>
+        </div>
+        <div class="code-body">
+<pre><code><span class="tok-kw">import</span> innovexa
+<span class="tok-kw">class</span> <span class="tok-cls">DigitalSolutions</span>:
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self):
+        self.web = <span class="tok-str">"Fast, responsive sites"</span>
+        self.app = <span class="tok-str">"iOS &amp; Android apps"</span>
+        self.sec = <span class="tok-str">"Enterprise-grade"</span>
+        <span class="tok-kw">return</span> growth.scale(you)
+</code></pre>
+        </div>
+        <div class="code-terminal">
+          <p><span class="prompt">$</span> deploy --target production</p>
+          <p class="log-ok">[OK] Build successful in 2.4s</p>
+          <p class="log-info">[INFO] Digital solutions: active</p>
+          <p class="log-success">[SUCCESS] Ready to scale</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="container stats-grid">
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label">Core service lines</span></div>
+      <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Technical support</span></div>
+      <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Satisfaction guaranteed</span></div>
+      <div class="stat"><span class="stat-num">360&deg;</span><span class="stat-label">Web to security coverage</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOME INTRO (About preview) ================= -->
+<section class="home-intro" id="intro">
+  <div class="container home-intro-grid">
+    <div class="home-intro-copy reveal">
+      <p class="eyebrow">About Innovexa</p>
+      <h2>A digital partner built around one job: making your business grow.</h2>
+      <p>Innovexa Technologies designs, builds and maintains the systems modern businesses run on &mdash; from the website customers first meet you through, to the apps your team uses daily, to the automations that quietly save hours every week. We work as an extension of your team, not a vendor that disappears after launch.</p>
+      <a href="about.html" class="link-arrow">
+        Learn more about us
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="about-visual reveal" style="--reveal-i:1">
+      <div class="glow-card">
+        <h3>Multi-platform. Future-ready.</h3>
+        <p>Web, mobile, automation and security &mdash; engineered to work together as one connected system.</p>
+        <ul>
+          <li>Custom, fast &amp; responsive websites</li>
+          <li>High-performance iOS &amp; Android apps</li>
+          <li>Smart workflow automation</li>
+          <li>Advanced cyber &amp; data protection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES PREVIEW ================= -->
+<section class="services" id="services-preview">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Our Digital Services</p>
+      <h2>Everything your business needs to operate online, in one place.</h2>
+    </div>
+
+    <div class="services-grid">
+      <article class="service-card reveal" style="--reveal-i:0">
+        <div class="service-icon icon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        </div>
+        <h3>App Development</h3>
+        <p>Native, high-performance mobile apps &mdash; with dedicated Android and iOS development tracks &mdash; from first prototype to app-store launch.</p>
+      </article>
+
+      <article class="service-card reveal" style="--reveal-i:1">
+        <div class="service-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="8 5 3 12 8 19"/><polyline points="16 5 21 12 16 19"/></svg>
+        </div>
+        <h3>Web Development</h3>
+        <p>Custom, fast &amp; responsive websites built with clean code and scalable architecture &mdash; from marketing sites to full web platforms.</p>
+      </article>
+
+      <article class="service-card reveal" style="--reveal-i:2">
+        <div class="service-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><line x1="8.2" y1="7.2" x2="10.5" y2="16"/><line x1="15.8" y1="7.2" x2="13.5" y2="16"/></svg>
+        </div>
+        <h3>AI Automation</h3>
+        <p>AI-driven workflows and process automation that remove repetitive work and surface smarter decisions.</p>
+      </article>
+    </div>
+
+    <div class="preview-footer">
+      <a href="services.html" class="link-arrow">
+        View all services
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BANNER ================= -->
+<section class="cta-banner">
+  <div class="container cta-banner-inner reveal">
+    <div>
+      <p class="eyebrow">Get In Touch</p>
+      <h2>Want to grow your business online? Contact us today.</h2>
+      <p>Tell us about your project and we'll get back to you with next steps &mdash; no pressure, just a clear plan.</p>
+    </div>
+    <div class="cta-banner-actions">
+      <a href="contact.html" class="btn btn-primary">
+        Get a quote
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="tel:+923247943761" class="btn btn-ghost">Call&nbsp;us</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img src="assets/logo.jpg" alt="Innovexa Technologies logo" class="footer-logo">
+      <p>We build solutions that scale. You grow, we make it happen.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="industries.html">Industries</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="services.html#app-development">App Development</a>
+      <a href="services.html#web-development">Web Development</a>
+      <a href="services.html#ai-automation">AI Automation</a>
+      <a href="services.html#security-solutions">Security Solutions</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="tel:+923247943761">+92&nbsp;324&nbsp;7943761</a>
+      <a href="mailto:innovexa.technologies01@gmail.com">innovexa.technologies01@gmail.com</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>&copy; <span id="year"></span> Innovexa Technologies. All rights reserved.</p>
+  </div>
+</footer>
+
+<button type="button" id="backToTop" class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script src="js/splash.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
