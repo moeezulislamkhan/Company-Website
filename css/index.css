@@ -1529,79 +1529,23 @@ html.splash-active body {
 
 
 /* ==========================================================
-   COMPANY NAME
+   ACCESSIBILITY LABEL
+   The company name is rendered entirely by particles.
+   This element stays visually hidden to avoid duplicate text.
    ========================================================== */
 
 .splash-name {
-
-  margin: 2px 0 0;
-
-  font-family: var(--font-display);
-
-  font-size:
-    clamp(
-      1.15rem,
-      2.6vw,
-      1.55rem
-    );
-
-  font-weight: 600;
-
-  letter-spacing: .09em;
-
-  text-align: center;
-
-  opacity: 0;
-
-  filter: blur(9px);
-
-  transform:
-    translateY(12px);
-
-  transition:
-
-    opacity .7s ease,
-
-    filter .8s ease,
-
-    transform .8s
-      cubic-bezier(
-        .22,
-        1,
-        .36,
-        1
-      );
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
-
-
-/* Innovation = Silver */
-
-.splash-name span {
-
-  color: #eef2f7;
-}
-
-
-/* Technology = Brand Blue */
-
-.splash-name b {
-
-  color: #2f86ff;
-
-  font-weight: 600;
-}
-
-
-.splash-name.is-visible {
-
-  opacity: 1;
-
-  filter: blur(0);
-
-  transform:
-    translateY(0);
-}
-
 
 /* ==========================================================
    REDUCED MOTION
@@ -1696,37 +1640,6 @@ html.splash-active body {
 .social-icons svg{width:16px;height:16px;fill:currentColor;stroke:currentColor;stroke-width:1.2}
 
 /* ==========================================================
-   CINEMATIC SPLASH
-   ========================================================== */
-html.splash-active,html.splash-active body{overflow:hidden}
-.splash-screen{position:fixed;inset:0;z-index:9999;background:#03050a;display:grid;place-items:center;opacity:1;visibility:visible;transition:opacity .8s cubic-bezier(.22,1,.36,1),filter .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
-.splash-screen.is-leaving{opacity:0;filter:blur(10px);transform:scale(1.025);pointer-events:none}
-.splash-bg{position:absolute;inset:-8%;background:
- radial-gradient(circle at 50% 46%,rgba(30,78,180,.18),transparent 23%),
- radial-gradient(circle at 17% 25%,rgba(20,45,100,.13),transparent 27%),
- radial-gradient(circle at 84% 70%,rgba(25,65,140,.11),transparent 30%),
- linear-gradient(145deg,#02040a 0%,#08101e 48%,#03050a 100%);filter:blur(18px);transform:scale(1.04)}
-.splash-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 18%,rgba(0,0,0,.35) 62%,rgba(0,0,0,.82) 100%)}
-.splash-noise{position:absolute;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E")}
-.splash-canvas{position:absolute;inset:0;width:100%;height:100%}
-.splash-stage{position:relative;z-index:2;width:min(92vw,520px);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-.splash-mark-shell{position:relative;width:min(74vw,420px);height:min(42vw,235px);display:grid;place-items:center}
-.splash-source-logo{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.splash-halo{position:absolute;width:62%;height:62%;border-radius:50%;background:rgba(47,107,255,.11);filter:blur(35px);opacity:.7;transform:scale(.65);transition:transform 1s ease,opacity 1s ease}
-.splash-logo-glow{position:absolute;width:70%;height:45%;border-radius:50%;background:rgba(55,126,255,.22);filter:blur(34px);opacity:0;transition:opacity 1s ease}
-.splash-screen.logo-ready .splash-halo{transform:scale(1);opacity:1}
-.splash-screen.logo-ready .splash-logo-glow{opacity:.65}
-.splash-name{margin:8px 0 0;color:#f3f6fb;font-size:clamp(1.1rem,2.5vw,1.5rem);font-weight:600;letter-spacing:.16em;text-transform:none;opacity:0;filter:blur(8px);transform:translateY(10px);transition:opacity .65s ease,filter .75s ease,transform .75s cubic-bezier(.22,1,.36,1)}
-.splash-name.is-visible{opacity:1;filter:blur(0);transform:none}
-.splash-kicker{margin:10px 0 0;font-family:var(--font-mono);font-size:clamp(.55rem,1.2vw,.7rem);letter-spacing:.24em;color:rgba(201,206,219,.45);opacity:0;filter:blur(6px);transition:opacity .6s ease,filter .6s ease}
-.splash-kicker.is-visible{opacity:1;filter:blur(0)}
-.splash-screen.reduced-motion .splash-mark-shell{background:url("../assets/logo.jpg") center/contain no-repeat}
-.splash-screen.reduced-motion .splash-source-logo{display:none}
-.splash-screen.reduced-motion .splash-halo{opacity:1;transform:scale(1)}
-.splash-screen.reduced-motion .splash-logo-glow{opacity:.55}
-.splash-screen.reduced-motion .splash-name{opacity:1;filter:none;transform:none}
-
-/* ==========================================================
    MAIN SCREEN — EXACTLY THREE BANNERS
    ========================================================== */
 .hero-carousel{position:relative;min-height:clamp(620px,78vh,820px);overflow:hidden;padding:0!important}
@@ -1778,7 +1691,7 @@ html.splash-active,html.splash-active body{overflow:hidden}
 @media(max-width:560px){
   .hero-carousel,.hero-slide .hero-inner{min-height:680px}.hero-carousel .hero-copy{padding-top:30px}.hero-carousel h1{font-size:clamp(2.2rem,10vw,3.3rem)}.hero-actions{flex-wrap:wrap}.hero-controls{bottom:24px}
   .banner-media{opacity:.4}.ai-chip{right:-20px;top:48%;transform:scale(.65) rotate(-6deg)}.shield-visual{right:-50px;top:42%;transform:scale(.65)}.tech-orbit{left:48%;top:45%}
-  .splash-name{letter-spacing:.1em}.splash-kicker{letter-spacing:.14em;text-align:center}
+  .splash-name{letter-spacing:.1em}
 }
 @media(prefers-reduced-motion:reduce){
   .hero-slide,.hero-dot,.tech-orbit,.tech-node,.data-stream{animation:none!important;transition:none!important}

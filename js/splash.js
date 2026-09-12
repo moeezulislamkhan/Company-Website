@@ -1,10 +1,17 @@
 /**
- * Innovexa Technologies — premium particle logo assembly
+ * Innovexa Technologies — cinematic particle assembly
+ * FRONTEND ONLY
  *
- * Frontend only.
+ * The visible logo is NEVER rendered as an image.
+ * logo.jpg is loaded invisibly only as a pixel-sampling source.
  *
- * The particles are sampled from the REAL logo asset so the
- * complete X + curved orbit/swoosh are reconstructed.
+ * Sequence:
+ * 0.0–0.4s  scattered particles
+ * 0.4–2.7s  particles assemble the complete X + swoosh
+ * 2.7–3.1s logo settles / brightens
+ * 3.1–3.9s Innovation Technology assembles
+ * 3.9–4.6s hold
+ * 4.6s+     smooth splash exit
  */
 
 (function () {
@@ -12,939 +19,617 @@
 
   var splash = document.getElementById('splashScreen');
   var canvas = document.getElementById('splashCanvas');
-  var img = document.getElementById('splashLogo');
+  var sourceLogo = document.getElementById('splashLogo');
   var name = document.getElementById('splashName');
 
-  var reduced = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  ).matches;
+  if (!splash || !canvas || !sourceLogo) return;
 
-  if (!splash) return;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
+
+  if (!ctx) return;
 
   document.documentElement.classList.add('splash-active');
 
-  var done = false;
-  var start = 0;
+  var W = 0, H = 0, DPR = 1;
+  var particles = [];
+  var connections = [];
+  var finished = false;
+  var startTime = 0;
   var raf = 0;
 
-  var particles = [];
-
-  var W = 0;
-  var H = 0;
-  var dpr = 1;
-
-  /*
-   * Main particle assembly:
-   *
-   * 0.0s    scattered particles
-   * 0.2s    particles begin moving
-   * 2.45s   complete logo
-   * 3.10s   logo + company name
-   * 3.75s   splash starts leaving
-   */
-
-  var DURATION = 2450;
-  var HOLD = 650;
-
-
-  /* ==========================================================
-     REMOVE SPLASH
-     ========================================================== */
-
-  function removeSplash() {
-
-    if (done) return;
-
-    done = true;
-
-    cancelAnimationFrame(raf);
-
-    document.documentElement.classList.remove(
-      'splash-active'
-    );
-
-    splash.classList.add('is-leaving');
-
-    window.setTimeout(function () {
-
-      if (splash.parentNode) {
-        splash.parentNode.removeChild(splash);
-      }
-
-    }, 850);
-  }
-
-
-  /* ==========================================================
-     REDUCED MOTION
-     ========================================================== */
-
-  function reducedMotion() {
-
-    splash.classList.add(
-      'reduced-motion',
-      'logo-ready'
-    );
-
-    if (name) {
-      name.classList.add('is-visible');
-    }
-
-    window.setTimeout(
-      removeSplash,
-      1500
-    );
-  }
-
-
-  if (
-    reduced ||
-    !canvas ||
-    !img
-  ) {
-
-    reducedMotion();
-
-    return;
-  }
-
-
-  /* ==========================================================
-     CANVAS
-     ========================================================== */
-
-  var ctx = canvas.getContext(
-    '2d',
-    {
-      alpha: true
-    }
-  );
-
-  if (!ctx) {
-
-    reducedMotion();
-
-    return;
-  }
-
-
-  /* ==========================================================
-     RESIZE
-     ========================================================== */
+  var LOGO_TIME = 2500;
+  var LOGO_HOLD = 350;
+  var TEXT_TIME = 850;
+  var FINAL_HOLD = 600;
 
   function resize() {
-
     W = window.innerWidth;
     H = window.innerHeight;
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-    dpr = Math.min(
-      window.devicePixelRatio || 1,
-      2
-    );
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
 
-    canvas.width =
-      Math.floor(W * dpr);
-
-    canvas.height =
-      Math.floor(H * dpr);
-
-    canvas.style.width =
-      W + 'px';
-
-    canvas.style.height =
-      H + 'px';
-
-    ctx.setTransform(
-      dpr,
-      0,
-      0,
-      dpr,
-      0,
-      0
-    );
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   }
 
   resize();
-
-  window.addEventListener(
-    'resize',
-    resize,
-    {
-      passive: true
-    }
-  );
-
-
-  /* ==========================================================
-     PREMIUM EASING
-     ========================================================== */
+  window.addEventListener('resize', resize, { passive: true });
 
   function ease(t) {
-
-    t = Math.max(
-      0,
-      Math.min(1, t)
-    );
-
-    return 1 -
-      Math.pow(
-        1 - t,
-        5
-      );
+    t = Math.max(0, Math.min(1, t));
+    return t * t * (3 - 2 * t);
   }
 
+  function easeOutQuint(t) {
+    t = Math.max(0, Math.min(1, t));
+    return 1 - Math.pow(1 - t, 5);
+  }
 
-  /* ==========================================================
-     DETECT BLUE LOGO PIXELS
-     ========================================================== */
-
-  function isLogoBlue(
-    r,
-    g,
-    b
-  ) {
-
+  function bluePixel(r, g, b) {
     return (
-      b > 65 &&
-      b > r * 1.13 &&
-      b > g * 0.88 &&
-      (g + b) > 145
+      b > 55 &&
+      b > r * 1.12 &&
+      b > g * 0.84 &&
+      (g + b) > 125
     );
   }
 
+  /*
+   * The source image contains the exact X + swoosh in the upper
+   * portion and the company text below it. We deliberately sample
+   * ONLY the emblem area, so the final particle logo is the exact
+   * X + swoosh and never accidentally includes the source JPG text.
+   */
+  function getLogoTargets() {
+    var off = document.createElement('canvas');
+    var size = 900;
+    off.width = size;
+    off.height = size;
 
-  /* ==========================================================
-     BUILD EXACT PARTICLE TARGETS
-     ========================================================== */
+    var octx = off.getContext('2d', { willReadFrequently: true });
+    octx.drawImage(sourceLogo, 0, 0, size, size);
 
-  function makeTargets() {
+    var data = octx.getImageData(0, 0, size, size).data;
 
-    var source =
-      document.createElement(
-        'canvas'
-      );
+    /* Source logo emblem crop: approximately x=130..1120,
+       y=270..735 on the original 1254×1254 artwork. */
+    var sx0 = 92;
+    var sx1 = 805;
+    var sy0 = 195;
+    var sy1 = 530;
 
-    var size = 512;
+    var minX = size, minY = size, maxX = -1, maxY = -1;
 
-    source.width = size;
-    source.height = size;
+    for (var y = sy0; y <= sy1; y += 1) {
+      for (var x = sx0; x <= sx1; x += 1) {
+        var i = (y * size + x) * 4;
 
-    var sourceCtx =
-      source.getContext(
-        '2d',
-        {
-          willReadFrequently: true
-        }
-      );
-
-    sourceCtx.drawImage(
-      img,
-      0,
-      0,
-      size,
-      size
-    );
-
-    var data =
-      sourceCtx.getImageData(
-        0,
-        0,
-        size,
-        size
-      ).data;
-
-
-    /*
-     * First discover the COMPLETE emblem.
-     *
-     * This is the important correction.
-     *
-     * The old version sampled only:
-     *
-     * y = 30 → 150
-     *
-     * which caused the lower X and curved swoosh
-     * to disappear.
-     *
-     * Now we scan the whole logo and automatically
-     * find every blue pixel belonging to the emblem.
-     */
-
-    var minX = size;
-    var minY = size;
-
-    var maxX = -1;
-    var maxY = -1;
-
-
-    for (
-      var y = 0;
-      y < size;
-      y += 2
-    ) {
-
-      for (
-        var x = 0;
-        x < size;
-        x += 2
-      ) {
-
-        var p =
-          (y * size + x) * 4;
-
-        var r = data[p];
-        var g = data[p + 1];
-        var b = data[p + 2];
-
-        if (
-          isLogoBlue(
-            r,
-            g,
-            b
-          )
-        ) {
-
-          minX =
-            Math.min(
-              minX,
-              x
-            );
-
-          minY =
-            Math.min(
-              minY,
-              y
-            );
-
-          maxX =
-            Math.max(
-              maxX,
-              x
-            );
-
-          maxY =
-            Math.max(
-              maxY,
-              y
-            );
+        if (bluePixel(data[i], data[i + 1], data[i + 2])) {
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
         }
       }
     }
 
+    if (maxX < 0) return [];
 
-    if (maxX < 0) {
-      return null;
-    }
-
-
-    var width =
-      maxX - minX;
-
-    var height =
-      maxY - minY;
-
-
+    var width = maxX - minX || 1;
+    var height = maxY - minY || 1;
     var points = [];
 
+    /* Dense sampling. No random deletion.
+       Every visible blue region receives particles. */
+    var stride = W < 600 ? 2.25 : 1.45;
 
-    /*
-     * More particles = much more complete logo.
-     *
-     * Desktop:
-     * every ~2 pixels
-     *
-     * Mobile:
-     * every ~3 pixels
-     */
+    for (var py = minY; py <= maxY; py += stride) {
+      for (var px = minX; px <= maxX; px += stride) {
+        var p = (Math.floor(py) * size + Math.floor(px)) * 4;
+        var r = data[p], g = data[p + 1], b = data[p + 2];
 
-    var stride =
-      window.innerWidth < 600
-        ? 3
-        : 2;
-
-
-    for (
-      var py = minY;
-      py <= maxY;
-      py += stride
-    ) {
-
-      for (
-        var px = minX;
-        px <= maxX;
-        px += stride
-      ) {
-
-        var i =
-          (py * size + px) * 4;
-
-        var r = data[i];
-        var g = data[i + 1];
-        var b = data[i + 2];
-
-
-        if (
-          !isLogoBlue(
-            r,
-            g,
-            b
-          )
-        ) {
-          continue;
-        }
-
-
-        /*
-         * Slight randomness keeps the particle field
-         * organic without destroying the final logo.
-         */
-
-        if (
-          Math.random() >
-          (
-            window.innerWidth < 600
-              ? 0.74
-              : 0.88
-          )
-        ) {
-
-          continue;
-        }
-
+        if (!bluePixel(r, g, b)) continue;
 
         points.push({
-
-          x:
-            (px - minX) /
-            width,
-
-          y:
-            (py - minY) /
-            height,
-
+          x: (px - minX) / width,
+          y: (py - minY) / height,
           r: r,
           g: g,
           b: b
-
         });
       }
     }
 
-
-    return points.length > 400
-      ? points
-      : null;
+    return points;
   }
 
+  function getTextTargets(text, fontSize, weight, tracking) {
+    var off = document.createElement('canvas');
+    var octx = off.getContext('2d', { willReadFrequently: true });
 
-  /* ==========================================================
-     INITIALIZE PARTICLES
-     ========================================================== */
+    var font = weight + ' ' + fontSize + 'px Inter, Arial, sans-serif';
+    octx.font = font;
 
-  function init(targets) {
+    var measured = octx.measureText(text).width + 60;
+    off.width = Math.ceil(measured);
+    off.height = Math.ceil(fontSize * 1.55);
 
-    var maxParticles =
-      W < 600
-        ? 1500
-        : (
-            W < 1100
-              ? 2300
-              : 3000
-          );
+    octx.font = font;
+    octx.textBaseline = 'middle';
+    octx.textAlign = 'left';
+    octx.fillStyle = '#ffffff';
 
+    /* Small tracking is applied by drawing letters individually. */
+    octx.clearRect(0, 0, off.width, off.height);
 
-    /*
-     * Protect mobile performance.
-     */
+    var x = 30;
+    var y = off.height / 2;
 
-    if (
-      targets.length >
-      maxParticles
-    ) {
-
-      var step =
-        targets.length /
-        maxParticles;
-
-      targets =
-        targets.filter(
-          function (_, i) {
-
-            return (
-              i %
-              Math.ceil(step)
-            ) === 0;
-
-          }
-        );
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      octx.fillText(ch, x, y);
+      x += octx.measureText(ch).width + tracking;
     }
 
+    var data = octx.getImageData(0, 0, off.width, off.height).data;
+    var points = [];
+    var stride = W < 600 ? 2.5 : 2;
 
-    /* ========================================================
-       LOGO POSITION
-       ======================================================== */
+    for (var py = 0; py < off.height; py += stride) {
+      for (var px = 0; px < off.width; px += stride) {
+        var p = (Math.floor(py) * off.width + Math.floor(px)) * 4;
 
-    var markW =
-      Math.min(
-        520,
-        Math.max(
-          285,
-          W * 0.42
-        )
-      );
+        if (data[p + 3] < 110) continue;
 
-
-    var markH =
-      markW * 0.71;
-
-
-    if (H < 700) {
-
-      markW =
-        Math.min(
-          markW,
-          W * 0.72
-        );
+        points.push({
+          x: px / off.width,
+          y: py / off.height,
+          r: 238,
+          g: 242,
+          b: 247
+        });
+      }
     }
 
+    return points;
+  }
 
-    markH =
-      markW * 0.71;
+  function makeParticles() {
+    var logoTargets = getLogoTargets();
 
+    if (!logoTargets.length) return false;
 
-    var left =
-      (W - markW) / 2;
+    var logoW = Math.min(
+      W * (W < 600 ? 0.82 : 0.42),
+      W < 600 ? 410 : 560
+    );
 
+    var logoH = logoW * 0.64;
 
-    var top =
-      H * 0.5 -
-      markH * 0.64;
+    var logoLeft = (W - logoW) / 2;
+    var logoTop = H * 0.5 - logoH * 0.82;
 
+    var logoParticles = logoTargets.map(function (t, index) {
+      var angle = Math.random() * Math.PI * 2;
+      var radius = Math.min(W, H) * (0.18 + Math.random() * 0.48);
 
-    /* ========================================================
-       CREATE PARTICLES
-       ======================================================== */
+      return {
+        group: 'logo',
 
-    particles =
-      targets.map(
-        function (t, index) {
+        sx: Math.random() * W + Math.cos(angle) * radius * 0.12,
+        sy: Math.random() * H + Math.sin(angle) * radius * 0.12,
 
-          var angle =
-            Math.random() *
-            Math.PI *
-            2;
+        tx: logoLeft + t.x * logoW,
+        ty: logoTop + t.y * logoH,
 
+        r: 0.82 + Math.random() * 1.18,
+        alpha: 0.56 + Math.random() * 0.38,
 
-          var distance =
-            Math.min(W, H) *
-            (
-              0.15 +
-              Math.random() *
-              0.52
-            );
+        cr: t.r,
+        cg: t.g,
+        cb: t.b,
 
+        phase: Math.random() * Math.PI * 2,
+        drift: 5 + Math.random() * 12,
 
-          /*
-           * Fully scattered starting positions.
-           */
+        delay: Math.random() * 220,
 
-          var sx =
-            Math.random() * W;
+        _x: 0,
+        _y: 0,
+        _t: 0
+      };
+    });
 
-          var sy =
-            Math.random() * H;
+    /* Text is created after the logo settles.
+       It is still made entirely from particles. */
+    var textSize = Math.max(
+      22,
+      Math.min(34, W * 0.036)
+    );
 
+    var innovation = getTextTargets(
+      'Innovation',
+      textSize,
+      600,
+      Math.max(0.3, textSize * 0.035)
+    );
 
-          /*
-           * Slight natural directional variation.
-           */
+    var technology = getTextTargets(
+      'Technology',
+      textSize,
+      600,
+      Math.max(0.3, textSize * 0.035)
+    );
 
-          sx +=
-            Math.cos(angle) *
-            distance *
-            0.18;
+    var textMaxWidth = Math.max(
+      innovation.length,
+      technology.length
+    );
 
-          sy +=
-            Math.sin(angle) *
-            distance *
-            0.18;
+    var textScale = Math.min(
+      1,
+      (W * 0.76) / Math.max(1, textMaxWidth * 2.05)
+    );
 
+    var textW = Math.min(W * 0.72, 500);
+    var textH = textSize * 1.35;
 
-          return {
+    function addText(points, offsetX, color) {
+      return points.map(function (t, index) {
+        var angle = Math.random() * Math.PI * 2;
+        var radius = Math.min(W, H) * (0.12 + Math.random() * 0.42);
 
-            x: sx,
-            y: sy,
+        return {
+          group: 'text',
 
-            sx: sx,
-            sy: sy,
+          sx: Math.random() * W + Math.cos(angle) * radius * 0.08,
+          sy: Math.random() * H + Math.sin(angle) * radius * 0.08,
 
-            /*
-             * EXACT final particle position
-             */
+          tx:
+            (W - textW) / 2 +
+            offsetX +
+            t.x * textW * textScale,
 
-            tx:
-              left +
-              t.x *
-              markW,
+          ty:
+            logoTop +
+            logoH +
+            42 +
+            t.y * textH,
 
-            ty:
-              top +
-              t.y *
-              markH,
+          r: 0.7 + Math.random() * 1.05,
+          alpha: 0.48 + Math.random() * 0.42,
 
+          cr: color[0],
+          cg: color[1],
+          cb: color[2],
 
-            /*
-             * Particle appearance
-             */
+          phase: Math.random() * Math.PI * 2,
+          drift: 3 + Math.random() * 7,
 
-            r:
-              0.62 +
-              Math.random() *
-              1.25,
+          delay: Math.random() * 130,
 
-            alpha:
-              0.42 +
-              Math.random() *
-              0.52,
+          _x: 0,
+          _y: 0,
+          _t: 0
+        };
+      });
+    }
 
+    /* Center each word. */
+    var innovationWidth = textW * textScale;
+    var technologyWidth = textW * textScale;
 
-            /*
-             * EXACT logo color
-             */
+    var textParticles = [];
 
-            cr: t.r,
-            cg: t.g,
-            cb: t.b,
+    textParticles = textParticles.concat(
+      addText(
+        innovation,
+        (textW - innovationWidth) * 0.5,
+        [238, 242, 247]
+      )
+    );
 
+    textParticles = textParticles.concat(
+      addText(
+        technology,
+        (textW - technologyWidth) * 0.5,
+        [47, 134, 255]
+      )
+    );
 
-            /*
-             * Organic movement
-             */
+    particles = logoParticles.concat(textParticles);
 
-            phase:
-              Math.random() *
-              Math.PI *
-              2,
+    return true;
+  }
 
-            drift:
-              7 +
-              Math.random() *
-              16,
+  function buildConnections() {
+    var links = [];
+    var grid = Object.create(null);
+    var cell = 7;
 
+    particles.forEach(function (p, index) {
+      var gx = Math.floor(p.tx / cell);
+      var gy = Math.floor(p.ty / cell);
+      var key = gx + ':' + gy;
 
-            /*
-             * Slight stagger.
-             */
+      if (!grid[key]) grid[key] = [];
+      grid[key].push(index);
+    });
 
-            delay:
-              Math.random() *
-              280,
+    particles.forEach(function (p, index) {
+      var gx = Math.floor(p.tx / cell);
+      var gy = Math.floor(p.ty / cell);
 
+      for (var yy = -1; yy <= 1; yy++) {
+        for (var xx = -1; xx <= 1; xx++) {
+          var key = (gx + xx) + ':' + (gy + yy);
+          var bucket = grid[key];
 
-            /*
-             * Occasional glow particles.
-             */
+          if (!bucket) continue;
 
-            glow:
-              index % 15 === 0
-          };
+          bucket.forEach(function (otherIndex) {
+            if (otherIndex <= index) return;
+
+            var q = particles[otherIndex];
+
+            if (p.group !== q.group) return;
+
+            var dx = p.tx - q.tx;
+            var dy = p.ty - q.ty;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance <= 6.2) {
+              links.push({
+                a: index,
+                b: otherIndex
+              });
+            }
+          });
         }
-      );
+      }
+    });
 
-
-    start =
-      performance.now();
-
-
-    render(start);
+    return links;
   }
 
+  function drawConnections(now) {
+    connections.forEach(function (link) {
+      var a = particles[link.a];
+      var b = particles[link.b];
 
-  /* ==========================================================
-     RENDER
-     ========================================================== */
+      var progress = Math.min(a._t, b._t);
+
+      if (progress < 0.08) return;
+
+      var strength = Math.pow(progress, 2.6);
+
+      ctx.beginPath();
+      ctx.moveTo(a._x, a._y);
+      ctx.lineTo(b._x, b._y);
+
+      var r = Math.round((a.cr + b.cr) / 2);
+      var g = Math.round((a.cg + b.cg) / 2);
+      var bl = Math.round((a.cb + b.cb) / 2);
+
+      ctx.strokeStyle =
+        'rgba(' +
+        r + ',' +
+        g + ',' +
+        bl + ',' +
+        (0.025 + strength * 0.22) +
+        ')';
+
+      ctx.lineWidth =
+        0.35 +
+        strength * 0.42;
+
+      ctx.stroke();
+    });
+  }
+
+  function drawParticle(p, x, y, alpha, assembled) {
+    ctx.beginPath();
+
+    ctx.fillStyle =
+      'rgba(' +
+      p.cr + ',' +
+      p.cg + ',' +
+      p.cb + ',' +
+      alpha +
+      ')';
+
+    ctx.arc(
+      x,
+      y,
+      p.r * (assembled ? 1.05 : 1),
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+
+    if (assembled && p.r > 1.2) {
+      ctx.beginPath();
+
+      ctx.fillStyle =
+        'rgba(' +
+        p.cr + ',' +
+        p.cg + ',' +
+        p.cb + ',' +
+        (alpha * 0.055) +
+        ')';
+
+      ctx.arc(
+        x,
+        y,
+        p.r * 4.5,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+    }
+  }
+
+  function removeSplash() {
+    if (finished) return;
+
+    finished = true;
+    cancelAnimationFrame(raf);
+
+    splash.classList.add('is-leaving');
+    document.documentElement.classList.remove('splash-active');
+
+    window.setTimeout(function () {
+      if (splash.parentNode) splash.parentNode.removeChild(splash);
+    }, 850);
+  }
 
   function render(now) {
+    if (finished) return;
 
-    if (done) return;
+    var elapsed = now - startTime;
 
+    ctx.clearRect(0, 0, W, H);
 
-    ctx.clearRect(
-      0,
-      0,
-      W,
-      H
-    );
+    particles.forEach(function (p) {
+      var isLogo = p.group === 'logo';
 
+      var localStart = isLogo ? 250 : LOGO_TIME + LOGO_HOLD;
+      var localDuration = isLogo ? LOGO_TIME : TEXT_TIME;
 
-    var elapsed =
-      now - start;
+      var raw =
+        (elapsed - localStart - p.delay) /
+        (localDuration - p.delay);
 
+      var t = Math.max(0, Math.min(1, raw));
+      var e = easeOutQuint(t);
 
-    var finished =
-      elapsed >= DURATION;
+      var remaining = 1 - t;
 
+      var sway =
+        Math.sin(
+          p.phase + elapsed * 0.00125
+        ) *
+        p.drift *
+        remaining;
 
-    particles.forEach(
-      function (p) {
+      var swayY =
+        Math.cos(
+          p.phase + elapsed * 0.00105
+        ) *
+        p.drift *
+        remaining;
 
-        var t =
-          Math.max(
-            0,
-            Math.min(
-              1,
-              (
-                elapsed -
-                p.delay
-              ) /
-              (
-                DURATION -
-                p.delay
-              )
-            )
-          );
+      var x =
+        p.sx +
+        (p.tx - p.sx) * e +
+        sway;
 
+      var y =
+        p.sy +
+        (p.ty - p.sy) * e +
+        swayY;
 
-        var e =
-          ease(t);
-
-
-        var remaining =
-          1 - t;
-
-
-        /*
-         * Subtle movement while particles travel.
-         *
-         * This prevents a robotic straight-line effect.
-         */
-
-        var sway =
-          Math.sin(
-            p.phase +
-            elapsed *
-            0.0015
-          ) *
-          p.drift *
-          remaining;
-
-
-        var swayY =
-          Math.cos(
-            p.phase +
-            elapsed *
-            0.00115
-          ) *
-          p.drift *
-          remaining;
-
-
-        var x =
-          p.sx +
-          (
-            p.tx -
-            p.sx
-          ) *
-          e +
-          sway;
-
-
-        var y =
-          p.sy +
-          (
-            p.ty -
-            p.sy
-          ) *
-          e +
-          swayY;
-
-
-        var alpha =
-          p.alpha *
-          (
-            t < 0.08
-              ? t / 0.08
-              : 1
-          );
-
-
-        /*
-         * Once assembled, lock every particle exactly
-         * onto its target. This creates a clean finished logo.
-         */
-
-        if (finished) {
-
-          x = p.tx;
-          y = p.ty;
-
-          alpha =
-            Math.min(
-              1,
-              p.alpha + 0.16
-            );
-        }
-
-
-        /* Particle */
-
-        ctx.beginPath();
-
-        ctx.fillStyle =
-          'rgba(' +
-          p.cr +
-          ',' +
-          p.cg +
-          ',' +
-          p.cb +
-          ',' +
-          alpha +
-          ')';
-
-
-        ctx.arc(
-          x,
-          y,
-          p.r,
-          0,
-          Math.PI * 2
-        );
-
-        ctx.fill();
-
-
-        /*
-         * Very subtle particle glow near completion.
-         */
-
-        if (
-          p.glow &&
-          t > 0.78
-        ) {
-
-          ctx.beginPath();
-
-          ctx.fillStyle =
-            'rgba(115,178,255,' +
-            (
-              alpha *
-              0.07
-            ) +
-            ')';
-
-
-          ctx.arc(
-            x,
-            y,
-            p.r * 5.2,
-            0,
-            Math.PI * 2
-          );
-
-          ctx.fill();
-        }
-
+      if (t >= 1) {
+        x = p.tx;
+        y = p.ty;
       }
-    );
 
+      p._x = x;
+      p._y = y;
+      p._t = t;
 
-    /* ========================================================
-       LOGO COMPLETE
-       ======================================================== */
+      var alpha = p.alpha;
 
-    if (
-      elapsed >=
-      DURATION + 100
-    ) {
+      if (t < 0.12) {
+        alpha *= t / 0.12;
+      }
 
-      splash.classList.add(
-        'logo-ready'
+      if (!isLogo && elapsed < LOGO_TIME + LOGO_HOLD) {
+        alpha = 0;
+      }
+
+      drawParticle(
+        p,
+        x,
+        y,
+        alpha,
+        t > 0.78
       );
+    });
 
+    drawConnections(now);
 
-      if (name) {
-        name.classList.add(
-          'is-visible'
-        );
-      }
+    /* Logo completed. */
+    if (elapsed >= LOGO_TIME + 80) {
+      splash.classList.add('logo-ready');
     }
 
+    /* Text completed. */
+    if (elapsed >= LOGO_TIME + LOGO_HOLD + TEXT_TIME * 0.72) {
+      if (name) name.classList.add('is-visible');
+    }
 
-    /* ========================================================
-       TRANSITION TO HOME
-       ======================================================== */
-
+    /* End. */
     if (
       elapsed >=
-      DURATION + HOLD
+      LOGO_TIME +
+      LOGO_HOLD +
+      TEXT_TIME +
+      FINAL_HOLD
     ) {
-
       removeSplash();
-
       return;
     }
 
-
-    raf =
-      requestAnimationFrame(
-        render
-      );
+    raf = requestAnimationFrame(render);
   }
 
+  function start() {
+    if (!makeParticles()) return;
 
-  /* ==========================================================
-     BOOT
-     ========================================================== */
+    connections = buildConnections();
 
-  function boot() {
+    startTime = performance.now();
 
-    function ready() {
+    if (reduced) {
+      particles.forEach(function (p) {
+        p.sx = p.tx;
+        p.sy = p.ty;
+      });
 
-      var targets =
-        makeTargets();
+      splash.classList.add('logo-ready');
 
+      if (name) name.classList.add('is-visible');
 
-      if (targets) {
+      render(startTime + 5000);
 
-        init(targets);
-
-      } else {
-
-        reducedMotion();
-      }
+      window.setTimeout(removeSplash, 1400);
+      return;
     }
 
-
-    img.onload =
-      ready;
-
-
-    if (img.complete) {
-      ready();
-    }
+    raf = requestAnimationFrame(render);
   }
-
 
   /*
-   * Safety fallback.
+   * The source image is ONLY loaded for pixel sampling.
+   * It has opacity:0 in CSS and is never drawn to the splash.
    */
+  if (sourceLogo.complete) {
+    start();
+  } else {
+    sourceLogo.addEventListener('load', start, { once: true });
+  }
 
-  window.setTimeout(
-    function () {
-
-      if (
-        !done &&
-        !particles.length
-      ) {
-
-        reducedMotion();
-      }
-
-    },
-    5000
-  );
-
-
-  boot();
-
+  /* Safety fallback. */
+  window.setTimeout(function () {
+    if (!finished && !particles.length) {
+      removeSplash();
+    }
+  }, 6500);
 })();
