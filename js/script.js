@@ -122,6 +122,26 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+
+  /* ---------- Three-banner hero carousel ---------- */
+  var slides=document.querySelectorAll('.hero-slide');
+  var dots=document.querySelectorAll('.hero-dot');
+  if(slides.length===3){
+    var slideIndex=0, slideTimer=null;
+    function showSlide(i){
+      slideIndex=(i+3)%3;
+      slides.forEach(function(slide,n){slide.classList.toggle('is-active',n===slideIndex);});
+      dots.forEach(function(dot,n){dot.classList.toggle('is-active',n===slideIndex);dot.setAttribute('aria-current',n===slideIndex?'true':'false');});
+    }
+    dots.forEach(function(dot,n){dot.addEventListener('click',function(){showSlide(n);startSlider();});});
+    function startSlider(){
+      if(prefersReducedMotion)return;
+      clearInterval(slideTimer);
+      slideTimer=setInterval(function(){showSlide(slideIndex+1);},6500);
+    }
+    startSlider();
+  }
+
   /* ---------- Contact form validation + submission ---------- */
   var form = document.getElementById('contactForm');
   var status = document.getElementById('formStatus');

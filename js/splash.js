@@ -1,262 +1,134 @@
 /**
- * Innovexa Technologies — Splash Screen
- * --------------------------------------
- * Frontend-only, canvas-based particle assembly. Particles start
- * scattered across the viewport, then converge into the shape and
- * color of the actual logo asset (sampled from assets/logo.jpg via
- * an offscreen canvas), cross-fade into the crisp logo image, then
- * reveal the company name. Shown once per browser session, only on
- * the Home page. No backend, no build step, no external libraries.
+ * Innovexa Technologies — cinematic particle assembly
+ * Frontend only. The real logo image is sampled as an off-screen target;
+ * the visible mark is created entirely from canvas particles.
  */
-(function () {
+(function(){
   'use strict';
+  var splash=document.getElementById('splashScreen');
+  if(!splash) return;
+  var canvas=document.getElementById('splashCanvas');
+  var img=document.getElementById('splashLogo');
+  var name=document.getElementById('splashName');
+  var kicker=document.getElementById('splashKicker');
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var done=false, start=performance.now(), particles=[], raf=0;
+  var DURATION=2300, HOLD=420;
 
-  var splash = document.getElementById('splashScreen');
-  if (!splash) return;
-
-  var SESSION_KEY = 'innovexaSplashShown';
-
-  // Skip entirely on repeat visits within the same session.
-  var alreadyShown = false;
-  try {
-    alreadyShown = sessionStorage.getItem(SESSION_KEY) === '1';
-  } catch (err) {
-    /* Storage unavailable (private mode, etc.) — just show it once and move on. */
-  }
-  if (alreadyShown) {
-    splash.parentNode.removeChild(splash);
-    return;
-  }
-
-  document.documentElement.classList.add('splash-active');
-
-  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var logoEl = document.getElementById('splashLogo');
-  var nameEl = document.getElementById('splashName');
-  var canvas = document.getElementById('splashCanvas');
-  var finished = false;
-
-  function markSessionSeen() {
-    try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (err) { /* ignore */ }
-  }
-
-  function finishSplash() {
-    if (finished) return;
-    finished = true;
-    document.documentElement.classList.remove('splash-active');
+  function removeSplash(){
+    if(done)return; done=true;
     splash.classList.add('is-leaving');
-    markSessionSeen();
-    window.setTimeout(function () {
-      if (splash.parentNode) splash.parentNode.removeChild(splash);
-    }, 700);
+    setTimeout(function(){ if(splash.parentNode)splash.parentNode.removeChild(splash); },800);
   }
-
-  // Absolute safety net: whatever happens (image fails to load, a
-  // browser quirk stalls the animation, etc.) the splash must never
-  // permanently block the site.
-  var safetyTimer = window.setTimeout(finishSplash, 7000);
-
-  /* ---------- Reduced motion: simple, fast, no particles ---------- */
-  if (prefersReducedMotion) {
-    if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
-    requestAnimationFrame(function () {
-      logoEl.classList.add('is-visible');
-    });
-    window.setTimeout(function () { nameEl.classList.add('is-visible'); }, 450);
-    window.setTimeout(function () {
-      window.clearTimeout(safetyTimer);
-      finishSplash();
-    }, 1500);
-    return;
+  function simple(){
+    splash.classList.add('reduced-motion');
+    requestAnimationFrame(function(){ splash.classList.add('logo-ready'); });
+    setTimeout(function(){ name.classList.add('is-visible'); kicker.classList.add('is-visible'); },420);
+    setTimeout(removeSplash,1800);
   }
+  if(reduced){ simple(); return; }
+  if(!canvas || !img){ simple(); return; }
+  var ctx=canvas.getContext('2d');
+  if(!ctx){ simple(); return; }
 
-  /* ---------- Full particle-assembly sequence ---------- */
-  if (!canvas || typeof canvas.getContext !== 'function') {
-    fallbackSimple();
-    return;
+  var W=0,H=0,dpr=1;
+  function resize(){
+    W=window.innerWidth; H=window.innerHeight;
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.floor(W*dpr); canvas.height=Math.floor(H*dpr);
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
   }
-  var ctx = canvas.getContext('2d');
-  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  resize();
+  window.addEventListener('resize',resize,{passive:true});
 
-  function sizeCanvas() {
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  function ease(t){
+    t=Math.max(0,Math.min(1,t));
+    return 1-Math.pow(1-t,4);
   }
-  sizeCanvas();
-  window.addEventListener('resize', sizeCanvas);
-
-  function fallbackSimple() {
-    if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
-    logoEl.classList.add('is-visible');
-    window.setTimeout(function () { nameEl.classList.add('is-visible'); }, 500);
-    window.setTimeout(function () {
-      window.clearTimeout(safetyTimer);
-      finishSplash();
-    }, 1700);
-  }
-
-  /* Sample the real logo image onto a small offscreen canvas and
-     collect the coordinates + color of every "bright" pixel — that
-     becomes the particle target field, so the particles assemble
-     into the logo's actual shape and colors, not a generic silhouette. */
-  function sampleLogoPoints(img, targetCount) {
-    var sampleSize = 130;
-    var off = document.createElement('canvas');
-    off.width = sampleSize;
-    off.height = sampleSize;
-    var octx = off.getContext('2d');
-
-    try {
-      octx.drawImage(img, 0, 0, sampleSize, sampleSize);
-      var data = octx.getImageData(0, 0, sampleSize, sampleSize).data;
-    } catch (err) {
-      // Tainted canvas (e.g. opened via file:// without a local server) —
-      // caller falls back to the simple fade sequence.
-      return null;
-    }
-
-    var points = [];
-    for (var y = 0; y < sampleSize; y++) {
-      for (var x = 0; x < sampleSize; x++) {
-        var idx = (y * sampleSize + x) * 4;
-        var r = data[idx], g = data[idx + 1], b = data[idx + 2], a = data[idx + 3];
-        var luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-        if (a > 40 && luminance > 32) {
-          points.push({ nx: x / sampleSize, ny: y / sampleSize, r: r, g: g, b: b });
+  function makeTargets(){
+    var off=document.createElement('canvas'), size=260;
+    off.width=size; off.height=size;
+    var o=off.getContext('2d');
+    try{o.drawImage(img,0,0,size,size);}catch(e){return null;}
+    var data=o.getImageData(0,0,size,size).data, pts=[];
+    /* The source logo is square. Only sample the blue emblem in its upper
+       half so the separate company name can appear underneath naturally. */
+    for(var y=30;y<150;y+=2){
+      for(var x=45;x<215;x+=2){
+        var i=(y*size+x)*4,r=data[i],g=data[i+1],b=data[i+2],a=data[i+3];
+        if(a>80 && b>75 && b>r*1.18 && (b+g)>150){
+          if(Math.random()<.78) pts.push({x:x/size,y:y/size,r:r,g:g,b:b});
         }
       }
     }
-    if (!points.length) return null;
-
-    // Shuffle (Fisher–Yates) then cap to a device-appropriate count.
-    for (var i = points.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = points[i];
-      points[i] = points[j];
-      points[j] = tmp;
-    }
-    return points.slice(0, Math.min(targetCount, points.length));
+    if(pts.length<100)return null;
+    return pts;
   }
-
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  function runParticles(points) {
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
-    var isSmall = vw <= 640;
-    var logoBoxSize = Math.min(vw * (isSmall ? 0.62 : 0.42), 220);
-    var centerX = vw / 2;
-    var centerY = vh / 2 - (isSmall ? 46 : 58);
-
-    var particles = points.map(function (p) {
-      var targetX = centerX + (p.nx - 0.5) * logoBoxSize;
-      var targetY = centerY + (p.ny - 0.5) * logoBoxSize;
-
-      // Genuinely uniform across the whole viewport — not radial from
-      // the center — so particles read as scattered edge-to-edge,
-      // not as a ring or blob around the logo's future position.
-      var startX = 10 + Math.random() * (vw - 20);
-      var startY = 10 + Math.random() * (vh - 20);
-
+  function init(targets){
+    var max=innerWidth<600?720:(innerWidth<1000?1050:1500);
+    var count=Math.min(max,targets.length);
+    for(var i=targets.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=targets[i];targets[i]=targets[j];targets[j]=tmp;}
+    targets=targets.slice(0,count);
+    var markW=Math.min(420,Math.max(250,W*.34));
+    var markH=markW*.56;
+    var left=(W-markW)/2, top=H/2-markH*.72;
+    particles=targets.map(function(t,idx){
+      var tx=left+t.x*markW, ty=top+t.y*markH;
+      var angle=Math.random()*Math.PI*2, radius=Math.min(W,H)*(0.28+Math.random()*.45);
       return {
-        x: startX, y: startY,
-        startX: startX, startY: startY,
-        targetX: targetX, targetY: targetY,
-        size: 1.3 + Math.random() * 2.1,
-        baseAlpha: 0.3 + Math.random() * 0.45,
-        color: 'rgb(' + p.r + ',' + p.g + ',' + p.b + ')',
-        delay: Math.random() * 320,
-        curve: (Math.random() - 0.5) * 130,
-        twinkle: Math.random() * Math.PI * 2,
-        twinkleSpeed: 160 + Math.random() * 140
+        x:Math.random()*W,y:Math.random()*H,
+        sx:Math.random()*W,sy:Math.random()*H,
+        tx:tx,ty:ty,
+        r:0.55+Math.random()*1.65,
+        alpha:.28+Math.random()*.68,
+        driftX:(Math.random()-.5)*18,driftY:(Math.random()-.5)*18,
+        delay:Math.random()*360,
+        cr:t.r,cg:t.g,cb:t.b,
+        phase:Math.random()*Math.PI*2,
+        halo:idx%9===0
       };
     });
-
-    var scatterHold = 420;
-    var travelDuration = 1850;
-    var totalDuration = scatterHold + travelDuration + 420;
-    var startTime = null;
-
-    function frame(now) {
-      if (!startTime) startTime = now;
-      var elapsed = now - startTime;
-      ctx.clearRect(0, 0, vw, vh);
-
-      for (var i = 0; i < particles.length; i++) {
-        var p = particles[i];
-        var localElapsed = elapsed - scatterHold - p.delay;
-        var t = localElapsed <= 0 ? 0 : Math.min(1, localElapsed / travelDuration);
-        var eased = easeOutCubic(t);
-
-        var midX = (p.startX + p.targetX) / 2;
-        var midY = (p.startY + p.targetY) / 2;
-        var dx = p.targetX - p.startX;
-        var dy = p.targetY - p.startY;
-        var len = Math.sqrt(dx * dx + dy * dy) || 1;
-        var ctrlX = midX + (-dy / len) * p.curve;
-        var ctrlY = midY + (dx / len) * p.curve;
-
-        var tt = Math.max(0, Math.min(1, eased));
-        var omt = 1 - tt;
-        var x = omt * omt * p.startX + 2 * omt * tt * ctrlX + tt * tt * p.targetX;
-        var y = omt * omt * p.startY + 2 * omt * tt * ctrlY + tt * tt * p.targetY;
-
-        var appearProgress = Math.min(1, elapsed / scatterHold);
-        var settleAlpha = 0.5 + 0.5 * Math.min(1, t);
-        var alpha = appearProgress * (p.baseAlpha + (settleAlpha - p.baseAlpha) * Math.min(1, t));
-        var wobble = t < 1 ? Math.sin(now / p.twinkleSpeed + p.twinkle) * 0.35 : 0;
-
-        ctx.beginPath();
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-        ctx.arc(x, y, Math.max(0.6, p.size + wobble), 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-
-      if (elapsed < totalDuration) {
-        requestAnimationFrame(frame);
-      } else {
-        onAssembled();
-      }
-    }
-    requestAnimationFrame(frame);
+    start=performance.now();
+    render();
   }
-
-  function onAssembled() {
-    logoEl.classList.add('is-visible');
-    window.setTimeout(function () { canvas.classList.add('is-fading'); }, 110);
-    window.setTimeout(function () { nameEl.classList.add('is-visible'); }, 480);
-    window.setTimeout(function () {
-      window.clearTimeout(safetyTimer);
-      finishSplash();
-    }, 480 + 560 + 480);
+  function render(now){
+    if(done)return;
+    if(!now)now=performance.now();
+    ctx.clearRect(0,0,W,H);
+    var elapsed=now-start;
+    particles.forEach(function(p){
+      var t=Math.max(0,Math.min(1,(elapsed-p.delay)/(DURATION-p.delay)));
+      var e=ease(t);
+      var sway=Math.sin(p.phase+elapsed*.0012)*p.driftX*(1-t);
+      var swayY=Math.cos(p.phase+elapsed*.001)*p.driftY*(1-t);
+      var x=p.sx+(p.tx-p.sx)*e+sway;
+      var y=p.sy+(p.ty-p.sy)*e+swayY;
+      var a=p.alpha*(t<.08?t/.08:1)*(t>.92?(1-(t-.92)/.08)*.18+.82:1);
+      if(elapsed>DURATION)a=p.alpha;
+      ctx.beginPath();
+      ctx.fillStyle='rgba('+p.cr+','+p.cg+','+p.cb+','+a+')';
+      ctx.arc(x,y,p.r,0,Math.PI*2);ctx.fill();
+      if(p.halo && t>.72){
+        ctx.beginPath();ctx.fillStyle='rgba('+p.cr+','+p.cg+','+p.cb+','+(a*.07)+')';
+        ctx.arc(x,y,p.r*5.5,0,Math.PI*2);ctx.fill();
+      }
+    });
+    if(elapsed>DURATION+120){
+      splash.classList.add('logo-ready');
+      name.classList.add('is-visible');
+      setTimeout(function(){kicker.classList.add('is-visible');},120);
+    }
+    if(elapsed>DURATION+HOLD+650){cancelAnimationFrame(raf);removeSplash();return;}
+    raf=requestAnimationFrame(render);
   }
-
-  var img = new Image();
-  img.onload = function () {
-    var targetCount = window.innerWidth <= 640 ? 420 : (window.innerWidth <= 1024 ? 650 : 900);
-    var points = sampleLogoPoints(img, targetCount);
-    if (!points) {
-      fallbackSimple();
-      return;
-    }
-    requestAnimationFrame(function () { runParticles(points); });
-  };
-  img.onerror = fallbackSimple;
-  img.src = logoEl.getAttribute('src');
-
-  // Pause the rAF loop's perceived cost when the tab isn't visible;
-  // the safety timer still guarantees forward progress either way.
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden && !finished) {
-      window.clearTimeout(safetyTimer);
-      safetyTimer = window.setTimeout(finishSplash, 7000);
-    }
-  });
+  function boot(){
+    img.onload=function(){
+      var targets=makeTargets();
+      if(targets)init(targets); else simple();
+    };
+    if(img.complete) img.onload();
+  }
+  setTimeout(function(){if(!done && particles.length===0)simple();},5000);
+  boot();
 })();
