@@ -1,0 +1,3484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Innovexa Technologies — Digital Capabilities</title>
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+    --bg:#05080d;
+    --bg-soft:#080d14;
+
+    --card:#0b1119;
+    --card-2:#0e1620;
+
+    --white:#ffffff;
+    --text:#edf4fb;
+    --muted:#8998a8;
+
+    --blue:#3188ed;
+    --blue-light:#72b6ff;
+    --blue-deep:#1767c7;
+
+    --line:rgba(116,178,239,.14);
+    --line-strong:rgba(116,178,239,.30);
+
+    --shadow:
+        0 30px 80px rgba(0,0,0,.42),
+        0 8px 30px rgba(0,0,0,.28);
+
+    --ease:cubic-bezier(.16,1,.3,1);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-width:320px;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    overflow-x:hidden;
+}
+
+button,
+a{
+    font:inherit;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+
+/* =========================================================
+   MAIN SECTION
+========================================================= */
+
+.capabilities-section{
+
+    position:relative;
+
+    width:100%;
+
+    padding:
+        clamp(90px,10vw,150px)
+        0
+        clamp(90px,10vw,150px);
+
+    overflow:hidden;
+
+    isolation:isolate;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(49,136,237,.075),
+            transparent 38%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg-soft)
+        );
+}
+
+
+/* =========================================================
+   BACKGROUND GRID
+========================================================= */
+
+.capabilities-section::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:-3;
+
+    background-image:
+        linear-gradient(
+            rgba(120,170,220,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(120,170,220,.035) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        70px 70px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            black 16%,
+            black 84%,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   AMBIENT GLOW
+========================================================= */
+
+.capabilities-glow{
+
+    position:absolute;
+
+    width:
+        clamp(260px,40vw,650px);
+
+    height:
+        clamp(260px,40vw,650px);
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(49,136,237,.10),
+            transparent 68%
+        );
+
+    filter:blur(30px);
+
+    pointer-events:none;
+
+    z-index:-2;
+
+    top:18%;
+
+    left:50%;
+
+    transform:
+        translateX(-50%);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.capabilities-container{
+
+    width:
+        min(
+            1280px,
+            calc(100% - 48px)
+        );
+
+    margin:0 auto;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.capabilities-intro{
+
+    max-width:760px;
+
+    margin:
+        0 auto
+        clamp(55px,7vw,90px);
+
+    text-align:center;
+}
+
+
+.capabilities-eyebrow{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:22px;
+
+    color:var(--blue-light);
+
+    font-size:11px;
+
+    font-weight:800;
+
+    letter-spacing:.20em;
+
+    text-transform:uppercase;
+}
+
+
+.capabilities-eyebrow::before{
+
+    content:"";
+
+    width:28px;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--blue-light)
+        );
+}
+
+
+.capabilities-eyebrow::after{
+
+    content:"";
+
+    width:28px;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue-light),
+            transparent
+        );
+}
+
+
+.capabilities-title{
+
+    color:var(--white);
+
+    font-size:
+        clamp(
+            42px,
+            5.4vw,
+            78px
+        );
+
+    line-height:.92;
+
+    letter-spacing:-.055em;
+
+    font-weight:850;
+}
+
+
+.capabilities-title span{
+
+    color:transparent;
+
+    background:
+        linear-gradient(
+            100deg,
+            #ffffff 5%,
+            #8bc5ff 55%,
+            #3188ed 100%
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+}
+
+
+.capabilities-description{
+
+    max-width:650px;
+
+    margin:28px auto 0;
+
+    color:var(--muted);
+
+    font-size:
+        clamp(
+            14px,
+            1.4vw,
+            17px
+        );
+
+    line-height:1.8;
+}
+
+
+/* =========================================================
+   CAROUSEL AREA
+========================================================= */
+
+.capabilities-carousel{
+
+    position:relative;
+
+    width:100%;
+
+    perspective:1800px;
+
+    perspective-origin:50% 50%;
+}
+
+
+/* =========================================================
+   VIEWPORT
+========================================================= */
+
+.carousel-viewport{
+
+    position:relative;
+
+    width:100%;
+
+    min-height:
+        clamp(
+            380px,
+            42vw,
+            570px
+        );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:visible;
+
+    touch-action:pan-y;
+
+    user-select:none;
+}
+
+
+/* =========================================================
+   TRACK
+========================================================= */
+
+.carousel-track{
+
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transform-style:preserve-3d;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.capability-card{
+
+    position:absolute;
+
+    width:
+        clamp(
+            270px,
+            29vw,
+            370px
+        );
+
+    height:
+        clamp(
+            340px,
+            38vw,
+            475px
+        );
+
+    padding:
+        clamp(25px,3vw,38px);
+
+    border:1px solid var(--line);
+
+    border-radius:
+        clamp(
+            24px,
+            2.5vw,
+            34px
+        );
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,27,39,.96),
+            rgba(7,13,20,.98)
+        );
+
+    box-shadow:var(--shadow);
+
+    transform-style:preserve-3d;
+
+    will-change:
+        transform,
+        opacity;
+
+    cursor:pointer;
+
+    overflow:hidden;
+
+    transition:
+        transform 800ms var(--ease),
+        opacity 650ms var(--ease),
+        filter 650ms var(--ease),
+        box-shadow 650ms var(--ease);
+
+    backface-visibility:hidden;
+}
+
+
+/* =========================================================
+   CARD SHINE
+========================================================= */
+
+.capability-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-2px;
+
+    border-radius:inherit;
+
+    padding:1px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(114,182,255,.30),
+            transparent 30%,
+            transparent 70%,
+            rgba(49,136,237,.22)
+        );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0)
+        content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+
+    mask-composite:exclude;
+
+    pointer-events:none;
+
+    opacity:.8;
+}
+
+
+/* =========================================================
+   CARD LIGHT
+========================================================= */
+
+.capability-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+
+    height:180px;
+
+    top:-90px;
+
+    right:-80px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(49,136,237,.22),
+            transparent 70%
+        );
+
+    filter:blur(8px);
+
+    pointer-events:none;
+
+    transition:
+        transform .8s var(--ease),
+        opacity .8s var(--ease);
+}
+
+
+/* =========================================================
+   ACTIVE CARD
+========================================================= */
+
+.capability-card.is-active{
+
+    border-color:
+        rgba(114,182,255,.38);
+
+    box-shadow:
+        0 40px 100px rgba(0,0,0,.55),
+        0 0 60px rgba(49,136,237,.10),
+        inset 0 1px 0 rgba(255,255,255,.05);
+
+    z-index:10;
+}
+
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
+.capability-card.is-active:hover{
+
+    box-shadow:
+        0 45px 110px rgba(0,0,0,.60),
+        0 0 80px rgba(49,136,237,.16),
+        inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+
+.capability-card.is-active:hover::after{
+
+    transform:
+        translate(
+            -35px,
+            35px
+        );
+
+    opacity:.9;
+}
+
+
+/* =========================================================
+   CARD INNER
+========================================================= */
+
+.card-inner{
+
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    transform-style:preserve-3d;
+}
+
+
+/* =========================================================
+   TOP
+========================================================= */
+
+.card-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+
+.card-number{
+
+    color:
+        rgba(255,255,255,.34);
+
+    font-size:11px;
+
+    font-weight:800;
+
+    letter-spacing:.16em;
+}
+
+
+.card-status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    color:
+        rgba(255,255,255,.46);
+
+    font-size:9px;
+
+    font-weight:700;
+
+    letter-spacing:.13em;
+
+    text-transform:uppercase;
+}
+
+
+.card-status-dot{
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:var(--blue-light);
+
+    box-shadow:
+        0 0 12px rgba(114,182,255,.75);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.card-icon-wrap{
+
+    width:
+        clamp(
+            66px,
+            7vw,
+            86px
+        );
+
+    height:
+        clamp(
+            66px,
+            7vw,
+            86px
+        );
+
+    display:grid;
+
+    place-items:center;
+
+    margin-top:18px;
+
+    border:
+        1px solid
+        rgba(114,182,255,.17);
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(49,136,237,.13),
+            rgba(49,136,237,.025)
+        );
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.05),
+        0 15px 35px rgba(0,0,0,.18);
+
+    transform:
+        translateZ(35px);
+}
+
+
+.card-icon{
+
+    width:38px;
+
+    height:38px;
+
+    color:
+        var(--blue-light);
+
+    filter:
+        drop-shadow(
+            0 0 12px
+            rgba(114,182,255,.18)
+        );
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.card-content{
+
+    transform:
+        translateZ(42px);
+}
+
+
+.card-kicker{
+
+    margin-bottom:12px;
+
+    color:
+        var(--blue-light);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+}
+
+
+.card-title{
+
+    color:var(--white);
+
+    font-size:
+        clamp(
+            26px,
+            2.7vw,
+            37px
+        );
+
+    line-height:1;
+
+    letter-spacing:-.045em;
+
+    font-weight:820;
+}
+
+
+.card-description{
+
+    margin-top:18px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.7;
+
+    max-width:285px;
+}
+
+
+/* =========================================================
+   BOTTOM
+========================================================= */
+
+.card-bottom{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding-top:20px;
+
+    transform:
+        translateZ(28px);
+}
+
+
+.card-link{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:
+        rgba(255,255,255,.78);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:.14em;
+
+    text-transform:uppercase;
+
+    transition:
+        color .35s ease,
+        gap .35s ease;
+}
+
+
+.capability-card:hover .card-link{
+
+    color:var(--white);
+
+    gap:14px;
+}
+
+
+.card-link-arrow{
+
+    font-size:17px;
+
+    line-height:1;
+
+    color:var(--blue-light);
+}
+
+
+.card-orbit{
+
+    position:relative;
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(114,182,255,.17);
+
+    transform:
+        translateZ(22px);
+}
+
+
+.card-orbit::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:8px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(114,182,255,.28);
+}
+
+
+.card-orbit::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:5px;
+
+    height:5px;
+
+    top:5px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    border-radius:50%;
+
+    background:var(--blue-light);
+
+    box-shadow:
+        0 0 10px rgba(114,182,255,.8);
+}
+
+
+/* =========================================================
+   CARD SIDE STATES
+========================================================= */
+
+.capability-card.side-left{
+
+    filter:
+        brightness(.72)
+        saturate(.78);
+
+    opacity:.58;
+}
+
+
+.capability-card.side-right{
+
+    filter:
+        brightness(.72)
+        saturate(.78);
+
+    opacity:.58;
+}
+
+
+.capability-card.far-left,
+.capability-card.far-right{
+
+    filter:
+        brightness(.45)
+        saturate(.55);
+
+    opacity:.20;
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.carousel-controls{
+
+    display:none;
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:
+        clamp(
+            8px,
+            1.5vw,
+            18px
+        );
+
+    transform:translateX(-50%);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    z-index:30;
+}
+
+
+.carousel-button{
+
+    width:48px;
+
+    height:48px;
+
+    display:grid;
+
+    place-items:center;
+
+    border:
+        1px solid
+        rgba(114,182,255,.17);
+
+    border-radius:50%;
+
+    background:
+        rgba(7,13,20,.82);
+
+    color:var(--white);
+
+    cursor:pointer;
+
+    backdrop-filter:blur(15px);
+
+    -webkit-backdrop-filter:blur(15px);
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        background .3s ease,
+        box-shadow .3s ease;
+}
+
+
+.carousel-button:hover{
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(114,182,255,.45);
+
+    background:
+        rgba(49,136,237,.12);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.3);
+}
+
+
+.carousel-button:active{
+
+    transform:
+        translateY(0)
+        scale(.94);
+}
+
+
+.carousel-button svg{
+
+    width:18px;
+
+    height:18px;
+}
+
+
+/* =========================================================
+   DOTS
+========================================================= */
+
+.carousel-dots{
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    margin-top:34px;
+}
+
+
+.carousel-dot{
+
+    width:6px;
+
+    height:6px;
+
+    padding:0;
+
+    border:0;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.22);
+
+    cursor:pointer;
+
+    transition:
+        width .4s var(--ease),
+        background .4s ease,
+        transform .4s ease;
+}
+
+
+.carousel-dot.active{
+
+    width:25px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue-deep),
+            var(--blue-light)
+        );
+
+    box-shadow:
+        0 0 14px rgba(49,136,237,.28);
+}
+
+.capabilities-note{
+
+    display:none;
+}
+
+#capabilitiesCarousel .carousel-controls,
+#capabilitiesCarousel .carousel-dots{
+
+    display:none !important;
+}
+
+
+/* =========================================================
+   BOTTOM NOTE
+========================================================= */
+
+.capabilities-note{
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin-top:34px;
+
+    color:
+        rgba(255,255,255,.35);
+
+    font-size:10px;
+
+    font-weight:700;
+
+    letter-spacing:.13em;
+
+    text-transform:uppercase;
+}
+
+
+.capabilities-note-line{
+
+    width:28px;
+
+    height:1px;
+
+    background:
+        rgba(114,182,255,.24);
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width:1050px){
+
+    .capabilities-container{
+
+        width:
+            min(
+                920px,
+                calc(100% - 40px)
+            );
+    }
+
+    .carousel-viewport{
+
+        min-height:490px;
+    }
+
+    .capability-card{
+
+        width:300px;
+
+        height:410px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width:700px){
+
+    .capabilities-section{
+
+        padding:
+            80px 0
+            85px;
+    }
+
+    .capabilities-container{
+
+        width:
+            calc(100% - 30px);
+    }
+
+    .capabilities-intro{
+
+        margin-bottom:45px;
+    }
+
+    .capabilities-eyebrow{
+
+        font-size:9px;
+
+        letter-spacing:.15em;
+    }
+
+    .capabilities-title{
+
+        font-size:
+            clamp(
+                37px,
+                11vw,
+                54px
+            );
+    }
+
+    .capabilities-description{
+
+        font-size:13px;
+
+        line-height:1.7;
+    }
+
+    .carousel-viewport{
+
+        min-height:455px;
+    }
+
+    .capability-card{
+
+        width:
+            min(
+                290px,
+                calc(100vw - 54px)
+            );
+
+        height:405px;
+
+        padding:27px;
+
+        border-radius:26px;
+    }
+
+    .capability-card.side-left,
+    .capability-card.side-right{
+
+        opacity:.20;
+
+        filter:
+            brightness(.45)
+            saturate(.45);
+    }
+
+    .carousel-controls{
+
+        bottom:0;
+    }
+
+    .carousel-button{
+
+        width:44px;
+
+        height:44px;
+    }
+
+    .card-title{
+
+        font-size:29px;
+    }
+
+    .card-description{
+
+        font-size:12px;
+
+        max-width:250px;
+    }
+
+    .card-icon-wrap{
+
+        width:70px;
+
+        height:70px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width:430px){
+
+    .capabilities-section{
+
+        padding-top:70px;
+    }
+
+    .capabilities-container{
+
+        width:
+            calc(100% - 24px);
+    }
+
+    .capabilities-title{
+
+        font-size:
+            clamp(
+                34px,
+                10.5vw,
+                46px
+            );
+    }
+
+    .capabilities-description{
+
+        padding:0 8px;
+    }
+
+    .carousel-viewport{
+
+        min-height:430px;
+    }
+
+    .capability-card{
+
+        width:
+            calc(100vw - 42px);
+
+        max-width:290px;
+
+        height:390px;
+
+        padding:24px;
+    }
+
+    .card-icon-wrap{
+
+        width:64px;
+
+        height:64px;
+
+        border-radius:20px;
+    }
+
+    .card-icon{
+
+        width:32px;
+
+        height:32px;
+    }
+
+    .card-title{
+
+        font-size:27px;
+    }
+
+    .card-description{
+
+        margin-top:14px;
+
+        font-size:11.5px;
+    }
+
+    .card-orbit{
+
+        width:38px;
+
+        height:38px;
+    }
+
+    .capabilities-note{
+
+        font-size:8px;
+
+        letter-spacing:.1em;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion:reduce){
+
+    html{
+        scroll-behavior:auto;
+    }
+
+    .capability-card,
+    .carousel-button,
+    .carousel-dot,
+    .card-link{
+
+        transition:none !important;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     DIGITAL CAPABILITIES
+======================================================= -->
+
+<section
+    class="capabilities-section"
+    id="capabilities"
+>
+
+    <div class="capabilities-glow"></div>
+
+
+    <div class="capabilities-container">
+
+
+        <!-- INTRO -->
+
+        <div class="capabilities-intro">
+
+            <div class="capabilities-eyebrow">
+                WHAT WE CREATE
+            </div>
+
+            <h2 class="capabilities-title">
+                DIGITAL IDEAS,
+                <span>BUILT TO MOVE.</span>
+            </h2>
+
+            <p class="capabilities-description">
+                From powerful web experiences to intelligent automation,
+                we connect technology with the way people and businesses
+                actually move.
+            </p>
+
+        </div>
+
+
+        <!-- CAROUSEL -->
+
+        <div
+            class="capabilities-carousel"
+            id="capabilitiesCarousel"
+        >
+
+            <div
+                class="carousel-viewport"
+                id="carouselViewport"
+            >
+
+                <div
+                    class="carousel-track"
+                    id="carouselTrack"
+                >
+
+
+                    <!-- =================================================
+                         CARD 01 — WEB
+                    ================================================== -->
+
+                    <a
+                        class="capability-card"
+                        href="services.html#web-development"
+                        data-index="0"
+                    >
+
+                        <div class="card-inner">
+
+                            <div>
+
+                                <div class="card-top">
+
+                                    <span class="card-number">
+                                        01
+                                    </span>
+
+                                    <span class="card-status">
+
+                                        <span
+                                            class="card-status-dot"
+                                        ></span>
+
+                                        DIGITAL
+                                    </span>
+
+                                </div>
+
+
+                                <div class="card-icon-wrap">
+
+                                    <svg
+                                        class="card-icon"
+                                        viewBox="0 0 48 48"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+
+                                        <rect
+                                            x="5"
+                                            y="8"
+                                            width="38"
+                                            height="30"
+                                            rx="5"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        />
+
+                                        <path
+                                            d="M5 16H43"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        />
+
+                                        <circle
+                                            cx="11"
+                                            cy="12"
+                                            r="1.5"
+                                            fill="currentColor"
+                                        />
+
+                                        <circle
+                                            cx="17"
+                                            cy="12"
+                                            r="1.5"
+                                            fill="currentColor"
+                                        />
+
+                                        <path
+                                            d="M15 27L20 31L28 22"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+
+                                    </svg>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="card-content">
+
+                                <div class="card-kicker">
+                                    WEB EXPERIENCES
+                                </div>
+
+                                <h3 class="card-title">
+                                    Web
+                                    <br>
+                                    Experiences
+                                </h3>
+
+                                <p class="card-description">
+                                    Digital platforms engineered to feel
+                                    fast, clear and effortless across every
+                                    screen.
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-bottom">
+
+                                <span class="card-link">
+                                    Explore capability
+
+                                    <span
+                                        class="card-link-arrow"
+                                    >
+                                        →
+                                    </span>
+                                </span>
+
+                                <span class="card-orbit"></span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <!-- =================================================
+                         CARD 02 — MOBILE
+                    ================================================== -->
+
+                    <a
+                        class="capability-card"
+                        href="services.html#app-development"
+                        data-index="1"
+                    >
+
+                        <div class="card-inner">
+
+                            <div>
+
+                                <div class="card-top">
+
+                                    <span class="card-number">
+                                        02
+                                    </span>
+
+                                    <span class="card-status">
+
+                                        <span
+                                            class="card-status-dot"
+                                        ></span>
+
+                                        MOBILE
+                                    </span>
+
+                                </div>
+
+
+                                <div class="card-icon-wrap">
+
+                                    <svg
+                                        class="card-icon"
+                                        viewBox="0 0 48 48"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+
+                                        <rect
+                                            x="13"
+                                            y="4"
+                                            width="22"
+                                            height="40"
+                                            rx="5"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        />
+
+                                        <path
+                                            d="M20 9H28"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                        />
+
+                                        <circle
+                                            cx="24"
+                                            cy="38"
+                                            r="2"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                        />
+
+                                        <path
+                                            d="M19 22L23 26L30 18"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+
+                                    </svg>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="card-content">
+
+                                <div class="card-kicker">
+                                    MOBILE EXPERIENCES
+                                </div>
+
+                                <h3 class="card-title">
+                                    Mobile
+                                    <br>
+                                    Experiences
+                                </h3>
+
+                                <p class="card-description">
+                                    Fluid mobile products designed around
+                                    real interactions, real people and
+                                    real-world moments.
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-bottom">
+
+                                <span class="card-link">
+                                    Explore capability
+
+                                    <span
+                                        class="card-link-arrow"
+                                    >
+                                        →
+                                    </span>
+                                </span>
+
+                                <span class="card-orbit"></span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <!-- =================================================
+                         CARD 03 — UI UX
+                    ================================================== -->
+
+                    <a
+                        class="capability-card"
+                        href="services.html#ui-ux-design"
+                        data-index="2"
+                    >
+
+                        <div class="card-inner">
+
+                            <div>
+
+                                <div class="card-top">
+
+                                    <span class="card-number">
+                                        03
+                                    </span>
+
+                                    <span class="card-status">
+
+                                        <span
+                                            class="card-status-dot"
+                                        ></span>
+
+                                        EXPERIENCE
+                                    </span>
+
+                                </div>
+
+
+                                <div class="card-icon-wrap">
+
+                                    <svg
+                                        class="card-icon"
+                                        viewBox="0 0 48 48"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+
+                                        <rect
+                                            x="5"
+                                            y="7"
+                                            width="38"
+                                            height="34"
+                                            rx="5"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        />
+
+                                        <rect
+                                            x="10"
+                                            y="12"
+                                            width="11"
+                                            height="9"
+                                            rx="2"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                        />
+
+                                        <rect
+                                            x="25"
+                                            y="12"
+                                            width="13"
+                                            height="4"
+                                            rx="2"
+                                            fill="currentColor"
+                                            opacity=".7"
+                                        />
+
+                                        <rect
+                                            x="25"
+                                            y="19"
+                                            width="9"
+                                            height="3"
+                                            rx="1.5"
+                                            fill="currentColor"
+                                            opacity=".45"
+                                        />
+
+                                        <path
+                                            d="M10 27H38"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                        />
+
+                                        <path
+                                            d="M10 33H27"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                        />
+
+                                    </svg>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="card-content">
+
+                                <div class="card-kicker">
+                                    UI / UX DESIGN
+                                </div>
+
+                                <h3 class="card-title">
+                                    UI/UX
+                                    <br>
+                                    Design
+                                </h3>
+
+                                <p class="card-description">
+                                    Interfaces shaped around clarity,
+                                    behavior and the small details that
+                                    make products feel natural.
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-bottom">
+
+                                <span class="card-link">
+                                    Explore capability
+
+                                    <span
+                                        class="card-link-arrow"
+                                    >
+                                        →
+                                    </span>
+                                </span>
+
+                                <span class="card-orbit"></span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <!-- =================================================
+                         CARD 04 — AI
+                    ================================================== -->
+
+                    <a
+                        class="capability-card"
+                        href="services.html#ai-solutions"
+                        data-index="3"
+                    >
+
+                        <div class="card-inner">
+
+                            <div>
+
+                                <div class="card-top">
+
+                                    <span class="card-number">
+                                        04
+                                    </span>
+
+                                    <span class="card-status">
+
+                                        <span
+                                            class="card-status-dot"
+                                        ></span>
+
+                                        INTELLIGENCE
+                                    </span>
+
+                                </div>
+
+
+                                <div class="card-icon-wrap">
+
+                                    <svg
+                                        class="card-icon"
+                                        viewBox="0 0 48 48"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+
+                                        <rect
+                                            x="12"
+                                            y="12"
+                                            width="24"
+                                            height="24"
+                                            rx="6"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        />
+
+                                        <path
+                                            d="M18 20H30"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                        />
+
+                                        <path
+                                            d="M18 25H26"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                        />
+
+                                        <path
+                                            d="M18 30H29"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                        />
+
+                                        <path
+                                            d="M18 12V7M24 12V5M30 12V7M18 36V41M24 36V43M30 36V41M12 18H7M12 24H5M12 30H7M36 18H41M36 24H43M36 30H41"
+                                            stroke="currentColor"
+                                            stroke-width="1.7"
+                                            stroke-linecap="round"
+                                        />
+
+                                    </svg>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="card-content">
+
+                                <div class="card-kicker">
+                                    ARTIFICIAL INTELLIGENCE
+                                </div>
+
+                                <h3 class="card-title">
+                                    Artificial
+                                    <br>
+                                    Intelligence
+                                </h3>
+
+                                <p class="card-description">
+                                    Intelligent systems that turn data,
+                                    patterns and context into useful
+                                    digital decisions.
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-bottom">
+
+                                <span class="card-link">
+                                    Explore capability
+
+                                    <span
+                                        class="card-link-arrow"
+                                    >
+                                        →
+                                    </span>
+                                </span>
+
+                                <span class="card-orbit"></span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <!-- =================================================
+                         CARD 05 — AUTOMATION
+                    ================================================== -->
+
+                    <a
+                        class="capability-card"
+                        href="services.html#automation"
+                        data-index="4"
+                    >
+
+                        <div class="card-inner">
+
+                            <div>
+
+                                <div class="card-top">
+
+                                    <span class="card-number">
+                                        05
+                                    </span>
+
+                                    <span class="card-status">
+
+                                        <span
+                                            class="card-status-dot"
+                                        ></span>
+
+                                        SYSTEMS
+                                    </span>
+
+                                </div>
+
+
+                                <div class="card-icon-wrap">
+
+                                    <svg
+                                        class="card-icon"
+                                        viewBox="0 0 48 48"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+
+                                        <circle
+                                            cx="24"
+                                            cy="24"
+                                            r="7"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        />
+
+                                        <circle
+                                            cx="24"
+                                            cy="24"
+                                            r="15"
+                                            stroke="currentColor"
+                                            stroke-width="1.7"
+                                            stroke-dasharray="4 4"
+                                            opacity=".65"
+                                        />
+
+                                        <path
+                                            d="M24 4V9M24 39V44M4 24H9M39 24H44"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                        />
+
+                                        <path
+                                            d="M10 10L13.5 13.5M34.5 34.5L38 38M38 10L34.5 13.5M13.5 34.5L10 38"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                            stroke-linecap="round"
+                                        />
+
+                                    </svg>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="card-content">
+
+                                <div class="card-kicker">
+                                    INTELLIGENT AUTOMATION
+                                </div>
+
+                                <h3 class="card-title">
+                                    Intelligent
+                                    <br>
+                                    Automation
+                                </h3>
+
+                                <p class="card-description">
+                                    Connected workflows that remove
+                                    repetitive friction and help teams
+                                    move with greater precision.
+                                </p>
+
+                            </div>
+
+
+                            <div class="card-bottom">
+
+                                <span class="card-link">
+                                    Explore capability
+
+                                    <span
+                                        class="card-link-arrow"
+                                    >
+                                        →
+                                    </span>
+                                </span>
+
+                                <span class="card-orbit"></span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+                <!-- CONTROLS -->
+
+                <div class="carousel-controls">
+
+                    <button
+                        class="carousel-button"
+                        id="carouselPrev"
+                        type="button"
+                        aria-label="Previous capability"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+
+                            <path
+                                d="M15 5L8 12L15 19"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+
+                        </svg>
+
+                    </button>
+
+
+                    <button
+                        class="carousel-button"
+                        id="carouselNext"
+                        type="button"
+                        aria-label="Next capability"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+
+                            <path
+                                d="M9 5L16 12L9 19"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- DOTS -->
+
+            <div
+                class="carousel-dots"
+                id="carouselDots"
+            ></div>
+
+
+            <div class="capabilities-note">
+
+                <span class="capabilities-note-line"></span>
+
+                DISCOVER WHAT'S POSSIBLE
+
+                <span class="capabilities-note-line"></span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<script>
+
+/* =========================================================
+   INNOVEXA TECHNOLOGIES
+   3D AUTO CAPABILITIES CAROUSEL
+========================================================= */
+
+(function(){
+
+    "use strict";
+
+
+    /* ======================================================
+       ELEMENTS
+    ====================================================== */
+
+    const carousel =
+        document.getElementById(
+            "capabilitiesCarousel"
+        );
+
+    const viewport =
+        document.getElementById(
+            "carouselViewport"
+        );
+
+    const track =
+        document.getElementById(
+            "carouselTrack"
+        );
+
+    const cards =
+        Array.from(
+            document.querySelectorAll(
+                ".capability-card"
+            )
+        );
+
+    const prevButton =
+        document.getElementById(
+            "carouselPrev"
+        );
+
+    const nextButton =
+        document.getElementById(
+            "carouselNext"
+        );
+
+    const dotsContainer =
+        document.getElementById(
+            "carouselDots"
+        );
+
+
+    if(
+        !carousel ||
+        !viewport ||
+        !track ||
+        !cards.length
+    ){
+        return;
+    }
+
+
+    /* ======================================================
+       CONFIG
+    ====================================================== */
+
+    const TOTAL =
+        cards.length;
+
+    const AUTO_DELAY =
+        3600;
+
+    const TRANSITION_MS =
+        850;
+
+    const DRAG_THRESHOLD =
+        55;
+
+
+    let activeIndex = 0;
+
+    let autoTimer = null;
+
+    let isPointerDown = false;
+
+    let pointerStartX = 0;
+
+    let pointerStartY = 0;
+
+    let pointerCurrentX = 0;
+
+    let isDragging = false;
+
+    let tiltX = 0;
+
+    let tiltY = 0;
+
+    let animationFrame = null;
+
+    let reducedMotion =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+
+    /* ======================================================
+       CREATE DOTS
+    ====================================================== */
+
+    cards.forEach(function(card, index){
+
+        const dot =
+            document.createElement("button");
+
+        dot.type = "button";
+
+        dot.className =
+            "carousel-dot";
+
+        dot.setAttribute(
+            "aria-label",
+            "Go to capability " +
+            (index + 1)
+        );
+
+        dot.dataset.index =
+            index;
+
+        dot.addEventListener(
+            "click",
+            function(){
+
+                goTo(
+                    Number(
+                        this.dataset.index
+                    )
+                );
+
+            }
+        );
+
+        dotsContainer.appendChild(dot);
+
+    });
+
+
+    const dots =
+        Array.from(
+            document.querySelectorAll(
+                ".carousel-dot"
+            )
+        );
+
+
+    /* ======================================================
+       GET SHORTEST POSITION
+    ====================================================== */
+
+    function relativePosition(
+        index
+    ){
+
+        let diff =
+            index -
+            activeIndex;
+
+        if(
+            diff >
+            TOTAL / 2
+        ){
+            diff -= TOTAL;
+        }
+
+        if(
+            diff <
+            -TOTAL / 2
+        ){
+            diff += TOTAL;
+        }
+
+        return diff;
+
+    }
+
+
+    /* ======================================================
+       RESPONSIVE MODE
+    ====================================================== */
+
+    function getMode(){
+
+        const width =
+            window.innerWidth;
+
+        if(width <= 700){
+            return "mobile";
+        }
+
+        if(width <= 1050){
+            return "tablet";
+        }
+
+        return "desktop";
+
+    }
+
+
+    /* ======================================================
+       APPLY CARD POSITION
+    ====================================================== */
+
+    function render(){
+
+        const mode =
+            getMode();
+
+        cards.forEach(
+            function(card, index){
+
+                const position =
+                    relativePosition(
+                        index
+                    );
+
+                let x = 0;
+
+                let y = 0;
+
+                let z = 0;
+
+                let rotateY = 0;
+
+                let rotateX = 0;
+
+                let scale = 1;
+
+                let opacity = 1;
+
+                let blur = 0;
+
+
+                /* ==========================================
+                   DESKTOP
+                ========================================== */
+
+                if(
+                    mode === "desktop"
+                ){
+
+                    const gap =
+                        345;
+
+                    if(
+                        position === 0
+                    ){
+
+                        x = 0;
+
+                        z = 80;
+
+                        scale = 1;
+
+                        rotateY = 0;
+
+                        opacity = 1;
+
+                    }
+                    else if(
+                        position === -1
+                    ){
+
+                        x = -gap;
+
+                        z = -80;
+
+                        scale = .84;
+
+                        rotateY = 17;
+
+                        opacity = .58;
+
+                    }
+                    else if(
+                        position === 1
+                    ){
+
+                        x = gap;
+
+                        z = -80;
+
+                        scale = .84;
+
+                        rotateY = -17;
+
+                        opacity = .58;
+
+                    }
+                    else if(
+                        position === -2
+                    ){
+
+                        x = -gap * 1.72;
+
+                        z = -210;
+
+                        scale = .66;
+
+                        rotateY = 25;
+
+                        opacity = .20;
+
+                    }
+                    else if(
+                        position === 2
+                    ){
+
+                        x = gap * 1.72;
+
+                        z = -210;
+
+                        scale = .66;
+
+                        rotateY = -25;
+
+                        opacity = .20;
+
+                    }
+                    else{
+
+                        x =
+                            position < 0
+                            ? -gap * 2.2
+                            : gap * 2.2;
+
+                        z = -320;
+
+                        scale = .55;
+
+                        rotateY =
+                            position < 0
+                            ? 30
+                            : -30;
+
+                        opacity = 0;
+
+                    }
+
+                }
+
+
+                /* ==========================================
+                   TABLET
+                ========================================== */
+
+                else if(
+                    mode === "tablet"
+                ){
+
+                    const gap =
+                        285;
+
+                    if(
+                        position === 0
+                    ){
+
+                        x = 0;
+
+                        z = 60;
+
+                        scale = 1;
+
+                        rotateY = 0;
+
+                        opacity = 1;
+
+                    }
+                    else if(
+                        position === -1
+                    ){
+
+                        x = -gap;
+
+                        z = -70;
+
+                        scale = .78;
+
+                        rotateY = 14;
+
+                        opacity = .38;
+
+                    }
+                    else if(
+                        position === 1
+                    ){
+
+                        x = gap;
+
+                        z = -70;
+
+                        scale = .78;
+
+                        rotateY = -14;
+
+                        opacity = .38;
+
+                    }
+                    else{
+
+                        x =
+                            position < 0
+                            ? -gap * 1.7
+                            : gap * 1.7;
+
+                        z = -200;
+
+                        scale = .60;
+
+                        opacity = 0;
+
+                    }
+
+                }
+
+
+                /* ==========================================
+                   MOBILE
+                ========================================== */
+
+                else{
+
+                    const gap =
+                        245;
+
+                    if(
+                        position === 0
+                    ){
+
+                        x = 0;
+
+                        z = 45;
+
+                        scale = 1;
+
+                        rotateY = 0;
+
+                        opacity = 1;
+
+                    }
+                    else if(
+                        position === -1
+                    ){
+
+                        x = -gap;
+
+                        z = -75;
+
+                        scale = .74;
+
+                        rotateY = 10;
+
+                        opacity = .20;
+
+                    }
+                    else if(
+                        position === 1
+                    ){
+
+                        x = gap;
+
+                        z = -75;
+
+                        scale = .74;
+
+                        rotateY = -10;
+
+                        opacity = .20;
+
+                    }
+                    else{
+
+                        x =
+                            position < 0
+                            ? -gap * 1.55
+                            : gap * 1.55;
+
+                        z = -180;
+
+                        scale = .55;
+
+                        opacity = 0;
+
+                    }
+
+                }
+
+
+                /* ==========================================
+                   ACTIVE CARD MOUSE TILT
+                ========================================== */
+
+                if(
+                    position === 0 &&
+                    !reducedMotion
+                ){
+
+                    rotateY +=
+                        tiltY;
+
+                    rotateX =
+                        tiltX;
+
+                }
+
+
+                /* ==========================================
+                   RESET CLASS
+                ========================================== */
+
+                card.classList.remove(
+                    "is-active",
+                    "side-left",
+                    "side-right",
+                    "far-left",
+                    "far-right"
+                );
+
+
+                if(
+                    position === 0
+                ){
+
+                    card.classList.add(
+                        "is-active"
+                    );
+
+                }
+                else if(
+                    position === -1
+                ){
+
+                    card.classList.add(
+                        "side-left"
+                    );
+
+                }
+                else if(
+                    position === 1
+                ){
+
+                    card.classList.add(
+                        "side-right"
+                    );
+
+                }
+                else if(
+                    position < 0
+                ){
+
+                    card.classList.add(
+                        "far-left"
+                    );
+
+                }
+                else{
+
+                    card.classList.add(
+                        "far-right"
+                    );
+
+                }
+
+
+                /* ==========================================
+                   Z INDEX
+                ========================================== */
+
+                card.style.zIndex =
+                    String(
+                        20 -
+                        Math.abs(position)
+                    );
+
+
+                /* ==========================================
+                   TRANSFORM
+                ========================================== */
+
+                card.style.transform =
+                    "translate3d(" +
+                    x +
+                    "px," +
+                    y +
+                    "px," +
+                    z +
+                    "px) " +
+                    "rotateX(" +
+                    rotateX +
+                    "deg) " +
+                    "rotateY(" +
+                    rotateY +
+                    "deg) " +
+                    "scale(" +
+                    scale +
+                    ")";
+
+
+                card.style.opacity =
+                    opacity;
+
+                card.style.filter =
+                    opacity < .3
+                    ? "brightness(.45) saturate(.5) blur(" + blur + "px)"
+                    : "";
+
+            }
+        );
+
+
+        /* ==================================================
+           DOTS
+        ================================================== */
+
+        dots.forEach(
+            function(dot,index){
+
+                dot.classList.toggle(
+                    "active",
+                    index === activeIndex
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ======================================================
+       GO TO SLIDE
+    ====================================================== */
+
+    function goTo(
+        target
+    ){
+
+        target =
+            (
+                target +
+                TOTAL
+            ) %
+            TOTAL;
+
+
+        if(
+            target === activeIndex
+        ){
+            render();
+            restartAuto();
+            return;
+        }
+
+
+        activeIndex =
+            target;
+
+
+        tiltX = 0;
+
+        tiltY = 0;
+
+
+        render();
+
+        restartAuto();
+
+    }
+
+
+    /* ======================================================
+       NEXT
+    ====================================================== */
+
+    function next(){
+
+        goTo(
+            activeIndex + 1
+        );
+
+    }
+
+
+    /* ======================================================
+       PREVIOUS
+    ====================================================== */
+
+    function previous(){
+
+        goTo(
+            activeIndex - 1
+        );
+
+    }
+
+
+    /* ======================================================
+       AUTO CAROUSEL
+    ====================================================== */
+
+    function startAuto(){
+
+        if(
+            reducedMotion
+        ){
+            return;
+        }
+
+        clearInterval(
+            autoTimer
+        );
+
+        autoTimer =
+            setInterval(
+                function(){
+
+                    if(
+                        !document.hidden &&
+                        !isPointerDown
+                    ){
+
+                        next();
+
+                    }
+
+                },
+                AUTO_DELAY
+            );
+
+    }
+
+
+    function stopAuto(){
+
+        clearInterval(
+            autoTimer
+        );
+
+        autoTimer = null;
+
+    }
+
+
+    function restartAuto(){
+
+        stopAuto();
+
+        startAuto();
+
+    }
+
+
+    carousel.addEventListener(
+        "mouseenter",
+        function(){
+
+            stopAuto();
+
+        }
+    );
+
+
+    carousel.addEventListener(
+        "mouseleave",
+        function(){
+
+            if(
+                !isPointerDown
+            ){
+
+                startAuto();
+
+            }
+
+        }
+    );
+
+
+    /* ======================================================
+       BUTTONS
+    ====================================================== */
+
+    prevButton.addEventListener(
+        "click",
+        function(){
+
+            previous();
+
+        }
+    );
+
+
+    nextButton.addEventListener(
+        "click",
+        function(){
+
+            next();
+
+        }
+    );
+
+
+    /* ======================================================
+       MOUSE 3D TILT
+    ====================================================== */
+
+    carousel.addEventListener(
+        "pointermove",
+        function(event){
+
+            if(
+                isDragging ||
+                reducedMotion
+            ){
+                return;
+            }
+
+
+            if(
+                window.innerWidth <= 700
+            ){
+                return;
+            }
+
+
+            const activeCard =
+                cards[
+                    activeIndex
+                ];
+
+
+            if(!activeCard){
+                return;
+            }
+
+
+            const rect =
+                activeCard.getBoundingClientRect();
+
+
+            const px =
+                (
+                    event.clientX -
+                    (
+                        rect.left +
+                        rect.width / 2
+                    )
+                ) /
+                (
+                    rect.width / 2
+                );
+
+
+            const py =
+                (
+                    event.clientY -
+                    (
+                        rect.top +
+                        rect.height / 2
+                    )
+                ) /
+                (
+                    rect.height / 2
+                );
+
+
+            tiltY =
+                Math.max(
+                    -7,
+                    Math.min(
+                        7,
+                        px * 7
+                    )
+                );
+
+
+            tiltX =
+                Math.max(
+                    -5,
+                    Math.min(
+                        5,
+                        -py * 5
+                    )
+                );
+
+
+            if(
+                !animationFrame
+            ){
+
+                animationFrame =
+                    requestAnimationFrame(
+                        function(){
+
+                            render();
+
+                            animationFrame =
+                                null;
+
+                        }
+                    );
+
+            }
+
+        }
+    );
+
+
+    carousel.addEventListener(
+        "pointerleave",
+        function(){
+
+            tiltX = 0;
+
+            tiltY = 0;
+
+            render();
+
+        }
+    );
+
+
+    /* ======================================================
+       TOUCH / POINTER DRAG
+    ====================================================== */
+
+    viewport.addEventListener(
+        "pointerdown",
+        function(event){
+
+            if(
+                event.pointerType ===
+                "mouse"
+            ){
+                return;
+            }
+
+
+            isPointerDown = true;
+
+            isDragging = false;
+
+            pointerStartX =
+                event.clientX;
+
+            pointerStartY =
+                event.clientY;
+
+            pointerCurrentX =
+                event.clientX;
+
+
+            stopAuto();
+
+
+            try{
+
+                viewport.setPointerCapture(
+                    event.pointerId
+                );
+
+            }catch(error){}
+
+        }
+    );
+
+
+    viewport.addEventListener(
+        "pointermove",
+        function(event){
+
+            if(
+                !isPointerDown
+            ){
+                return;
+            }
+
+
+            pointerCurrentX =
+                event.clientX;
+
+
+            const dx =
+                pointerCurrentX -
+                pointerStartX;
+
+            const dy =
+                event.clientY -
+                pointerStartY;
+
+
+            if(
+                Math.abs(dx) >
+                8
+            ){
+
+                isDragging = true;
+
+            }
+
+
+            if(
+                isDragging &&
+                Math.abs(dx) >
+                Math.abs(dy)
+            ){
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive:false
+        }
+    );
+
+
+    viewport.addEventListener(
+        "pointerup",
+        function(event){
+
+            if(
+                !isPointerDown
+            ){
+                return;
+            }
+
+
+            const dx =
+                pointerCurrentX -
+                pointerStartX;
+
+
+            isPointerDown = false;
+
+
+            if(
+                Math.abs(dx) >=
+                DRAG_THRESHOLD
+            ){
+
+                if(
+                    dx < 0
+                ){
+
+                    next();
+
+                }
+                else{
+
+                    previous();
+
+                }
+
+            }
+            else{
+
+                restartAuto();
+
+            }
+
+
+            try{
+
+                viewport.releasePointerCapture(
+                    event.pointerId
+                );
+
+            }catch(error){}
+
+        }
+    );
+
+
+    viewport.addEventListener(
+        "pointercancel",
+        function(){
+
+            isPointerDown = false;
+
+            isDragging = false;
+
+            restartAuto();
+
+        }
+    );
+
+
+    /* ======================================================
+       KEYBOARD
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function(event){
+
+            const rect =
+                carousel.getBoundingClientRect();
+
+            const visible =
+                rect.top <
+                window.innerHeight &&
+                rect.bottom >
+                0;
+
+
+            if(!visible){
+                return;
+            }
+
+
+            if(
+                event.key ===
+                "ArrowRight"
+            ){
+
+                event.preventDefault();
+
+                next();
+
+            }
+
+
+            if(
+                event.key ===
+                "ArrowLeft"
+            ){
+
+                event.preventDefault();
+
+                previous();
+
+            }
+
+        }
+    );
+
+
+    /* ======================================================
+       VISIBILITY
+    ====================================================== */
+
+    document.addEventListener(
+        "visibilitychange",
+        function(){
+
+            if(
+                document.hidden
+            ){
+
+                stopAuto();
+
+            }
+            else{
+
+                startAuto();
+
+            }
+
+        }
+    );
+
+
+    /* ======================================================
+       RESIZE
+    ====================================================== */
+
+    let resizeTimer = null;
+
+
+    window.addEventListener(
+        "resize",
+        function(){
+
+            clearTimeout(
+                resizeTimer
+            );
+
+
+            resizeTimer =
+                setTimeout(
+                    function(){
+
+                        tiltX = 0;
+
+                        tiltY = 0;
+
+                        render();
+
+                    },
+                    120
+                );
+
+        }
+    );
+
+
+    /* ======================================================
+       REDUCED MOTION CHANGE
+    ====================================================== */
+
+    const motionQuery =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        );
+
+
+    function motionChanged(event){
+
+        reducedMotion =
+            event.matches;
+
+
+        if(
+            reducedMotion
+        ){
+
+            stopAuto();
+
+        }
+        else{
+
+            startAuto();
+
+        }
+
+
+        render();
+
+    }
+
+
+    if(
+        motionQuery.addEventListener
+    ){
+
+        motionQuery.addEventListener(
+            "change",
+            motionChanged
+        );
+
+    }
+    else{
+
+        motionQuery.addListener(
+            motionChanged
+        );
+
+    }
+
+
+    /* ======================================================
+       INITIALIZE
+    ====================================================== */
+
+    render();
+
+    startAuto();
+
+
+})();
+
+</script>
+
+</body>
+</html>

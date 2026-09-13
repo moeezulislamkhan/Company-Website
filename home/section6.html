@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Let's build something remarkable."
+    >
+
+    <title>Let's Build Something</title>
+
+    <style>
+
+        /* =========================================================
+           01. ROOT VARIABLES
+        ========================================================= */
+
+        :root {
+            --black: #020406;
+            --black-2: #03080e;
+            --navy-1: #06111d;
+            --navy-2: #081827;
+            --navy-3: #0b2135;
+
+            --blue: #63b5ff;
+            --blue-bright: #9bd2ff;
+            --blue-soft: rgba(99, 181, 255, 0.16);
+            --blue-line: rgba(99, 181, 255, 0.12);
+
+            --white: #f4f7fb;
+            --white-soft: #c4ced9;
+            --muted: #68798c;
+
+            --border: rgba(255, 255, 255, 0.08);
+
+            --section-padding: clamp(24px, 5vw, 80px);
+        }
+
+
+        /* =========================================================
+           02. RESET
+        ========================================================= */
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            background: var(--black);
+            color: var(--white);
+
+            font-family:
+                Inter,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+
+        /* =========================================================
+           03. CTA SECTION
+        ========================================================= */
+
+        .idea-cta {
+            position: relative;
+            isolation: isolate;
+
+            width: 100%;
+            height: 100svh;
+            min-height: 620px;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 76% 50%,
+                    rgba(8, 42, 72, 0.32) 0%,
+                    rgba(5, 24, 41, 0.14) 25%,
+                    transparent 48%
+                ),
+                linear-gradient(
+                    135deg,
+                    var(--black) 0%,
+                    var(--black-2) 45%,
+                    #05101b 100%
+                );
+        }
+
+
+        /* =========================================================
+           04. GRID BACKGROUND
+        ========================================================= */
+
+        .idea-cta__grid {
+            position: absolute;
+            inset: 0;
+            z-index: -3;
+
+            pointer-events: none;
+
+            background-image:
+                linear-gradient(
+                    to right,
+                    var(--blue-line) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    to bottom,
+                    var(--blue-line) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                clamp(42px, 4.5vw, 72px)
+                clamp(42px, 4.5vw, 72px);
+
+            opacity: 0.5;
+
+            mask-image:
+                radial-gradient(
+                    ellipse 75% 85% at 72% 50%,
+                    black 0%,
+                    rgba(0, 0, 0, 0.65) 42%,
+                    transparent 88%
+                );
+
+            -webkit-mask-image:
+                radial-gradient(
+                    ellipse 75% 85% at 72% 50%,
+                    black 0%,
+                    rgba(0, 0, 0, 0.65) 42%,
+                    transparent 88%
+                );
+        }
+
+
+        /* =========================================================
+           05. BACKGROUND VIGNETTE
+        ========================================================= */
+
+        .idea-cta__vignette {
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+
+            pointer-events: none;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(2, 4, 6, 0.92) 0%,
+                    rgba(2, 4, 6, 0.55) 45%,
+                    rgba(2, 4, 6, 0.12) 100%
+                );
+        }
+
+
+        /* =========================================================
+           06. MAIN CONTAINER
+        ========================================================= */
+
+        .idea-cta__container {
+            position: relative;
+
+            width: min(
+                calc(100% - 48px),
+                1240px
+            );
+
+            height: 100%;
+            margin: 0 auto;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 0.92fr)
+                minmax(430px, 1.08fr);
+
+            align-items: center;
+
+            column-gap: clamp(
+                30px,
+                6vw,
+                100px
+            );
+
+            padding:
+                var(--section-padding)
+                0;
+        }
+
+
+        /* =========================================================
+           07. LEFT CONTENT
+        ========================================================= */
+
+        .idea-cta__content {
+            position: relative;
+            z-index: 10;
+
+            max-width: 610px;
+        }
+
+
+        /* =========================================================
+           08. EYEBROW
+        ========================================================= */
+
+        .idea-cta__eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            margin-bottom: clamp(18px, 2.4vh, 28px);
+
+            color: var(--blue);
+
+            font-size: 11px;
+            font-weight: 650;
+            line-height: 1;
+
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .idea-cta__eyebrow::before {
+            content: "";
+
+            width: 30px;
+            height: 1px;
+
+            flex: 0 0 auto;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--blue)
+                );
+
+            box-shadow:
+                0 0 12px rgba(99, 181, 255, 0.5);
+        }
+
+
+        /* =========================================================
+           09. MAIN HEADING
+           ONLY COLOR UPDATED
+        ========================================================= */
+
+        .idea-cta__title {
+            max-width: 600px;
+
+            margin: 0;
+
+            font-size: clamp(
+                42px,
+                4.4vw,
+                64px
+            );
+
+            font-weight: 650;
+
+            line-height: 0.99;
+
+            letter-spacing: -0.052em;
+
+            color: var(--white);
+        }
+
+        .idea-cta__title-line {
+            display: block;
+        }
+
+
+        /*
+         * UPDATED:
+         * "Our craft." is no longer dull/muted.
+         * It now has a refined light-blue tone.
+         */
+
+        .idea-cta__title-line--muted {
+            color: #a9c9e5;
+
+            text-shadow:
+                0 0 24px rgba(99, 181, 255, 0.08);
+        }
+
+
+        /*
+         * Explicitly keep the other two lines bright.
+         */
+
+        .idea-cta__title-line:first-child,
+        .idea-cta__title-line:last-child {
+            color: #f4f7fb;
+        }
+
+
+        /* =========================================================
+           10. DESCRIPTION
+        ========================================================= */
+
+        .idea-cta__description {
+            max-width: 500px;
+
+            margin:
+                clamp(22px, 3vh, 30px)
+                0
+                0;
+
+            color: var(--white-soft);
+
+            font-size: clamp(
+                14px,
+                1.2vw,
+                16px
+            );
+
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+           11. RIGHT VISUAL AREA
+        ========================================================= */
+
+        .idea-machine {
+            position: relative;
+
+            width: min(100%, 600px);
+            height: min(72vh, 560px);
+
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            perspective: 900px;
+        }
+
+
+        /* =========================================================
+           12. MACHINE AMBIENT GLOW
+        ========================================================= */
+
+        .idea-machine__ambient {
+            position: absolute;
+
+            width: min(460px, 75%);
+            aspect-ratio: 1;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(26, 92, 142, 0.20) 0%,
+                    rgba(13, 53, 85, 0.10) 34%,
+                    transparent 70%
+                );
+
+            filter: blur(14px);
+
+            opacity: 0.75;
+
+            transition:
+                transform 700ms cubic-bezier(.2,.8,.2,1),
+                opacity 500ms ease;
+        }
+
+
+        /* =========================================================
+           13. MACHINE STRUCTURE
+        ========================================================= */
+
+        .idea-machine__body {
+            position: relative;
+
+            width: clamp(
+                260px,
+                29vw,
+                360px
+            );
+
+            height: clamp(
+                340px,
+                52vh,
+                455px
+            );
+
+            transform-style: preserve-3d;
+
+            transition:
+                transform 700ms cubic-bezier(.2,.8,.2,1);
+        }
+
+
+        /* =========================================================
+           14. OUTER ARCHITECTURAL FRAME
+        ========================================================= */
+
+        .machine-frame {
+            position: absolute;
+            inset: 0;
+
+            border:
+                1px solid rgba(99, 181, 255, 0.20);
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(8, 26, 43, 0.20),
+                    rgba(2, 8, 14, 0.44)
+                );
+
+            clip-path: polygon(
+                13% 0,
+                87% 0,
+                100% 10%,
+                100% 90%,
+                87% 100%,
+                13% 100%,
+                0 90%,
+                0 10%
+            );
+
+            box-shadow:
+                inset 0 0 45px rgba(40, 123, 184, 0.035),
+                0 30px 100px rgba(0, 0, 0, 0.42);
+        }
+
+
+        /* =========================================================
+           15. INNER GLASS CHAMBER
+        ========================================================= */
+
+        .machine-chamber {
+            position: absolute;
+
+            top: 8%;
+            left: 13%;
+            right: 13%;
+            bottom: 9%;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(99, 181, 255, 0.13);
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(9, 30, 49, 0.48),
+                    rgba(3, 11, 19, 0.70)
+                );
+
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+
+            clip-path: polygon(
+                10% 0,
+                90% 0,
+                100% 5%,
+                100% 95%,
+                90% 100%,
+                10% 100%,
+                0 95%,
+                0 5%
+            );
+        }
+
+
+        /* =========================================================
+           16. CHAMBER VERTICAL ENERGY
+        ========================================================= */
+
+        .machine-energy {
+            position: absolute;
+
+            top: 0;
+            left: 50%;
+
+            width: 2px;
+            height: 100%;
+
+            transform:
+                translateX(-50%)
+                scaleY(0);
+
+            transform-origin: top;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    transparent 0%,
+                    rgba(99, 181, 255, 0.75) 20%,
+                    #9bd2ff 50%,
+                    rgba(99, 181, 255, 0.5) 80%,
+                    transparent 100%
+                );
+
+            opacity: 0;
+
+            filter:
+                drop-shadow(
+                    0 0 8px rgba(99, 181, 255, 0.8)
+                );
+
+            transition:
+                transform 900ms cubic-bezier(.16,1,.3,1),
+                opacity 400ms ease;
+        }
+
+
+        .idea-machine.is-active
+        .machine-energy {
+            transform:
+                translateX(-50%)
+                scaleY(1);
+
+            opacity: 1;
+        }
+
+
+        /* =========================================================
+           17. HORIZONTAL TECHNICAL LINES
+        ========================================================= */
+
+        .machine-line {
+            position: absolute;
+
+            left: 12%;
+            right: 12%;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(99, 181, 255, 0.18),
+                    transparent
+                );
+
+            opacity: 0.65;
+
+            transition:
+                opacity 450ms ease,
+                background 450ms ease;
+        }
+
+        .machine-line:nth-child(1) {
+            top: 18%;
+        }
+
+        .machine-line:nth-child(2) {
+            top: 32%;
+        }
+
+        .machine-line:nth-child(3) {
+            top: 48%;
+        }
+
+        .machine-line:nth-child(4) {
+            top: 65%;
+        }
+
+        .machine-line:nth-child(5) {
+            top: 82%;
+        }
+
+
+        .idea-machine.is-active
+        .machine-line {
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(99, 181, 255, 0.42),
+                    transparent
+                );
+
+            opacity: 0.95;
+        }
+
+
+        /* =========================================================
+           18. SIDE TECH MARKERS
+        ========================================================= */
+
+        .machine-marker {
+            position: absolute;
+
+            width: 22px;
+            height: 1px;
+
+            background:
+                rgba(99, 181, 255, 0.35);
+
+            transition:
+                width 500ms ease,
+                background 500ms ease;
+        }
+
+        .machine-marker--left {
+            left: -12px;
+        }
+
+        .machine-marker--right {
+            right: -12px;
+        }
+
+        .machine-marker--1 {
+            top: 24%;
+        }
+
+        .machine-marker--2 {
+            top: 42%;
+        }
+
+        .machine-marker--3 {
+            top: 69%;
+        }
+
+        .idea-machine.is-active
+        .machine-marker {
+            width: 32px;
+
+            background:
+                rgba(99, 181, 255, 0.65);
+        }
+
+
+        /* =========================================================
+           19. BALL DROP
+        ========================================================= */
+
+        .drop-zone {
+            position: absolute;
+
+            top: -76px;
+            left: 50%;
+
+            width: 40px;
+            height: 80px;
+
+            transform:
+                translateX(-50%);
+
+            pointer-events: none;
+        }
+
+
+        .drop-ball {
+            position: absolute;
+
+            top: 0;
+            left: 50%;
+
+            width: 16px;
+            height: 16px;
+
+            transform:
+                translateX(-50%);
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #ffffff 0%,
+                    #c8e7ff 22%,
+                    #63b5ff 55%,
+                    #2477b7 100%
+                );
+
+            box-shadow:
+                0 0 8px rgba(155, 210, 255, 0.95),
+                0 0 25px rgba(99, 181, 255, 0.65),
+                0 0 55px rgba(45, 139, 210, 0.32);
+
+            opacity: 0;
+
+            z-index: 20;
+        }
+
+
+        .drop-ball::after {
+            content: "";
+
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            width: 4px;
+            height: 4px;
+
+            transform:
+                translate(-50%, -50%);
+
+            border-radius: 50%;
+
+            background: white;
+
+            box-shadow:
+                0 0 10px white;
+        }
+
+
+        /* =========================================================
+           20. BALL ANIMATION
+        ========================================================= */
+
+        .idea-machine.is-dropping
+        .drop-ball {
+            animation:
+                ballDrop
+                1.25s
+                cubic-bezier(.22,.85,.3,1)
+                forwards;
+        }
+
+        @keyframes ballDrop {
+
+            0% {
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -20px)
+                    scale(0.65);
+            }
+
+            8% {
+                opacity: 1;
+            }
+
+            66% {
+                opacity: 1;
+
+                transform:
+                    translate(-50%, 315px)
+                    scale(1);
+            }
+
+            82% {
+                opacity: 1;
+
+                transform:
+                    translate(-50%, 346px)
+                    scale(0.88);
+            }
+
+            90% {
+                opacity: 0.9;
+
+                transform:
+                    translate(-50%, 356px)
+                    scale(0.4);
+            }
+
+            100% {
+                opacity: 0;
+
+                transform:
+                    translate(-50%, 360px)
+                    scale(0);
+            }
+        }
+
+
+        /* =========================================================
+           21. IMPACT
+        ========================================================= */
+
+        .impact {
+            position: absolute;
+
+            left: 50%;
+            top: 82%;
+
+            width: 20px;
+            height: 20px;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0);
+
+            border:
+                1px solid rgba(155, 210, 255, 0.8);
+
+            border-radius: 50%;
+
+            opacity: 0;
+
+            pointer-events: none;
+        }
+
+
+        .idea-machine.is-active
+        .impact {
+            animation:
+                impactWave
+                800ms
+                cubic-bezier(.2,.8,.2,1)
+                forwards;
+        }
+
+
+        @keyframes impactWave {
+
+            0% {
+                opacity: 0.8;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.3);
+            }
+
+            70% {
+                opacity: 0.25;
+            }
+
+            100% {
+                opacity: 0;
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(8);
+            }
+        }
+
+
+        /* =========================================================
+           22. CTA EMERGENCE
+        ========================================================= */
+
+        .machine-cta {
+            position: absolute;
+
+            left: 50%;
+            bottom: 4%;
+
+            width: max-content;
+
+            transform:
+                translate(-50%, 42px)
+                scale(0.92);
+
+            opacity: 0;
+
+            z-index: 30;
+
+            pointer-events: none;
+
+            text-decoration: none;
+
+            padding: 14px 17px 14px 21px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+
+            border:
+                1px solid rgba(99, 181, 255, 0.28);
+
+            border-radius: 14px;
+
+            color: var(--white);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(10, 35, 56, 0.96),
+                    rgba(3, 13, 22, 0.97)
+                );
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.07),
+                0 18px 50px rgba(0,0,0,0.42);
+
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+
+            transition:
+                transform 350ms ease,
+                border-color 350ms ease,
+                box-shadow 350ms ease;
+        }
+
+
+        .idea-machine.is-active
+        .machine-cta {
+            transform:
+                translate(-50%, 0)
+                scale(1);
+
+            opacity: 1;
+
+            pointer-events: auto;
+
+            transition:
+                transform 800ms cubic-bezier(.16,1,.3,1) 350ms,
+                opacity 600ms ease 350ms,
+                border-color 350ms ease,
+                box-shadow 350ms ease;
+        }
+
+
+        .machine-cta__text {
+            font-size: 13px;
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+
+        .machine-cta__arrow {
+            display: grid;
+            place-items: center;
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(99, 181, 255, 0.10);
+
+            color: var(--blue-bright);
+
+            font-size: 17px;
+
+            transition:
+                transform 350ms ease,
+                background 350ms ease;
+        }
+
+
+        .machine-cta:hover {
+            transform:
+                translate(-50%, -4px)
+                scale(1.01);
+
+            border-color:
+                rgba(99, 181, 255, 0.62);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.08),
+                0 20px 60px rgba(0,0,0,0.5),
+                0 0 30px rgba(99,181,255,0.08);
+        }
+
+
+        .machine-cta:hover
+        .machine-cta__arrow {
+            transform: translateX(6px);
+
+            background:
+                rgba(99, 181, 255, 0.18);
+        }
+
+
+        /* =========================================================
+           23. BUTTON LIGHT SWEEP
+        ========================================================= */
+
+        .machine-cta::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            bottom: 0;
+            left: -100%;
+
+            width: 55%;
+
+            transform: skewX(-20deg);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.09),
+                    transparent
+                );
+
+            transition:
+                left 700ms ease;
+
+            pointer-events: none;
+        }
+
+
+        .machine-cta:hover::before {
+            left: 150%;
+        }
+
+
+        /* =========================================================
+           24. PARTICLES
+        ========================================================= */
+
+        .particle {
+            position: absolute;
+
+            width: 3px;
+            height: 3px;
+
+            border-radius: 50%;
+
+            background: #7bc1ff;
+
+            box-shadow:
+                0 0 9px rgba(99, 181, 255, 0.8);
+
+            opacity: 0.25;
+
+            pointer-events: none;
+        }
+
+
+        .particle--1 {
+            top: 17%;
+            left: 20%;
+
+            animation:
+                particleFloat 5s ease-in-out infinite;
+        }
+
+        .particle--2 {
+            top: 32%;
+            right: 14%;
+
+            animation:
+                particleFloat 6s ease-in-out infinite 0.7s;
+        }
+
+        .particle--3 {
+            top: 52%;
+            left: 10%;
+
+            animation:
+                particleFloat 4.5s ease-in-out infinite 1.2s;
+        }
+
+        .particle--4 {
+            bottom: 21%;
+            right: 20%;
+
+            animation:
+                particleFloat 5.8s ease-in-out infinite 0.3s;
+        }
+
+        .particle--5 {
+            bottom: 12%;
+            left: 26%;
+
+            animation:
+                particleFloat 4.8s ease-in-out infinite 1.7s;
+        }
+
+        .particle--6 {
+            top: 10%;
+            right: 31%;
+
+            animation:
+                particleFloat 6.2s ease-in-out infinite 0.9s;
+        }
+
+
+        @keyframes particleFloat {
+
+            0%,
+            100% {
+                transform: translate3d(0, 0, 0);
+                opacity: 0.15;
+            }
+
+            50% {
+                transform: translate3d(0, -12px, 0);
+                opacity: 0.5;
+            }
+        }
+
+
+        /* =========================================================
+           25. TECH LABELS
+        ========================================================= */
+
+        .machine-label {
+            position: absolute;
+
+            padding: 7px 10px;
+
+            border:
+                1px solid rgba(99, 181, 255, 0.10);
+
+            border-radius: 5px;
+
+            background:
+                rgba(2, 9, 15, 0.68);
+
+            color: #64768a;
+
+            font-size: 8px;
+            font-weight: 600;
+
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+
+            pointer-events: none;
+        }
+
+
+        .machine-label--top {
+            top: 3%;
+            right: 4%;
+        }
+
+        .machine-label--left {
+            top: 48%;
+            left: -8%;
+        }
+
+        .machine-label--right {
+            bottom: 17%;
+            right: -7%;
+        }
+
+
+        /* =========================================================
+           26. ENTRY ANIMATIONS
+        ========================================================= */
+
+        .idea-cta__eyebrow,
+        .idea-cta__title,
+        .idea-cta__description {
+            opacity: 0;
+            transform: translateY(22px);
+
+            animation:
+                contentReveal
+                800ms
+                cubic-bezier(.16,1,.3,1)
+                forwards;
+        }
+
+
+        .idea-cta__eyebrow {
+            animation-delay: 150ms;
+        }
+
+        .idea-cta__title {
+            animation-delay: 260ms;
+        }
+
+        .idea-cta__description {
+            animation-delay: 380ms;
+        }
+
+
+        @keyframes contentReveal {
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =========================================================
+           27. MACHINE ENTRY
+        ========================================================= */
+
+        .idea-machine__body {
+            opacity: 0;
+
+            transform:
+                translateY(25px)
+                scale(0.97);
+
+            animation:
+                machineReveal
+                900ms
+                cubic-bezier(.16,1,.3,1)
+                300ms
+                forwards;
+        }
+
+
+        @keyframes machineReveal {
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+
+        /* =========================================================
+           28. ACTIVE MACHINE
+        ========================================================= */
+
+        .idea-machine.is-active
+        .machine-chamber {
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(11, 39, 63, 0.56),
+                    rgba(3, 12, 21, 0.74)
+                );
+
+            box-shadow:
+                inset 0 0 55px rgba(99, 181, 255, 0.05);
+        }
+
+
+        /* =========================================================
+           29. RESPONSIVE — LARGE LAPTOP
+        ========================================================= */
+
+        @media (max-width: 1150px) {
+
+            .idea-cta__container {
+                grid-template-columns:
+                    minmax(0, 0.95fr)
+                    minmax(370px, 1.05fr);
+
+                column-gap: 30px;
+            }
+
+            .idea-cta__title {
+                font-size: clamp(
+                    40px,
+                    5vw,
+                    58px
+                );
+            }
+
+            .idea-machine {
+                height: min(68vh, 510px);
+            }
+
+            .machine-label--left {
+                left: -3%;
+            }
+
+            .machine-label--right {
+                right: -3%;
+            }
+        }
+
+
+        /* =========================================================
+           30. RESPONSIVE — TABLET
+        ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .idea-cta {
+                height: auto;
+                min-height: 100svh;
+            }
+
+            .idea-cta__container {
+                height: auto;
+
+                min-height: 100svh;
+
+                grid-template-columns: 1fr;
+
+                padding-top: 70px;
+                padding-bottom: 80px;
+
+                row-gap: 15px;
+            }
+
+            .idea-cta__content {
+                max-width: 680px;
+            }
+
+            .idea-machine {
+                width: 100%;
+                height: 450px;
+
+                margin: 0 auto;
+            }
+
+            .idea-machine__body {
+                width: 290px;
+                height: 390px;
+            }
+        }
+
+
+        /* =========================================================
+           31. RESPONSIVE — MOBILE
+        ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .idea-cta {
+                min-height: 100svh;
+            }
+
+            .idea-cta__grid {
+                background-size: 48px 48px;
+                opacity: 0.38;
+            }
+
+            .idea-cta__vignette {
+                background:
+                    linear-gradient(
+                        180deg,
+                        rgba(2,4,6,0.88),
+                        rgba(2,4,6,0.38) 55%,
+                        rgba(2,4,6,0.92)
+                    );
+            }
+
+            .idea-cta__container {
+                width:
+                    calc(100% - 32px);
+
+                padding-top: 58px;
+                padding-bottom: 75px;
+
+                row-gap: 5px;
+            }
+
+            .idea-cta__eyebrow {
+                margin-bottom: 18px;
+
+                font-size: 9px;
+                letter-spacing: 0.16em;
+            }
+
+            .idea-cta__eyebrow::before {
+                width: 22px;
+            }
+
+            .idea-cta__title {
+                font-size: clamp(
+                    37px,
+                    11.5vw,
+                    49px
+                );
+
+                line-height: 1;
+
+                letter-spacing: -0.055em;
+            }
+
+            .idea-cta__description {
+                max-width: 500px;
+
+                margin-top: 20px;
+
+                font-size: 13px;
+                line-height: 1.65;
+            }
+
+            .idea-machine {
+                height: 355px;
+                margin-top: -4px;
+            }
+
+            .idea-machine__body {
+                width: 245px;
+                height: 325px;
+            }
+
+            .machine-label {
+                font-size: 6px;
+                padding: 5px 7px;
+            }
+
+            .machine-label--top {
+                top: 3%;
+                right: 0;
+            }
+
+            .machine-label--left {
+                left: -12%;
+            }
+
+            .machine-label--right {
+                right: -12%;
+            }
+
+            .machine-cta {
+                padding:
+                    11px
+                    13px
+                    11px
+                    16px;
+
+                gap: 13px;
+
+                border-radius: 11px;
+            }
+
+            .machine-cta__text {
+                font-size: 11px;
+            }
+
+            .machine-cta__arrow {
+                width: 29px;
+                height: 29px;
+
+                border-radius: 7px;
+
+                font-size: 14px;
+            }
+
+            .drop-zone {
+                top: -62px;
+            }
+        }
+
+
+        /* =========================================================
+           32. VERY SMALL MOBILE
+        ========================================================= */
+
+        @media (max-width: 380px) {
+
+            .idea-cta__container {
+                padding-top: 45px;
+            }
+
+            .idea-cta__title {
+                font-size: 34px;
+            }
+
+            .idea-cta__description {
+                font-size: 12px;
+            }
+
+            .idea-machine {
+                height: 315px;
+            }
+
+            .idea-machine__body {
+                width: 220px;
+                height: 292px;
+            }
+
+            .machine-label {
+                display: none;
+            }
+        }
+
+
+        /* =========================================================
+           33. SHORT DESKTOP SCREENS
+        ========================================================= */
+
+        @media (min-width: 901px) and (max-height: 700px) {
+
+            .idea-cta {
+                min-height: 600px;
+            }
+
+            .idea-cta__container {
+                padding-top: 35px;
+                padding-bottom: 55px;
+            }
+
+            .idea-cta__eyebrow {
+                margin-bottom: 15px;
+            }
+
+            .idea-cta__title {
+                font-size: clamp(
+                    38px,
+                    4.3vw,
+                    54px
+                );
+            }
+
+            .idea-cta__description {
+                margin-top: 18px;
+                font-size: 14px;
+                line-height: 1.55;
+            }
+
+            .idea-machine {
+                height: 390px;
+            }
+
+            .idea-machine__body {
+                width: 260px;
+                height: 340px;
+            }
+        }
+
+
+        /* =========================================================
+           34. REDUCED MOTION
+        ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            .drop-ball {
+                display: none;
+            }
+
+            .machine-cta {
+                opacity: 1 !important;
+
+                transform:
+                    translate(-50%, 0)
+                    scale(1) !important;
+
+                pointer-events: auto;
+            }
+
+            .idea-machine__body {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================================================
+         FULLSCREEN CTA SECTION
+    ========================================================= -->
+
+    <section
+        class="idea-cta"
+        id="project-cta"
+        aria-labelledby="project-cta-title"
+    >
+
+        <!-- Background Grid -->
+        <div
+            class="idea-cta__grid"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- Background Vignette -->
+        <div
+            class="idea-cta__vignette"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+        ====================================================== -->
+
+        <div class="idea-cta__container">
+
+
+            <!-- =================================================
+                 LEFT SIDE
+            ================================================== -->
+
+            <div class="idea-cta__content">
+
+                <div class="idea-cta__eyebrow">
+                    Let's build something
+                </div>
+
+
+                <h2
+                    class="idea-cta__title"
+                    id="project-cta-title"
+                >
+
+                    <span class="idea-cta__title-line">
+                        Your idea.
+                    </span>
+
+                    <span
+                        class="
+                            idea-cta__title-line
+                            idea-cta__title-line--muted
+                        "
+                    >
+                        Our craft.
+                    </span>
+
+                    <span class="idea-cta__title-line">
+                        Something remarkable.
+                    </span>
+
+                </h2>
+
+
+                <p class="idea-cta__description">
+                    From the first concept to the final experience,
+                    we turn ideas into thoughtful digital products
+                    designed to make an impact.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT SIDE — IDEA MACHINE
+            ================================================== -->
+
+            <div
+                class="idea-machine"
+                id="ideaMachine"
+                aria-label="Interactive project creation visual"
+            >
+
+                <!-- Ambient Glow -->
+
+                <div
+                    class="idea-machine__ambient"
+                    id="machineAmbient"
+                    aria-hidden="true"
+                ></div>
+
+
+                <!-- Floating Particles -->
+
+                <span
+                    class="particle particle--1"
+                    aria-hidden="true"
+                ></span>
+
+                <span
+                    class="particle particle--2"
+                    aria-hidden="true"
+                ></span>
+
+                <span
+                    class="particle particle--3"
+                    aria-hidden="true"
+                ></span>
+
+                <span
+                    class="particle particle--4"
+                    aria-hidden="true"
+                ></span>
+
+                <span
+                    class="particle particle--5"
+                    aria-hidden="true"
+                ></span>
+
+                <span
+                    class="particle particle--6"
+                    aria-hidden="true"
+                ></span>
+
+
+                <!-- Technical Labels -->
+
+                <span
+                    class="machine-label machine-label--top"
+                    aria-hidden="true"
+                >
+                    DIGITAL CORE
+                </span>
+
+                <span
+                    class="machine-label machine-label--left"
+                    aria-hidden="true"
+                >
+                    INPUT
+                </span>
+
+                <span
+                    class="machine-label machine-label--right"
+                    aria-hidden="true"
+                >
+                    OUTPUT
+                </span>
+
+
+                <!-- Machine Body -->
+
+                <div
+                    class="idea-machine__body"
+                    id="machineBody"
+                >
+
+                    <!-- Outer Frame -->
+
+                    <div
+                        class="machine-frame"
+                        aria-hidden="true"
+                    ></div>
+
+
+                    <!-- Inner Chamber -->
+
+                    <div
+                        class="machine-chamber"
+                        aria-hidden="true"
+                    >
+
+                        <div class="machine-energy"></div>
+
+                        <div class="machine-line"></div>
+                        <div class="machine-line"></div>
+                        <div class="machine-line"></div>
+                        <div class="machine-line"></div>
+                        <div class="machine-line"></div>
+
+                        <div class="impact"></div>
+
+                    </div>
+
+
+                    <!-- Side Markers -->
+
+                    <span
+                        class="
+                            machine-marker
+                            machine-marker--left
+                            machine-marker--1
+                        "
+                        aria-hidden="true"
+                    ></span>
+
+                    <span
+                        class="
+                            machine-marker
+                            machine-marker--left
+                            machine-marker--2
+                        "
+                        aria-hidden="true"
+                    ></span>
+
+                    <span
+                        class="
+                            machine-marker
+                            machine-marker--left
+                            machine-marker--3
+                        "
+                        aria-hidden="true"
+                    ></span>
+
+                    <span
+                        class="
+                            machine-marker
+                            machine-marker--right
+                            machine-marker--1
+                        "
+                        aria-hidden="true"
+                    ></span>
+
+                    <span
+                        class="
+                            machine-marker
+                            machine-marker--right
+                            machine-marker--2
+                        "
+                        aria-hidden="true"
+                    ></span>
+
+                    <span
+                        class="
+                            machine-marker
+                            machine-marker--right
+                            machine-marker--3
+                        "
+                        aria-hidden="true"
+                    ></span>
+
+
+                    <!-- Falling Ball -->
+
+                    <div
+                        class="drop-zone"
+                        aria-hidden="true"
+                    >
+
+                        <div
+                            class="drop-ball"
+                            id="dropBall"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- ONLY CTA BUTTON -->
+
+                    <a
+                        href="http://127.0.0.1:5500/home/section6.html#contact"
+                        class="machine-cta"
+                        id="machineCta"
+                        aria-label="Start a Conversation"
+                    >
+
+                        <span class="machine-cta__text">
+                            Start a Conversation
+                        </span>
+
+                        <span
+                            class="machine-cta__arrow"
+                            aria-hidden="true"
+                        >
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
+
+    <script>
+
+        (() => {
+
+            "use strict";
+
+
+            /* =====================================================
+               ELEMENTS
+            ====================================================== */
+
+            const machine =
+                document.getElementById("ideaMachine");
+
+            const machineBody =
+                document.getElementById("machineBody");
+
+            const ambient =
+                document.getElementById("machineAmbient");
+
+            const ball =
+                document.getElementById("dropBall");
+
+
+            if (
+                !machine ||
+                !machineBody ||
+                !ambient ||
+                !ball
+            ) {
+                return;
+            }
+
+
+            /* =====================================================
+               SETTINGS
+            ====================================================== */
+
+            const prefersReducedMotion =
+                window.matchMedia(
+                    "(prefers-reduced-motion: reduce)"
+                ).matches;
+
+
+            const DROP_DELAY = 1200;
+
+
+            /* =====================================================
+               ACTIVATE MACHINE
+            ====================================================== */
+
+            function activateMachine() {
+
+                if (prefersReducedMotion) {
+
+                    machine.classList.add("is-active");
+
+                    return;
+                }
+
+
+                machine.classList.add("is-dropping");
+
+
+                window.setTimeout(() => {
+
+                    machine.classList.add("is-active");
+
+                }, 880);
+            }
+
+
+            /* =====================================================
+               INITIAL ANIMATION
+            ====================================================== */
+
+            window.setTimeout(
+                activateMachine,
+                DROP_DELAY
+            );
+
+
+            /* =====================================================
+               MOUSE PARALLAX
+            ====================================================== */
+
+            const canUseHover =
+                window.matchMedia(
+                    "(hover: hover) and (pointer: fine)"
+                ).matches;
+
+
+            if (canUseHover) {
+
+                machine.addEventListener(
+                    "pointermove",
+                    (event) => {
+
+                        const rect =
+                            machine.getBoundingClientRect();
+
+
+                        const x =
+                            event.clientX - rect.left;
+
+                        const y =
+                            event.clientY - rect.top;
+
+
+                        const centerX =
+                            rect.width / 2;
+
+                        const centerY =
+                            rect.height / 2;
+
+
+                        const normalizedX =
+                            (x - centerX) / centerX;
+
+                        const normalizedY =
+                            (y - centerY) / centerY;
+
+
+                        const rotateY =
+                            normalizedX * 3.5;
+
+                        const rotateX =
+                            normalizedY * -3;
+
+
+                        const moveX =
+                            normalizedX * 7;
+
+                        const moveY =
+                            normalizedY * 7;
+
+
+                        machineBody.style.transform =
+                            `
+                                translate3d(
+                                    ${moveX}px,
+                                    ${moveY}px,
+                                    0
+                                )
+                                rotateX(${rotateX}deg)
+                                rotateY(${rotateY}deg)
+                            `;
+
+
+                        ambient.style.transform =
+                            `
+                                translate3d(
+                                    ${moveX * 0.5}px,
+                                    ${moveY * 0.5}px,
+                                    0
+                                )
+                            `;
+                    }
+                );
+
+
+                machine.addEventListener(
+                    "pointerleave",
+                    () => {
+
+                        machineBody.style.transform =
+                            `
+                                translate3d(0, 0, 0)
+                                rotateX(0deg)
+                                rotateY(0deg)
+                            `;
+
+
+                        ambient.style.transform =
+                            "translate3d(0, 0, 0)";
+                    }
+                );
+            }
+
+        })();
+
+    </script>
+
+</body>
+</html>

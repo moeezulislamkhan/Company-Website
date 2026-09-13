@@ -1,0 +1,4690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Innovexa Technologies — The Signal</title>
+
+<style>
+
+/* =========================================================
+   INNOVEXA TECHNOLOGIES
+   THE SIGNAL — FINAL OVERLAP-FREE VERSION (FIXED)
+========================================================= */
+
+:root{
+
+    --bg:#05080d;
+    --bg2:#071019;
+
+    --white:#ffffff;
+    --text:#edf5fc;
+    --muted:#8999a9;
+
+    --blue:#3188ed;
+    --blue-light:#8bc7ff;
+    --blue-soft:#4f9ef4;
+
+    --line:rgba(121,188,250,.16);
+    --line-strong:rgba(121,188,250,.32);
+
+    --ease:cubic-bezier(.16,1,.3,1);
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+html{
+    scroll-behavior:smooth;
+}
+
+
+body{
+
+    min-width:320px;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    overflow-x:hidden;
+
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.signal-section{
+
+    position:relative;
+
+    width:100%;
+
+    height:720vh;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 40%,
+            rgba(49,136,237,.055),
+            transparent 42%
+        ),
+        linear-gradient(
+            180deg,
+            #05080d 0%,
+            #060b12 50%,
+            #05080d 100%
+        );
+
+    isolation:isolate;
+
+}
+
+
+/* =========================================================
+   STICKY STAGE
+========================================================= */
+
+.signal-sticky{
+
+    position:sticky;
+
+    top:0;
+
+    width:100%;
+
+    height:100vh;
+
+    height:100svh;
+
+    min-height:620px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+/* =========================================================
+   BACKGROUND GRID
+========================================================= */
+
+.signal-grid{
+
+    position:absolute;
+
+    inset:-20%;
+
+    z-index:0;
+
+    opacity:.35;
+
+    background-image:
+
+        linear-gradient(
+            rgba(100,160,220,.035) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(100,160,220,.035) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        75px 75px;
+
+    transform:
+        perspective(900px)
+        rotateX(66deg)
+        translateY(23%);
+
+    transform-origin:center bottom;
+
+    mask-image:
+        linear-gradient(
+            to top,
+            black,
+            transparent 78%
+        );
+
+    pointer-events:none;
+
+}
+
+
+/* =========================================================
+   AMBIENT LIGHT
+========================================================= */
+
+.signal-ambient{
+
+    position:absolute;
+
+    width:
+        clamp(
+            300px,
+            55vw,
+            900px
+        );
+
+    height:
+        clamp(
+            300px,
+            55vw,
+            900px
+        );
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(49,136,237,.075) 0%,
+            rgba(49,136,237,.025) 34%,
+            transparent 70%
+        );
+
+    filter:blur(20px);
+
+    pointer-events:none;
+
+    z-index:1;
+
+}
+
+
+/* =========================================================
+   TOP BRAND
+========================================================= */
+
+.signal-brand{
+
+    position:absolute;
+
+    top:
+        clamp(
+            24px,
+            4vw,
+            48px
+        );
+
+    left:
+        clamp(
+            20px,
+            5vw,
+            72px
+        );
+
+    z-index:20;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    max-width:
+        calc(100% - 40px);
+
+    padding:
+        10px 14px;
+
+    border:
+        1px solid
+        rgba(121,188,250,.16);
+
+    border-radius:999px;
+
+    background:
+        rgba(5,12,22,.56);
+
+    box-shadow:
+        0 10px 28px
+        rgba(0,0,0,.18),
+
+        inset
+        0 1px
+        rgba(255,255,255,.06);
+
+    backdrop-filter:
+        blur(12px);
+
+    -webkit-backdrop-filter:
+        blur(12px);
+
+    color:
+        rgba(255,255,255,.52);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:.19em;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+}
+
+
+.signal-brand-dot{
+
+    width:6px;
+    height:6px;
+
+    flex:none;
+
+    border-radius:50%;
+
+    background:
+        var(--blue-light);
+
+    box-shadow:
+        0 0 14px
+        rgba(139,199,255,.8);
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.signal-progress{
+
+    position:absolute;
+
+    top:50%;
+
+    right:
+        clamp(
+            20px,
+            4vw,
+            60px
+        );
+
+    transform:
+        translateY(-50%);
+
+    z-index:20;
+
+    width:1px;
+
+    height:150px;
+
+    background:
+        rgba(255,255,255,.09);
+
+}
+
+
+.signal-progress-fill{
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+
+    height:0%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            var(--blue-light),
+            var(--blue)
+        );
+
+    box-shadow:
+        0 0 12px
+        rgba(49,136,237,.5);
+
+    transition:
+        height .15s linear;
+
+}
+
+
+.signal-progress-label{
+
+    position:absolute;
+
+    top:
+        calc(100% + 12px);
+
+    right:-9px;
+
+    transform:
+        translateX(50%);
+
+    color:
+        rgba(255,255,255,.35);
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:.1em;
+
+    white-space:nowrap;
+
+}
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+#signalCanvas{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:4;
+
+    pointer-events:none;
+
+}
+
+
+/* =========================================================
+   CENTER CORE
+========================================================= */
+
+.signal-core{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:
+        clamp(
+            130px,
+            18vw,
+            260px
+        );
+
+    height:
+        clamp(
+            130px,
+            18vw,
+            260px
+        );
+
+    transform:
+        translate(-50%,-50%)
+        scale(.35);
+
+    border-radius:50%;
+
+    z-index:6;
+
+    opacity:.15;
+
+    pointer-events:none;
+
+    transform-style:preserve-3d;
+
+    will-change:
+        transform,
+        opacity;
+
+}
+
+
+.signal-core-ring{
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(139,199,255,.28);
+
+    transform:
+        rotateX(70deg)
+        rotateZ(20deg);
+
+    box-shadow:
+        0 0 45px
+        rgba(49,136,237,.06);
+
+    animation:
+        coreOrbit
+        8s
+        linear
+        infinite;
+
+}
+
+
+.signal-core-ring:nth-child(2){
+
+    inset:15%;
+
+    transform:
+        rotateX(70deg)
+        rotateZ(-35deg);
+
+    opacity:.65;
+
+    animation-duration:6s;
+
+}
+
+
+.signal-core-ring:nth-child(3){
+
+    inset:30%;
+
+    transform:
+        rotateX(70deg)
+        rotateZ(70deg);
+
+    opacity:.5;
+
+    animation-duration:4.5s;
+
+}
+
+
+.signal-core-center{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:18%;
+    height:18%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffffff 0%,
+            var(--blue-light) 24%,
+            var(--blue) 55%,
+            transparent 72%
+        );
+
+    box-shadow:
+        0 0 25px
+        rgba(114,182,255,.75),
+
+        0 0 70px
+        rgba(49,136,237,.32);
+
+}
+
+
+@keyframes coreOrbit{
+
+    from{
+
+        transform:
+            rotateX(70deg)
+            rotateZ(0deg);
+
+    }
+
+    to{
+
+        transform:
+            rotateX(70deg)
+            rotateZ(360deg);
+
+    }
+
+}
+
+
+/* =========================================================
+   TEXT LAYER
+   FIX: added transition + .is-hidden state so this whole
+   block (title/description) can be faded out completely
+   before the final panel appears — this was the missing
+   piece causing the overlap in the screenshot.
+========================================================= */
+
+.signal-copy{
+
+    position:absolute;
+
+    left:
+        clamp(
+            24px,
+            7vw,
+            110px
+        );
+
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    z-index:12;
+
+    width:
+        min(
+            520px,
+            calc(100% - 48px)
+        );
+
+    pointer-events:none;
+
+    opacity:1;
+
+    visibility:visible;
+
+    transition:
+        opacity .5s var(--ease),
+        visibility 0s linear .5s;
+
+}
+
+
+.signal-copy.is-hidden{
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:
+        opacity .5s var(--ease),
+        visibility 0s linear 0s;
+
+}
+
+
+/* =========================================================
+   KICKER
+========================================================= */
+
+.signal-kicker{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    width:max-content;
+
+    max-width:100%;
+
+    margin-bottom:22px;
+
+    padding:
+        8px 12px;
+
+    border:
+        1px solid
+        rgba(139,199,255,.16);
+
+    border-radius:999px;
+
+    background:
+        rgba(49,136,237,.06);
+
+    color:
+        var(--blue-light);
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+}
+
+
+.signal-kicker-line{
+
+    width:25px;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--blue-light)
+        );
+
+}
+
+
+/* =========================================================
+   TITLE WRAPPER
+   IMPORTANT:
+   Fixed visual area prevents title/description collision.
+========================================================= */
+
+.signal-title{
+
+    position:relative;
+
+    width:100%;
+
+    /*
+     * FIX: 150px was a guessed fixed height sized for a
+     * 2-line title. Longer titles (4-5 lines) overflowed
+     * past it and showed through the description below.
+     * JS now measures every title's real rendered height
+     * on load/resize and sets this via inline style, so
+     * this value is only a fallback before JS runs.
+     */
+
+    height:
+        190px;
+
+    overflow:visible;
+
+    color:
+        var(--white);
+
+    /*
+     * FIX: reduced so long titles wrap into fewer lines
+     * and stay readable at this box width.
+     */
+
+    font-size:
+        clamp(
+            30px,
+            3.6vw,
+            52px
+        );
+
+    line-height:1.12;
+
+    letter-spacing:-.045em;
+
+    font-weight:850;
+
+}
+
+
+/* =========================================================
+   TITLE ITEMS
+   IMPORTANT:
+   Only active layer is visible.
+========================================================= */
+
+.signal-title > span{
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:100%;
+
+    display:block;
+
+    visibility:hidden;
+
+    opacity:0;
+
+    z-index:0;
+
+    transform:
+        translate3d(0,24px,0)
+        scale(.985);
+
+    transition:
+        opacity .48s var(--ease),
+        transform .68s var(--ease),
+        visibility 0s linear .68s;
+
+    will-change:
+        opacity,
+        transform;
+
+}
+
+
+.signal-title > span.active{
+
+    visibility:visible;
+
+    opacity:1;
+
+    z-index:2;
+
+    transform:
+        translate3d(0,0,0)
+        scale(1);
+
+    transition:
+        opacity .48s var(--ease),
+        transform .68s var(--ease),
+        visibility 0s linear 0s;
+
+}
+
+
+/* =========================================================
+   ACCENT WORD
+========================================================= */
+
+.signal-title .accent{
+
+    color:transparent;
+
+    background:
+        linear-gradient(
+            100deg,
+            #ffffff 10%,
+            #a4d2ff 48%,
+            #3188ed 100%
+        );
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   Separated from title with fixed spacing.
+========================================================= */
+
+.signal-description{
+
+    position:relative;
+
+    width:100%;
+
+    /* Fallback height before JS measures the real content. */
+
+    height:78px;
+
+    margin-top:22px;
+
+    overflow:hidden;
+
+    max-width:410px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        clamp(
+            12px,
+            1vw,
+            14px
+        );
+
+    line-height:1.75;
+
+}
+
+
+.signal-description > span{
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:100%;
+
+    display:block;
+
+    visibility:hidden;
+
+    opacity:0;
+
+    transform:
+        translate3d(0,12px,0);
+
+    transition:
+        opacity .4s ease,
+        transform .55s var(--ease),
+        visibility 0s linear .55s;
+
+}
+
+
+.signal-description > span.active{
+
+    visibility:visible;
+
+    opacity:1;
+
+    transform:
+        translate3d(0,0,0);
+
+    transition:
+        opacity .4s ease .08s,
+        transform .55s var(--ease) .08s,
+        visibility 0s linear 0s;
+
+}
+
+
+/* =========================================================
+   STAGE
+   FIX: added transition + .is-hidden state, same reasoning
+   as .signal-copy above.
+========================================================= */
+
+.signal-stage{
+
+    position:absolute;
+
+    right:
+        clamp(
+            50px,
+            10vw,
+            170px
+        );
+
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    z-index:12;
+
+    text-align:right;
+
+    pointer-events:none;
+
+    opacity:1;
+
+    visibility:visible;
+
+    transition:
+        opacity .5s var(--ease),
+        visibility 0s linear .5s;
+
+}
+
+
+.signal-stage.is-hidden{
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:
+        opacity .5s var(--ease),
+        visibility 0s linear 0s;
+
+}
+
+
+.signal-stage-number{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    color:
+        rgba(139,199,255,.55);
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:.16em;
+
+}
+
+
+.signal-stage-name{
+
+    color:
+        rgba(255,255,255,.72);
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   BOTTOM PATH
+========================================================= */
+
+.signal-path{
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:
+        clamp(
+            28px,
+            5vw,
+            60px
+        );
+
+    transform:
+        translateX(-50%);
+
+    z-index:15;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:
+        clamp(
+            8px,
+            1.6vw,
+            22px
+        );
+
+    white-space:nowrap;
+
+}
+
+
+.signal-path-item{
+
+    color:
+        rgba(255,255,255,.24);
+
+    font-size:
+        clamp(
+            7px,
+            .65vw,
+            9px
+        );
+
+    font-weight:800;
+
+    letter-spacing:.12em;
+
+    transition:
+        color .5s ease,
+        text-shadow .5s ease;
+
+}
+
+
+.signal-path-item.active{
+
+    color:
+        rgba(139,199,255,.92);
+
+    text-shadow:
+        0 0 15px
+        rgba(49,136,237,.3);
+
+}
+
+
+.signal-path-separator{
+
+    width:
+        clamp(
+            10px,
+            1.5vw,
+            20px
+        );
+
+    height:1px;
+
+    background:
+        rgba(255,255,255,.09);
+
+}
+
+
+/* =========================================================
+   FINAL MESSAGE
+========================================================= */
+
+.signal-final{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    z-index:14;
+
+    width:
+        min(
+            900px,
+            calc(100% - 40px)
+        );
+
+    text-align:center;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:
+        translate(-50%,-45%)
+        scale(.96);
+
+    pointer-events:none;
+
+    transition:
+        opacity .8s var(--ease),
+        transform 1s var(--ease),
+        visibility 0s linear 1s;
+
+}
+
+
+.signal-final.active{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:
+        translate(-50%,-50%)
+        scale(1);
+
+    transition:
+        opacity .8s var(--ease) .25s,
+        transform 1s var(--ease) .25s,
+        visibility 0s linear 0s;
+
+}
+
+
+.signal-final-eyebrow{
+
+    margin-bottom:18px;
+
+    color:
+        var(--blue-light);
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:.20em;
+
+}
+
+
+.signal-final-title{
+
+    color:
+        var(--white);
+
+    font-size:
+        clamp(
+            42px,
+            5.5vw,
+            76px
+        );
+
+    line-height:.92;
+
+    letter-spacing:-.055em;
+
+    font-weight:900;
+
+}
+
+
+.signal-final-title span{
+
+    color:transparent;
+
+    background:
+        linear-gradient(
+            100deg,
+            #ffffff,
+            #8bc7ff,
+            #3188ed
+        );
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+}
+
+
+.signal-final-text{
+
+    max-width:620px;
+
+    margin:24px auto 0;
+
+    color:
+        var(--muted);
+
+    font-size:
+        clamp(
+            12px,
+            1.1vw,
+            15px
+        );
+
+    line-height:1.8;
+
+}
+
+
+.signal-final-button{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    margin-top:28px;
+
+    padding:
+        13px 20px;
+
+    border:
+        1px solid
+        rgba(139,199,255,.24);
+
+    border-radius:100px;
+
+    color:
+        var(--white);
+
+    background:
+        rgba(49,136,237,.07);
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:.13em;
+
+    text-transform:uppercase;
+
+    text-decoration:none;
+
+    pointer-events:auto;
+
+    transition:
+        transform .35s ease,
+        background .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease;
+
+}
+
+
+.signal-final-button:hover{
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(139,199,255,.48);
+
+    background:
+        rgba(49,136,237,.14);
+
+    box-shadow:
+        0 15px 45px
+        rgba(0,0,0,.28),
+
+        0 0 30px
+        rgba(49,136,237,.08);
+
+}
+
+
+.signal-final-arrow{
+
+    color:
+        var(--blue-light);
+
+    font-size:16px;
+
+    line-height:1;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width:900px){
+
+    .signal-section{
+
+        height:650vh;
+
+    }
+
+
+    .signal-copy{
+
+        left:32px;
+
+        width:
+            min(
+                400px,
+                calc(100% - 64px)
+            );
+
+    }
+
+
+    .signal-title{
+
+        height:170px;
+
+        font-size:
+            clamp(
+                28px,
+                4.6vw,
+                44px
+            );
+
+    }
+
+
+    .signal-description{
+
+        height:76px;
+
+    }
+
+
+    .signal-stage{
+
+        right:70px;
+
+    }
+
+
+    .signal-progress{
+
+        right:24px;
+
+        height:120px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:700px){
+
+    .signal-section{
+
+        height:620vh;
+
+    }
+
+
+    .signal-sticky{
+
+        min-height:560px;
+
+    }
+
+
+    .signal-grid{
+
+        background-size:
+            55px 55px;
+
+        opacity:.22;
+
+        transform:
+            perspective(700px)
+            rotateX(68deg)
+            translateY(28%);
+
+    }
+
+
+    .signal-brand{
+
+        top:22px;
+
+        left:20px;
+
+        padding:
+            8px 11px;
+
+        font-size:7px;
+
+        letter-spacing:.13em;
+
+    }
+
+
+    .signal-progress{
+
+        top:44%;
+
+        right:15px;
+
+        height:100px;
+
+    }
+
+
+    .signal-copy{
+
+        top:
+            clamp(
+                118px,
+                19vh,
+                150px
+            );
+
+        left:20px;
+
+        width:
+            calc(100% - 55px);
+
+        transform:none;
+
+    }
+
+
+    .signal-kicker{
+
+        margin-bottom:14px;
+
+        padding:
+            7px 9px;
+
+        font-size:7px;
+
+        letter-spacing:.13em;
+
+    }
+
+
+    /* =====================================================
+       MOBILE TITLE AREA
+       Extra height prevents description overlap.
+    ===================================================== */
+
+    .signal-title{
+
+        height:145px;
+
+        font-size:
+            clamp(
+                24px,
+                6.8vw,
+                34px
+            );
+
+        line-height:1.1;
+
+        letter-spacing:-.04em;
+
+    }
+
+
+    .signal-description{
+
+        height:76px;
+
+        margin-top:18px;
+
+        max-width:275px;
+
+        font-size:10px;
+
+        line-height:1.7;
+
+    }
+
+
+    .signal-stage{
+
+        right:35px;
+
+        top:auto;
+
+        bottom:120px;
+
+        transform:none;
+
+    }
+
+
+    .signal-stage-number{
+
+        font-size:7px;
+
+    }
+
+
+    .signal-stage-name{
+
+        font-size:7px;
+
+        letter-spacing:.11em;
+
+    }
+
+
+    .signal-path{
+
+        bottom:30px;
+
+        width:
+            calc(100% - 32px);
+
+        justify-content:center;
+
+        gap:7px;
+
+        overflow:hidden;
+
+    }
+
+
+    .signal-path-item{
+
+        font-size:6px;
+
+        letter-spacing:.06em;
+
+    }
+
+
+    .signal-path-separator{
+
+        width:7px;
+
+    }
+
+
+    .signal-core{
+
+        width:185px;
+
+        height:185px;
+
+        top:59%;
+
+        opacity:.8;
+
+    }
+
+
+    .signal-final{
+
+        width:
+            calc(100% - 34px);
+
+        top:55%;
+
+    }
+
+
+    .signal-final-eyebrow{
+
+        font-size:7px;
+
+        margin-bottom:13px;
+
+    }
+
+
+    .signal-final-title{
+
+        font-size:
+            clamp(
+                35px,
+                10vw,
+                48px
+            );
+
+    }
+
+
+    .signal-final-text{
+
+        margin-top:17px;
+
+        font-size:10px;
+
+        line-height:1.7;
+
+    }
+
+
+    .signal-final-button{
+
+        margin-top:21px;
+
+        padding:
+            11px 16px;
+
+        font-size:7px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width:430px){
+
+    .signal-section{
+
+        height:600vh;
+
+    }
+
+
+    .signal-copy{
+
+        top:110px;
+
+        width:
+            calc(100% - 54px);
+
+    }
+
+
+    .signal-title{
+
+        height:130px;
+
+        font-size:
+            clamp(
+                22px,
+                7.8vw,
+                30px
+            );
+
+    }
+
+
+    .signal-description{
+
+        height:72px;
+
+        max-width:260px;
+
+        font-size:9.5px;
+
+    }
+
+
+    .signal-core{
+
+        width:150px;
+
+        height:150px;
+
+        top:60%;
+
+    }
+
+
+    .signal-stage{
+
+        bottom:108px;
+
+        right:27px;
+
+    }
+
+
+    .signal-progress{
+
+        right:10px;
+
+        height:80px;
+
+    }
+
+
+    .signal-path-item:nth-child(3),
+    .signal-path-item:nth-child(4){
+
+        display:none;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL HEIGHT DEVICES
+========================================================= */
+
+@media (max-height:700px) and (min-width:701px){
+
+    .signal-copy{
+
+        transform:
+            translateY(-46%);
+
+    }
+
+
+    .signal-title{
+
+        height:132px;
+
+    }
+
+
+    .signal-description{
+
+        height:70px;
+
+        margin-top:17px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion:reduce){
+
+    html{
+        scroll-behavior:auto;
+    }
+
+
+    .signal-core-ring{
+
+        animation:none;
+
+    }
+
+
+    .signal-title > span,
+    .signal-description > span,
+    .signal-final,
+    .signal-copy,
+    .signal-stage{
+
+        transition:none;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     THE SIGNAL
+========================================================= -->
+
+<section
+    class="signal-section"
+    id="the-signal"
+>
+
+    <div class="signal-sticky">
+
+
+        <!-- BACKGROUND -->
+
+        <div class="signal-grid"></div>
+
+        <div class="signal-ambient"></div>
+
+
+        <!-- BRAND -->
+
+        <div class="signal-brand">
+
+            <span
+                class="signal-brand-dot"
+            ></span>
+
+            INNOVEXA / THE SIGNAL
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="signal-progress">
+
+            <div
+                class="signal-progress-fill"
+                id="signalProgressFill"
+            ></div>
+
+            <span
+                class="signal-progress-label"
+                id="signalProgressLabel"
+            >
+                00%
+            </span>
+
+        </div>
+
+
+        <!-- CANVAS -->
+
+        <canvas
+            id="signalCanvas"
+        ></canvas>
+
+
+        <!-- CORE -->
+
+        <div
+            class="signal-core"
+            id="signalCore"
+        >
+
+            <div class="signal-core-ring"></div>
+
+            <div class="signal-core-ring"></div>
+
+            <div class="signal-core-ring"></div>
+
+            <div class="signal-core-center"></div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <div class="signal-copy" id="signalCopy">
+
+
+            <div class="signal-kicker">
+
+                <span
+                    class="signal-kicker-line"
+                ></span>
+
+                DIGITAL EVOLUTION
+
+            </div>
+
+
+            <!-- =================================================
+                 TITLE
+            ================================================= -->
+
+            <h2 class="signal-title">
+
+
+                <span
+                    class="active"
+                    data-title="0"
+                >
+
+                    Every idea starts with a
+                    <br>
+
+                    <span class="accent">
+                        signal.
+                    </span>
+
+                </span>
+
+
+                <span data-title="1">
+
+                    We turn scattered information
+                    <br>
+
+                    into a clear
+                    <span class="accent">
+                        direction.
+                    </span>
+
+                </span>
+
+
+                <span data-title="2">
+
+                    We connect the right pieces
+                    <br>
+
+                    to create meaningful
+                    <span class="accent">
+                        experiences.
+                    </span>
+
+                </span>
+
+
+                <span data-title="3">
+
+                    We bring technology together
+                    <br>
+
+                    as one intelligent
+                    <span class="accent">
+                        system.
+                    </span>
+
+                </span>
+
+
+                <span data-title="4">
+
+                    So people can use technology
+                    <br>
+
+                    without feeling its
+                    <span class="accent">
+                        complexity.
+                    </span>
+
+                </span>
+
+
+            </h2>
+
+
+            <!-- =================================================
+                 DESCRIPTION
+            ================================================== -->
+
+            <div class="signal-description">
+
+
+                <span
+                    class="active"
+                    data-description="0"
+                >
+
+                    The starting point is never
+                    technology. It is understanding
+                    what deserves to be built.
+
+                </span>
+
+
+                <span data-description="1">
+
+                    We find the patterns inside
+                    complexity and turn them into
+                    decisions that make sense.
+
+                </span>
+
+
+                <span data-description="2">
+
+                    Products become stronger when
+                    design, technology and human
+                    behaviour work together.
+
+                </span>
+
+
+                <span data-description="3">
+
+                    The result is not a collection
+                    of disconnected features.
+                    It is one connected digital system.
+
+                </span>
+
+
+                <span data-description="4">
+
+                    When everything works together,
+                    technology becomes almost invisible
+                    — and the experience becomes obvious.
+
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             STAGE
+        ================================================== -->
+
+        <div class="signal-stage" id="signalStage">
+
+            <span
+                class="signal-stage-number"
+                id="signalStageNumber"
+            >
+                01 / 05
+            </span>
+
+
+            <span
+                class="signal-stage-name"
+                id="signalStageName"
+            >
+                SIGNAL
+            </span>
+
+        </div>
+
+
+        <!-- =================================================
+             PATH
+        ================================================== -->
+
+        <div class="signal-path">
+
+
+            <span
+                class="signal-path-item active"
+                data-path="0"
+            >
+                SIGNAL
+            </span>
+
+
+            <span
+                class="signal-path-separator"
+            ></span>
+
+
+            <span
+                class="signal-path-item"
+                data-path="1"
+            >
+                DIRECTION
+            </span>
+
+
+            <span
+                class="signal-path-separator"
+            ></span>
+
+
+            <span
+                class="signal-path-item"
+                data-path="2"
+            >
+                CONNECTION
+            </span>
+
+
+            <span
+                class="signal-path-separator"
+            ></span>
+
+
+            <span
+                class="signal-path-item"
+                data-path="3"
+            >
+                SYSTEM
+            </span>
+
+
+            <span
+                class="signal-path-separator"
+            ></span>
+
+
+            <span
+                class="signal-path-item"
+                data-path="4"
+            >
+                EXPERIENCE
+            </span>
+
+
+        </div>
+
+
+        <!-- =================================================
+             FINAL
+        ================================================== -->
+
+        <div
+            class="signal-final"
+            id="signalFinal"
+        >
+
+
+            <div class="signal-final-eyebrow">
+
+                FROM AN IDEA TO SOMETHING PEOPLE CAN USE
+
+            </div>
+
+
+            <h2 class="signal-final-title">
+
+                Technology should
+                <br>
+
+                create
+                <span>
+                    momentum.
+                </span>
+
+            </h2>
+
+
+            <p class="signal-final-text">
+
+                We transform ideas, information and
+                technology into connected digital
+                experiences that are easier to understand,
+                easier to use and built to move forward.
+
+            </p>
+
+
+            <a
+                href="services.html"
+                class="signal-final-button"
+            >
+
+                SEE HOW WE THINK
+
+                <span
+                    class="signal-final-arrow"
+                >
+                    →
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<script>
+
+/* =========================================================
+   INNOVEXA TECHNOLOGIES
+   THE SIGNAL — 3D ENGINE (FIXED)
+========================================================= */
+
+(function(){
+
+    "use strict";
+
+
+    /* ======================================================
+       ELEMENTS
+    ====================================================== */
+
+    const section =
+        document.getElementById(
+            "the-signal"
+        );
+
+    const canvas =
+        document.getElementById(
+            "signalCanvas"
+        );
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+    const core =
+        document.getElementById(
+            "signalCore"
+        );
+
+    const progressFill =
+        document.getElementById(
+            "signalProgressFill"
+        );
+
+    const progressLabel =
+        document.getElementById(
+            "signalProgressLabel"
+        );
+
+    const stageNumber =
+        document.getElementById(
+            "signalStageNumber"
+        );
+
+    const stageName =
+        document.getElementById(
+            "signalStageName"
+        );
+
+    const finalPanel =
+        document.getElementById(
+            "signalFinal"
+        );
+
+    /*
+     * FIX: cached references to the copy block and the
+     * stage indicator so they can be hidden completely
+     * once the final panel takes over the screen.
+     */
+
+    const copyPanel =
+        document.getElementById(
+            "signalCopy"
+        );
+
+    const stagePanel =
+        document.getElementById(
+            "signalStage"
+        );
+
+    const titleItems =
+        Array.from(
+            document.querySelectorAll(
+                "[data-title]"
+            )
+        );
+
+    const descriptionItems =
+        Array.from(
+            document.querySelectorAll(
+                "[data-description]"
+            )
+        );
+
+    const pathItems =
+        Array.from(
+            document.querySelectorAll(
+                "[data-path]"
+            )
+        );
+
+    /*
+     * FIX: wrapper elements whose height must fit the
+     * tallest title / description among all 5 stages.
+     * Their CSS height is only a fallback — JS measures
+     * the real content and overrides it, so long titles
+     * (e.g. "We bring technology together as one
+     * intelligent system.") never overflow into the
+     * description below.
+     */
+
+    const titleWrapper =
+        document.querySelector(
+            ".signal-title"
+        );
+
+    const descriptionWrapper =
+        document.querySelector(
+            ".signal-description"
+        );
+
+
+    if(
+        !section ||
+        !canvas ||
+        !ctx
+    ){
+
+        return;
+
+    }
+
+
+    /* ======================================================
+       MOTION
+    ====================================================== */
+
+    const reduceMotion =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+
+    /* ======================================================
+       CONFIG
+    ====================================================== */
+
+    /*
+     * FIX: single source of truth for the final-reveal
+     * threshold. The copy/stage blocks start fading out
+     * slightly BEFORE this point (see FINAL_FADE_LEAD) so
+     * there is never a frame where both the last title
+     * and the final panel are fully opaque at once.
+     */
+
+    const FINAL_THRESHOLD = .84;
+
+    const FINAL_FADE_LEAD = .04;
+
+
+    /* ======================================================
+       STATE
+    ====================================================== */
+
+    let width = 0;
+
+    let height = 0;
+
+    let dpr = 1;
+
+    let targetProgress = 0;
+
+    let currentProgress = 0;
+
+    let mouseX = 0;
+
+    let mouseY = 0;
+
+    let smoothMouseX = 0;
+
+    let smoothMouseY = 0;
+
+    let lastStage = -1;
+
+    let particles = [];
+
+    let nodes = [];
+
+    let animationId = null;
+
+
+    /* ======================================================
+       STAGES
+    ====================================================== */
+
+    const stages = [
+
+        "SIGNAL",
+
+        "DIRECTION",
+
+        "CONNECTION",
+
+        "SYSTEM",
+
+        "EXPERIENCE"
+
+    ];
+
+
+    /* ======================================================
+       UTILITY
+    ====================================================== */
+
+    function clamp(
+        value,
+        min,
+        max
+    ){
+
+        return Math.max(
+            min,
+            Math.min(
+                max,
+                value
+            )
+        );
+
+    }
+
+
+    function lerp(
+        a,
+        b,
+        amount
+    ){
+
+        return a +
+            (
+                b -
+                a
+            ) *
+            amount;
+
+    }
+
+
+    function ease(
+        value
+    ){
+
+        value =
+            clamp(
+                value,
+                0,
+                1
+            );
+
+        return (
+            value *
+            value *
+            (
+                3 -
+                2 *
+                value
+            )
+        );
+
+    }
+
+
+    function random(
+        min,
+        max
+    ){
+
+        return (
+            Math.random() *
+            (
+                max -
+                min
+            )
+        ) +
+        min;
+
+    }
+
+
+    /* ======================================================
+       PROGRESS
+    ====================================================== */
+
+    function calculateProgress(){
+
+        const rect =
+            section.getBoundingClientRect();
+
+        const total =
+            section.offsetHeight -
+            window.innerHeight;
+
+
+        if(
+            total <= 0
+        ){
+
+            return 0;
+
+        }
+
+
+        return clamp(
+            -rect.top /
+            total,
+            0,
+            1
+        );
+
+    }
+
+
+    /* ======================================================
+       FIT TITLE / DESCRIPTION HEIGHT TO REAL CONTENT
+       FIX: this is the permanent fix for the title text
+       overflowing behind the description. Instead of
+       guessing a fixed pixel height in CSS (which breaks
+       the moment any stage's text wraps differently),
+       we measure every stage's actual rendered height —
+       even the hidden/inactive ones, since they still lay
+       out normally under visibility:hidden — and size the
+       wrapper to the tallest one. Runs on load and resize,
+       so it stays correct at any screen width, any font,
+       any future text change.
+    ====================================================== */
+
+    function measureAndFitTextBlocks(){
+
+        if(
+            titleWrapper
+        ){
+
+            let maxTitleHeight = 0;
+
+
+            titleItems.forEach(
+                function(item){
+
+                    const itemHeight =
+                        item.offsetHeight;
+
+
+                    if(
+                        itemHeight >
+                        maxTitleHeight
+                    ){
+
+                        maxTitleHeight =
+                            itemHeight;
+
+                    }
+
+                }
+            );
+
+
+            if(
+                maxTitleHeight > 0
+            ){
+
+                titleWrapper.style.height =
+                    maxTitleHeight +
+                    "px";
+
+            }
+
+        }
+
+
+        if(
+            descriptionWrapper
+        ){
+
+            let maxDescriptionHeight = 0;
+
+
+            descriptionItems.forEach(
+                function(item){
+
+                    const itemHeight =
+                        item.offsetHeight;
+
+
+                    if(
+                        itemHeight >
+                        maxDescriptionHeight
+                    ){
+
+                        maxDescriptionHeight =
+                            itemHeight;
+
+                    }
+
+                }
+            );
+
+
+            if(
+                maxDescriptionHeight > 0
+            ){
+
+                descriptionWrapper.style.height =
+                    maxDescriptionHeight +
+                    "px";
+
+            }
+
+        }
+
+    }
+
+
+    /* ======================================================
+       RESIZE
+    ====================================================== */
+
+    function resize(){
+
+        width =
+            window.innerWidth;
+
+        height =
+            window.innerHeight;
+
+
+        dpr =
+            Math.min(
+                window.devicePixelRatio ||
+                1,
+                2
+            );
+
+
+        canvas.width =
+            Math.round(
+                width *
+                dpr
+            );
+
+
+        canvas.height =
+            Math.round(
+                height *
+                dpr
+            );
+
+
+        canvas.style.width =
+            width +
+            "px";
+
+
+        canvas.style.height =
+            height +
+            "px";
+
+
+        ctx.setTransform(
+            dpr,
+            0,
+            0,
+            dpr,
+            0,
+            0
+        );
+
+
+        createScene();
+
+
+        measureAndFitTextBlocks();
+
+    }
+
+
+    /* ======================================================
+       CREATE SCENE
+    ====================================================== */
+
+    function createScene(){
+
+        particles = [];
+
+        nodes = [];
+
+
+        const mobile =
+            width <= 700;
+
+
+        const tablet =
+            width > 700 &&
+            width <= 1000;
+
+
+        let particleCount =
+            mobile
+            ? 80
+            : tablet
+                ? 130
+                : 210;
+
+
+        if(
+            reduceMotion
+        ){
+
+            particleCount =
+                mobile
+                ? 35
+                : 70;
+
+        }
+
+
+        for(
+            let i = 0;
+            i < particleCount;
+            i++
+        ){
+
+            particles.push({
+
+                angle:
+                    random(
+                        0,
+                        Math.PI * 2
+                    ),
+
+                radius:
+                    random(
+                        70,
+                        Math.max(
+                            width,
+                            height
+                        ) *
+                        .72
+                    ),
+
+                depth:
+                    random(
+                        .25,
+                        1
+                    ),
+
+                size:
+                    random(
+                        .45,
+                        mobile
+                        ? 1.5
+                        : 2.2
+                    ),
+
+                speed:
+                    random(
+                        .0002,
+                        .0008
+                    ),
+
+                phase:
+                    random(
+                        0,
+                        Math.PI * 2
+                    ),
+
+                alpha:
+                    random(
+                        .18,
+                        .72
+                    )
+
+            });
+
+        }
+
+
+        const nodeCount =
+            mobile
+            ? 13
+            : tablet
+                ? 22
+                : 34;
+
+
+        for(
+            let i = 0;
+            i < nodeCount;
+            i++
+        ){
+
+            nodes.push({
+
+                x:
+                    random(
+                        -.85,
+                        .85
+                    ),
+
+                y:
+                    random(
+                        -.62,
+                        .62
+                    ),
+
+                z:
+                    random(
+                        -.8,
+                        .8
+                    ),
+
+                size:
+                    random(
+                        1,
+                        2.8
+                    ),
+
+                pulse:
+                    random(
+                        0,
+                        Math.PI * 2
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    /* ======================================================
+       3D PROJECTION
+    ====================================================== */
+
+    function project(
+        x,
+        y,
+        z
+    ){
+
+        const camera = 720;
+
+        const depth =
+            camera /
+            (
+                camera +
+                z
+            );
+
+
+        return {
+
+            x:
+                width / 2 +
+                x *
+                depth,
+
+            y:
+                height / 2 +
+                y *
+                depth,
+
+            scale:
+                depth
+
+        };
+
+    }
+
+
+    /* ======================================================
+       BACKGROUND
+    ====================================================== */
+
+    function drawBackground(){
+
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        const gradient =
+            ctx.createRadialGradient(
+                width / 2,
+                height / 2,
+                0,
+                width / 2,
+                height / 2,
+                Math.max(
+                    width,
+                    height
+                ) *
+                .62
+            );
+
+
+        gradient.addColorStop(
+            0,
+            "rgba(49,136,237,.045)"
+        );
+
+
+        gradient.addColorStop(
+            .45,
+            "rgba(49,136,237,.012)"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "rgba(0,0,0,0)"
+        );
+
+
+        ctx.fillStyle =
+            gradient;
+
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+    }
+
+
+    /* ======================================================
+       SIGNAL
+    ====================================================== */
+
+    function drawSignal(
+        progress
+    ){
+
+        const intensity =
+            1 -
+            ease(
+                progress /
+                .28
+            );
+
+
+        if(
+            intensity <= 0
+        ){
+
+            return;
+
+        }
+
+
+        const centerX =
+            width / 2;
+
+        const centerY =
+            height / 2;
+
+
+        const lines =
+            width <= 700
+            ? 7
+            : 12;
+
+
+        ctx.save();
+
+
+        for(
+            let i = 0;
+            i < lines;
+            i++
+        ){
+
+            const angle =
+                (
+                    i /
+                    lines
+                ) *
+                Math.PI *
+                2;
+
+
+            const start =
+                40 +
+                (
+                    i *
+                    7
+                );
+
+
+            const length =
+                Math.max(
+                    width,
+                    height
+                ) *
+                .42;
+
+
+            const curve =
+                Math.sin(
+                    i *
+                    2.8
+                ) *
+                100;
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+
+                centerX +
+                Math.cos(angle) *
+                start,
+
+                centerY +
+                Math.sin(angle) *
+                start
+
+            );
+
+
+            ctx.quadraticCurveTo(
+
+                centerX +
+                Math.cos(
+                    angle +
+                    .4
+                ) *
+                length *
+                .48 +
+                curve,
+
+                centerY +
+                Math.sin(
+                    angle +
+                    .4
+                ) *
+                length *
+                .48,
+
+                centerX +
+                Math.cos(angle) *
+                length,
+
+                centerY +
+                Math.sin(angle) *
+                length
+
+            );
+
+
+            ctx.strokeStyle =
+                "rgba(79,158,244," +
+                (
+                    .04 *
+                    intensity
+                ) +
+                ")";
+
+
+            ctx.lineWidth =
+                .7;
+
+
+            ctx.stroke();
+
+        }
+
+
+        ctx.restore();
+
+    }
+
+
+    /* ======================================================
+       NETWORK
+    ====================================================== */
+
+    function drawNetwork(
+        progress,
+        time
+    ){
+
+        const networkProgress =
+            ease(
+                clamp(
+                    (
+                        progress -
+                        .18
+                    ) /
+                    .35,
+                    0,
+                    1
+                )
+            );
+
+
+        if(
+            networkProgress <= 0
+        ){
+
+            return;
+
+        }
+
+
+        const projected = [];
+
+
+        nodes.forEach(
+            function(node){
+
+                const spread =
+                    lerp(
+                        1.45,
+                        .75,
+                        networkProgress
+                    );
+
+
+                const p =
+                    project(
+
+                        node.x *
+                        width *
+                        .50 *
+                        spread,
+
+                        node.y *
+                        height *
+                        .62 *
+                        spread,
+
+                        node.z *
+                        520 *
+                        spread
+
+                    );
+
+
+                projected.push(
+                    p
+                );
+
+            }
+        );
+
+
+        ctx.save();
+
+
+        for(
+            let i = 0;
+            i < projected.length;
+            i++
+        ){
+
+            for(
+                let j = i + 1;
+                j < projected.length;
+                j++
+            ){
+
+                const a =
+                    projected[i];
+
+                const b =
+                    projected[j];
+
+
+                const dx =
+                    a.x -
+                    b.x;
+
+
+                const dy =
+                    a.y -
+                    b.y;
+
+
+                const distance =
+                    Math.sqrt(
+                        dx * dx +
+                        dy * dy
+                    );
+
+
+                const maxDistance =
+                    width <= 700
+                    ? 130
+                    : 180;
+
+
+                if(
+                    distance <
+                    maxDistance
+                ){
+
+                    const alpha =
+                        (
+                            1 -
+                            distance /
+                            maxDistance
+                        ) *
+                        .22 *
+                        networkProgress;
+
+
+                    ctx.beginPath();
+
+
+                    ctx.moveTo(
+                        a.x,
+                        a.y
+                    );
+
+
+                    ctx.lineTo(
+                        b.x,
+                        b.y
+                    );
+
+
+                    ctx.strokeStyle =
+                        "rgba(114,182,255," +
+                        alpha +
+                        ")";
+
+
+                    ctx.lineWidth =
+                        .55;
+
+
+                    ctx.stroke();
+
+                }
+
+            }
+
+        }
+
+
+        projected.forEach(
+            function(point,index){
+
+                const pulse =
+                    1 +
+                    Math.sin(
+                        time *
+                        .0015 +
+                        nodes[index].pulse
+                    ) *
+                    .25;
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+                    point.x,
+                    point.y,
+                    nodes[index].size *
+                    point.scale *
+                    pulse,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.fillStyle =
+                    "rgba(139,199,255," +
+                    (
+                        .55 *
+                        networkProgress
+                    ) +
+                    ")";
+
+
+                ctx.fill();
+
+            }
+        );
+
+
+        ctx.restore();
+
+    }
+
+
+    /* ======================================================
+       ARCHITECTURE
+    ====================================================== */
+
+    function drawArchitecture(
+        progress
+    ){
+
+        const systemProgress =
+            ease(
+                clamp(
+                    (
+                        progress -
+                        .43
+                    ) /
+                    .32,
+                    0,
+                    1
+                )
+            );
+
+
+        if(
+            systemProgress <= 0
+        ){
+
+            return;
+
+        }
+
+
+        const centerX =
+            width / 2;
+
+        const centerY =
+            height / 2;
+
+
+        const baseWidth =
+            Math.min(
+                width * .55,
+                620
+            );
+
+
+        const baseHeight =
+            Math.min(
+                height * .55,
+                440
+            );
+
+
+        const layers =
+            width <= 700
+            ? 3
+            : 5;
+
+
+        ctx.save();
+
+
+        for(
+            let i = 0;
+            i < layers;
+            i++
+        ){
+
+            const layerProgress =
+                clamp(
+                    systemProgress *
+                    1.25 -
+                    i *
+                    .13,
+                    0,
+                    1
+                );
+
+
+            const w =
+                baseWidth *
+                (
+                    .45 +
+                    i *
+                    .13
+                );
+
+
+            const h =
+                baseHeight *
+                (
+                    .35 +
+                    i *
+                    .12
+                );
+
+
+            const x =
+                centerX -
+                w / 2;
+
+
+            const y =
+                centerY -
+                h / 2;
+
+
+            ctx.beginPath();
+
+
+            ctx.rect(
+                x,
+                y,
+                w *
+                layerProgress,
+                h *
+                layerProgress
+            );
+
+
+            ctx.strokeStyle =
+                "rgba(114,182,255," +
+                (
+                    .035 +
+                    .045 *
+                    layerProgress
+                ) +
+                ")";
+
+
+            ctx.lineWidth = 1;
+
+
+            ctx.stroke();
+
+
+            const columns =
+                width <= 700
+                ? 3
+                : 6;
+
+
+            for(
+                let c = 1;
+                c < columns;
+                c++
+            ){
+
+                const cx =
+                    x +
+                    (
+                        w /
+                        columns
+                    ) *
+                    c;
+
+
+                ctx.beginPath();
+
+
+                ctx.moveTo(
+                    cx,
+                    y
+                );
+
+
+                ctx.lineTo(
+                    cx,
+                    y +
+                    h *
+                    layerProgress
+                );
+
+
+                ctx.strokeStyle =
+                    "rgba(114,182,255,.055)";
+
+
+                ctx.lineWidth =
+                    .7;
+
+
+                ctx.stroke();
+
+            }
+
+        }
+
+
+        const lineCount =
+            width <= 700
+            ? 5
+            : 9;
+
+
+        for(
+            let i = 0;
+            i < lineCount;
+            i++
+        ){
+
+            const y =
+                centerY -
+                baseHeight *
+                .38 +
+                (
+                    i /
+                    (
+                        lineCount -
+                        1
+                    )
+                ) *
+                baseHeight *
+                .76;
+
+
+            /*
+             * Stable line width.
+             * No Math.random() here, so architecture
+             * does not flicker on every animation frame.
+             */
+
+            const lineFactor =
+                .35 +
+                (
+                    (
+                        i *
+                        17
+                    ) %
+                    45
+                ) /
+                100;
+
+
+            const lineWidth =
+                baseWidth *
+                lineFactor *
+                systemProgress;
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                centerX -
+                lineWidth / 2,
+                y
+            );
+
+
+            ctx.lineTo(
+                centerX +
+                lineWidth / 2,
+                y
+            );
+
+
+            ctx.strokeStyle =
+                "rgba(139,199,255,.07)";
+
+
+            ctx.lineWidth =
+                .8;
+
+
+            ctx.stroke();
+
+        }
+
+
+        ctx.restore();
+
+    }
+
+
+    /* ======================================================
+       EXPERIENCE
+    ====================================================== */
+
+    function drawExperience(
+        progress,
+        time
+    ){
+
+        const experienceProgress =
+            ease(
+                clamp(
+                    (
+                        progress -
+                        .70
+                    ) /
+                    .24,
+                    0,
+                    1
+                )
+            );
+
+
+        if(
+            experienceProgress <= 0
+        ){
+
+            return;
+
+        }
+
+
+        const cx =
+            width / 2;
+
+        const cy =
+            height / 2;
+
+
+        const maxRadius =
+            Math.min(
+                width,
+                height
+            ) *
+            (
+                width <= 700
+                ? .28
+                : .38
+            );
+
+
+        ctx.save();
+
+
+        for(
+            let i = 0;
+            i < 4;
+            i++
+        ){
+
+            const radius =
+                maxRadius *
+                (
+                    .35 +
+                    i *
+                    .22
+                );
+
+
+            ctx.beginPath();
+
+
+            ctx.ellipse(
+
+                cx,
+                cy,
+
+                radius,
+
+                radius *
+                (
+                    .35 +
+                    i *
+                    .035
+                ),
+
+                i *
+                .35 +
+                time *
+                .00005 *
+                (
+                    i % 2
+                    ? 1
+                    : -1
+                ),
+
+                0,
+                Math.PI * 2
+
+            );
+
+
+            ctx.strokeStyle =
+                "rgba(114,182,255," +
+                (
+                    .035 +
+                    .025 *
+                    experienceProgress
+                ) +
+                ")";
+
+
+            ctx.lineWidth =
+                .8;
+
+
+            ctx.stroke();
+
+        }
+
+
+        const orbitRadius =
+            maxRadius *
+            .88;
+
+
+        const angle =
+            time *
+            .0012;
+
+
+        const sx =
+            cx +
+            Math.cos(angle) *
+            orbitRadius;
+
+
+        const sy =
+            cy +
+            Math.sin(angle) *
+            orbitRadius *
+            .35;
+
+
+        const glow =
+            ctx.createRadialGradient(
+                sx,
+                sy,
+                0,
+                sx,
+                sy,
+                30
+            );
+
+
+        glow.addColorStop(
+            0,
+            "rgba(255,255,255,.95)"
+        );
+
+
+        glow.addColorStop(
+            .18,
+            "rgba(139,199,255,.8)"
+        );
+
+
+        glow.addColorStop(
+            1,
+            "rgba(49,136,237,0)"
+        );
+
+
+        ctx.fillStyle =
+            glow;
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            sx,
+            sy,
+            30,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+        ctx.restore();
+
+    }
+
+
+    /* ======================================================
+       PARTICLES
+    ====================================================== */
+
+    function drawParticles(
+        progress,
+        time
+    ){
+
+        const transformation =
+            ease(
+                clamp(
+                    progress /
+                    .72,
+                    0,
+                    1
+                )
+            );
+
+
+        ctx.save();
+
+
+        particles.forEach(
+            function(particle,index){
+
+                const angle =
+                    particle.angle +
+                    time *
+                    particle.speed;
+
+
+                const chaosRadius =
+                    particle.radius;
+
+
+                const chaosX =
+                    Math.cos(angle) *
+                    chaosRadius;
+
+
+                const chaosY =
+                    Math.sin(angle) *
+                    chaosRadius *
+                    .72;
+
+
+                const organizedRadius =
+                    Math.min(
+                        width,
+                        height
+                    ) *
+                    (
+                        .08 +
+                        (
+                            index %
+                            7
+                        ) *
+                        .025
+                    );
+
+
+                const organizedX =
+                    Math.cos(
+                        angle *
+                        1.8
+                    ) *
+                    organizedRadius;
+
+
+                const organizedY =
+                    Math.sin(
+                        angle *
+                        1.8
+                    ) *
+                    organizedRadius *
+                    .55;
+
+
+                const x =
+                    lerp(
+                        chaosX,
+                        organizedX,
+                        transformation
+                    );
+
+
+                const y =
+                    lerp(
+                        chaosY,
+                        organizedY,
+                        transformation
+                    );
+
+
+                const z =
+                    lerp(
+                        0,
+                        particle.depth *
+                        350,
+                        transformation
+                    );
+
+
+                const point =
+                    project(
+
+                        x +
+                        smoothMouseX *
+                        25,
+
+                        y +
+                        smoothMouseY *
+                        20,
+
+                        z
+
+                    );
+
+
+                const alpha =
+                    particle.alpha *
+                    (
+                        .35 +
+                        transformation *
+                        .65
+                    );
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+
+                    point.x,
+                    point.y,
+
+                    Math.max(
+                        .35,
+                        particle.size *
+                        point.scale
+                    ),
+
+                    0,
+                    Math.PI * 2
+
+                );
+
+
+                ctx.fillStyle =
+                    "rgba(139,199,255," +
+                    alpha +
+                    ")";
+
+
+                ctx.fill();
+
+            }
+        );
+
+
+        ctx.restore();
+
+    }
+
+
+    /* ======================================================
+       CORE PULSE
+    ====================================================== */
+
+    function drawCorePulse(
+        progress,
+        time
+    ){
+
+        const coreProgress =
+            ease(
+                clamp(
+                    (
+                        progress -
+                        .08
+                    ) /
+                    .72,
+                    0,
+                    1
+                )
+            );
+
+
+        const cx =
+            width / 2;
+
+        const cy =
+            height / 2;
+
+
+        const pulse =
+            1 +
+            Math.sin(
+                time *
+                .002
+            ) *
+            .08;
+
+
+        const radius =
+            (
+                width <= 700
+                ? 45
+                : 65
+            ) *
+            pulse *
+            coreProgress;
+
+
+        if(
+            radius <= 0
+        ){
+
+            return;
+
+        }
+
+
+        const gradient =
+            ctx.createRadialGradient(
+                cx,
+                cy,
+                0,
+                cx,
+                cy,
+                radius * 3
+            );
+
+
+        gradient.addColorStop(
+            0,
+            "rgba(255,255,255,.9)"
+        );
+
+
+        gradient.addColorStop(
+            .08,
+            "rgba(139,199,255,.75)"
+        );
+
+
+        gradient.addColorStop(
+            .35,
+            "rgba(49,136,237,.12)"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "rgba(49,136,237,0)"
+        );
+
+
+        ctx.fillStyle =
+            gradient;
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            cx,
+            cy,
+            radius * 3,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+    }
+
+
+    /* ======================================================
+       UPDATE STAGE
+    ====================================================== */
+
+    function updateStage(
+        progress
+    ){
+
+        let stage = 0;
+
+
+        if(
+            progress < .18
+        ){
+
+            stage = 0;
+
+        }
+        else if(
+            progress < .38
+        ){
+
+            stage = 1;
+
+        }
+        else if(
+            progress < .58
+        ){
+
+            stage = 2;
+
+        }
+        else if(
+            progress < .78
+        ){
+
+            stage = 3;
+
+        }
+        else{
+
+            stage = 4;
+
+        }
+
+
+        if(
+            stage === lastStage
+        ){
+
+            return;
+
+        }
+
+
+        lastStage =
+            stage;
+
+
+        /*
+         * IMPORTANT:
+         * Only one title and one description can
+         * visually remain active at a time.
+         */
+
+        titleItems.forEach(
+            function(item){
+
+                const isActive =
+                    Number(
+                        item.dataset.title
+                    ) === stage;
+
+
+                item.classList.toggle(
+                    "active",
+                    isActive
+                );
+
+            }
+        );
+
+
+        descriptionItems.forEach(
+            function(item){
+
+                const isActive =
+                    Number(
+                        item.dataset.description
+                    ) === stage;
+
+
+                item.classList.toggle(
+                    "active",
+                    isActive
+                );
+
+            }
+        );
+
+
+        pathItems.forEach(
+            function(item){
+
+                item.classList.toggle(
+                    "active",
+                    Number(
+                        item.dataset.path
+                    ) === stage
+                );
+
+            }
+        );
+
+
+        stageNumber.textContent =
+            "0" +
+            (
+                stage +
+                1
+            ) +
+            " / 05";
+
+
+        stageName.textContent =
+            stages[stage];
+
+    }
+
+
+    /* ======================================================
+       CORE UI
+    ====================================================== */
+
+    function updateCore(
+        progress
+    ){
+
+        const first =
+            ease(
+                clamp(
+                    progress /
+                    .20,
+                    0,
+                    1
+                )
+            );
+
+
+        const finalFade =
+            ease(
+                clamp(
+                    (
+                        progress -
+                        .78
+                    ) /
+                    .18,
+                    0,
+                    1
+                )
+            );
+
+
+        const scale =
+            lerp(
+                .28,
+                1.15,
+                first
+            ) *
+            (
+                1 -
+                finalFade *
+                .75
+            );
+
+
+        const opacity =
+            lerp(
+                .15,
+                .85,
+                first
+            ) *
+            (
+                1 -
+                finalFade
+            );
+
+
+        const parallaxX =
+            smoothMouseX *
+            12;
+
+
+        const parallaxY =
+            smoothMouseY *
+            10;
+
+
+        core.style.transform =
+            "translate(" +
+            (
+                -50 +
+                parallaxX /
+                4
+            ) +
+            "%," +
+            (
+                -50 +
+                parallaxY /
+                4
+            ) +
+            "%) " +
+            "scale(" +
+            scale +
+            ")";
+
+
+        core.style.opacity =
+            opacity;
+
+    }
+
+
+    /* ======================================================
+       FINAL
+       FIX: this used to ONLY toggle "active" on the final
+       panel. Because stage 4 (the last title/description)
+       had nothing to switch it off, it stayed visible
+       forever after .78, so from .84 to 1.0 BOTH the last
+       title/description AND the final panel were fully
+       visible on screen at the same time — this was the
+       exact overlap seen in the screenshot.
+
+       Now: as soon as we cross (FINAL_THRESHOLD - LEAD),
+       the copy block and stage indicator are explicitly
+       faded + hidden (visibility:hidden after the fade,
+       so they also stop being focusable/selectable),
+       and only then does the final panel fade in.
+    ====================================================== */
+
+    function updateFinal(
+        progress
+    ){
+
+        const showFinal =
+            progress >=
+            FINAL_THRESHOLD;
+
+
+        const hideCopy =
+            progress >=
+            (
+                FINAL_THRESHOLD -
+                FINAL_FADE_LEAD
+            );
+
+
+        finalPanel.classList.toggle(
+            "active",
+            showFinal
+        );
+
+
+        copyPanel.classList.toggle(
+            "is-hidden",
+            hideCopy
+        );
+
+
+        stagePanel.classList.toggle(
+            "is-hidden",
+            hideCopy
+        );
+
+    }
+
+
+    /* ======================================================
+       RENDER
+    ====================================================== */
+
+    function render(
+        time
+    ){
+
+        currentProgress =
+            lerp(
+                currentProgress,
+                targetProgress,
+                reduceMotion
+                ? 1
+                : .075
+            );
+
+
+        smoothMouseX =
+            lerp(
+                smoothMouseX,
+                mouseX,
+                reduceMotion
+                ? 1
+                : .07
+            );
+
+
+        smoothMouseY =
+            lerp(
+                smoothMouseY,
+                mouseY,
+                reduceMotion
+                ? 1
+                : .07
+            );
+
+
+        drawBackground();
+
+
+        drawSignal(
+            currentProgress
+        );
+
+
+        drawParticles(
+            currentProgress,
+            time
+        );
+
+
+        drawNetwork(
+            currentProgress,
+            time
+        );
+
+
+        drawArchitecture(
+            currentProgress
+        );
+
+
+        drawExperience(
+            currentProgress,
+            time
+        );
+
+
+        drawCorePulse(
+            currentProgress,
+            time
+        );
+
+
+        updateStage(
+            currentProgress
+        );
+
+
+        updateCore(
+            currentProgress
+        );
+
+
+        updateFinal(
+            currentProgress
+        );
+
+
+        const percent =
+            Math.round(
+                currentProgress *
+                100
+            );
+
+
+        progressFill.style.height =
+            percent +
+            "%";
+
+
+        progressLabel.textContent =
+            String(
+                percent
+            ).padStart(
+                2,
+                "0"
+            ) +
+            "%";
+
+
+        animationId =
+            requestAnimationFrame(
+                render
+            );
+
+    }
+
+
+    /* ======================================================
+       MOUSE PARALLAX
+    ====================================================== */
+
+    window.addEventListener(
+        "mousemove",
+        function(event){
+
+            if(
+                reduceMotion ||
+                window.innerWidth <= 700
+            ){
+
+                return;
+
+            }
+
+
+            mouseX =
+                (
+                    event.clientX /
+                    window.innerWidth -
+                    .5
+                ) *
+                2;
+
+
+            mouseY =
+                (
+                    event.clientY /
+                    window.innerHeight -
+                    .5
+                ) *
+                2;
+
+        },
+        {
+            passive:true
+        }
+    );
+
+
+    /* ======================================================
+       TOUCH
+    ====================================================== */
+
+    window.addEventListener(
+        "touchmove",
+        function(event){
+
+            if(
+                reduceMotion ||
+                !event.touches.length
+            ){
+
+                return;
+
+            }
+
+
+            const touch =
+                event.touches[0];
+
+
+            mouseX =
+                (
+                    touch.clientX /
+                    window.innerWidth -
+                    .5
+                ) *
+                .8;
+
+
+            mouseY =
+                (
+                    touch.clientY /
+                    window.innerHeight -
+                    .5
+                ) *
+                .8;
+
+        },
+        {
+            passive:true
+        }
+    );
+
+
+    /* ======================================================
+       SCROLL
+    ====================================================== */
+
+    let scrollTick = false;
+
+
+    function handleScroll(){
+
+        targetProgress =
+            calculateProgress();
+
+
+        if(
+            !scrollTick
+        ){
+
+            requestAnimationFrame(
+                function(){
+
+                    scrollTick =
+                        false;
+
+                }
+            );
+
+
+            scrollTick =
+                true;
+
+        }
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        handleScroll,
+        {
+            passive:true
+        }
+    );
+
+
+    /* ======================================================
+       RESIZE
+    ====================================================== */
+
+    let resizeTimer = null;
+
+
+    window.addEventListener(
+        "resize",
+        function(){
+
+            clearTimeout(
+                resizeTimer
+            );
+
+
+            resizeTimer =
+                setTimeout(
+                    function(){
+
+                        resize();
+
+                        targetProgress =
+                            calculateProgress();
+
+                    },
+                    120
+                );
+
+        },
+        {
+            passive:true
+        }
+    );
+
+
+    /* ======================================================
+       VISIBILITY
+    ====================================================== */
+
+    document.addEventListener(
+        "visibilitychange",
+        function(){
+
+            if(
+                document.hidden
+            ){
+
+                if(
+                    animationId
+                ){
+
+                    cancelAnimationFrame(
+                        animationId
+                    );
+
+                    animationId =
+                        null;
+
+                }
+
+            }
+            else{
+
+                if(
+                    !animationId
+                ){
+
+                    animationId =
+                        requestAnimationFrame(
+                            render
+                        );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* ======================================================
+       INITIALIZE
+    ====================================================== */
+
+    resize();
+
+
+    targetProgress =
+        calculateProgress();
+
+
+    currentProgress =
+        targetProgress;
+
+
+    animationId =
+        requestAnimationFrame(
+            render
+        );
+
+
+    /*
+     * FIX: web fonts often finish loading slightly after
+     * first paint, which can change how each title wraps
+     * and how tall it actually is. Re-measure once fonts
+     * are ready so the box size stays accurate.
+     */
+
+    if(
+        document.fonts &&
+        document.fonts.ready
+    ){
+
+        document.fonts.ready.then(
+            function(){
+
+                measureAndFitTextBlocks();
+
+            }
+        );
+
+    }
+
+
+})();
+
+</script>
+
+</body>
+</html>

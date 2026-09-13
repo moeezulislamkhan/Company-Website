@@ -1,0 +1,3930 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Innovexa Technologies — Digital Transformation</title>
+
+<meta
+    name="description"
+    content="Innovexa Technologies transforms complexity into connected digital experiences."
+>
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+    --bg:#050a11;
+    --bg-2:#07101a;
+    --surface:#09131e;
+    --surface-2:#0d1926;
+
+    --white:#ffffff;
+    --text:#f3f7fb;
+
+    --muted:#91a0af;
+    --muted-2:#647383;
+
+    --blue:#3188ed;
+    --blue-light:#72b6ff;
+    --blue-deep:#1767c7;
+
+    --line:rgba(105,175,240,.14);
+    --line-strong:rgba(105,175,240,.28);
+
+    --max-width:1380px;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:auto;
+}
+
+body{
+    min-width:320px;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+}
+
+button,
+a{
+    font:inherit;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.dt-section{
+    position:relative;
+    width:100%;
+    min-height:760vh;
+    background:
+        radial-gradient(
+            circle at 50% 38%,
+            rgba(35,111,188,.08),
+            transparent 34%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg) 0%,
+            var(--bg-2) 50%,
+            var(--bg) 100%
+        );
+}
+
+.dt-sticky{
+    position:sticky;
+    top:0;
+
+    width:100%;
+    height:100svh;
+    min-height:620px;
+
+    overflow:hidden;
+    isolation:isolate;
+}
+
+
+/* =========================================================
+   ATMOSPHERE
+========================================================= */
+
+.dt-bg{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+
+    background:
+        radial-gradient(
+            circle at 50% 52%,
+            rgba(49,136,237,.055),
+            transparent 23%
+        ),
+        radial-gradient(
+            circle at 12% 12%,
+            rgba(49,136,237,.035),
+            transparent 25%
+        );
+}
+
+.dt-bg::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.018) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.018) 1px,
+            transparent 1px
+        );
+
+    background-size:72px 72px;
+
+    mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 0%,
+            rgba(0,0,0,.75) 42%,
+            transparent 82%
+        );
+}
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+#dtCanvas{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:1;
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   TOP BRAND
+========================================================= */
+
+.dt-brand{
+    position:absolute;
+
+    top:34px;
+    left:clamp(20px,4vw,64px);
+
+    z-index:10;
+
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    color:rgba(255,255,255,.82);
+
+    font-size:11px;
+    font-weight:700;
+
+    letter-spacing:.18em;
+    text-transform:uppercase;
+}
+
+.dt-brand-dot{
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:var(--blue-light);
+
+    box-shadow:
+        0 0 0 4px rgba(49,136,237,.08),
+        0 0 18px rgba(49,136,237,.55);
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.dt-progress{
+    position:absolute;
+
+    top:36px;
+    right:clamp(20px,4vw,64px);
+
+    z-index:10;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    color:var(--muted-2);
+
+    font-size:10px;
+    font-weight:700;
+
+    letter-spacing:.18em;
+}
+
+.dt-progress-line{
+    width:72px;
+    height:1px;
+
+    background:rgba(255,255,255,.12);
+
+    overflow:hidden;
+}
+
+.dt-progress-fill{
+    width:0%;
+    height:100%;
+
+    background:var(--blue-light);
+
+    box-shadow:0 0 12px rgba(114,182,255,.5);
+
+    transform-origin:left center;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.dt-intro{
+    position:absolute;
+
+    left:clamp(20px,7vw,120px);
+    top:50%;
+
+    z-index:8;
+
+    width:min(680px,calc(100% - 40px));
+
+    transform:
+        translate3d(0,-50%,0);
+
+    pointer-events:none;
+
+    transition:
+        opacity .35s ease,
+        transform .35s ease;
+}
+
+.dt-kicker{
+    display:flex;
+    align-items:center;
+    gap:13px;
+
+    margin-bottom:22px;
+
+    color:var(--blue-light);
+
+    font-size:11px;
+    font-weight:750;
+
+    letter-spacing:.24em;
+    text-transform:uppercase;
+}
+
+.dt-kicker::before{
+    content:"";
+
+    width:30px;
+    height:1px;
+
+    background:var(--blue-light);
+
+    box-shadow:0 0 10px rgba(114,182,255,.4);
+}
+
+.dt-title{
+    max-width:670px;
+
+    color:var(--white);
+
+    font-size:clamp(39px,4.8vw,72px);
+    line-height:.92;
+
+    letter-spacing:-.055em;
+
+    font-weight:850;
+}
+
+.dt-title span{
+    display:block;
+}
+
+.dt-title .accent{
+    color:var(--blue-light);
+}
+
+.dt-intro-copy{
+    max-width:570px;
+
+    margin-top:27px;
+
+    color:var(--muted);
+
+    font-size:clamp(14px,1.15vw,17px);
+    line-height:1.75;
+}
+
+
+/* =========================================================
+   PHASE CONTENT
+========================================================= */
+
+.dt-phases{
+    position:absolute;
+    left:clamp(20px,7vw,120px);
+    bottom:clamp(70px,9vh,110px);
+
+    z-index:9;
+
+    width:min(480px,calc(100% - 40px));
+
+    pointer-events:none;
+}
+
+.dt-phase{
+    position:absolute;
+
+    left:0;
+    bottom:0;
+
+    width:100%;
+
+    opacity:0;
+
+    transform:
+        translate3d(0,24px,0);
+
+    transition:
+        opacity .75s cubic-bezier(.22,1,.36,1),
+        transform .75s cubic-bezier(.22,1,.36,1);
+}
+
+.dt-phase.active{
+    opacity:1;
+
+    transform:
+        translate3d(0,0,0);
+}
+
+.dt-phase-number{
+    display:block;
+
+    margin-bottom:13px;
+
+    color:var(--blue-light);
+
+    font-size:10px;
+    font-weight:800;
+
+    letter-spacing:.22em;
+}
+
+.dt-phase h2{
+    color:var(--white);
+
+    font-size:clamp(22px,2vw,30px);
+    line-height:1.1;
+
+    letter-spacing:-.025em;
+
+    font-weight:780;
+}
+
+.dt-phase p{
+    max-width:410px;
+
+    margin-top:10px;
+
+    color:var(--muted);
+
+    font-size:14px;
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   SYSTEM LABEL
+========================================================= */
+
+.dt-system-label{
+    position:absolute;
+
+    left:50%;
+    bottom:clamp(40px,7vh,82px);
+
+    z-index:8;
+
+    transform:
+        translateX(-50%);
+
+    color:rgba(255,255,255,.34);
+
+    font-size:9px;
+    font-weight:750;
+
+    letter-spacing:.25em;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+    transition:
+        opacity .4s ease;
+}
+
+
+/* =========================================================
+   OUTPUTS
+========================================================= */
+
+.dt-outputs{
+    position:absolute;
+    inset:0;
+
+    z-index:9;
+
+    pointer-events:none;
+}
+
+.dt-output{
+    position:absolute;
+
+    width:150px;
+    min-height:48px;
+
+    padding:12px 14px;
+
+    border:1px solid var(--line);
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13,25,38,.92),
+            rgba(7,15,24,.72)
+        );
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.035);
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
+    opacity:0;
+
+    transform:
+        translate3d(0,18px,0)
+        scale(.94);
+
+    transition:
+        opacity .75s cubic-bezier(.22,1,.36,1),
+        transform .75s cubic-bezier(.22,1,.36,1),
+        border-color .3s ease,
+        box-shadow .3s ease;
+
+    text-align:left;
+}
+
+.dt-output.visible{
+    opacity:1;
+
+    transform:
+        translate3d(0,0,0)
+        scale(1);
+}
+
+.dt-output:hover{
+    border-color:var(--line-strong);
+
+    box-shadow:
+        0 20px 65px rgba(0,0,0,.35),
+        0 0 28px rgba(49,136,237,.09),
+        inset 0 1px 0 rgba(255,255,255,.05);
+
+    transform:
+        translate3d(0,-3px,0)
+        scale(1.025);
+}
+
+.dt-output-small{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:var(--muted-2);
+
+    font-size:8px;
+    font-weight:800;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
+}
+
+.dt-output strong{
+    color:rgba(255,255,255,.9);
+
+    font-size:11px;
+    font-weight:750;
+
+    letter-spacing:.035em;
+}
+
+
+/* Desktop output positions */
+
+.dt-output:nth-child(1){
+    left:17%;
+    top:32%;
+}
+
+.dt-output:nth-child(2){
+    left:24%;
+    top:67%;
+}
+
+.dt-output:nth-child(3){
+    left:50%;
+    top:83%;
+
+    transform:
+        translate3d(-50%,18px,0)
+        scale(.94);
+}
+
+.dt-output:nth-child(3).visible{
+    transform:
+        translate3d(-50%,0,0)
+        scale(1);
+}
+
+.dt-output:nth-child(4){
+    right:24%;
+    top:67%;
+}
+
+.dt-output:nth-child(5){
+    right:17%;
+    top:32%;
+}
+
+
+/* =========================================================
+   FINAL MESSAGE
+========================================================= */
+
+.dt-final{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    z-index:12;
+
+    width:min(760px,calc(100% - 40px));
+
+    text-align:center;
+
+    transform:
+        translate3d(-50%,-50%,0)
+        scale(.94);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:
+        opacity 1s cubic-bezier(.22,1,.36,1),
+        transform 1s cubic-bezier(.22,1,.36,1);
+}
+
+.dt-final.visible{
+    opacity:1;
+
+    transform:
+        translate3d(-50%,-50%,0)
+        scale(1);
+}
+
+.dt-final-kicker{
+    margin-bottom:19px;
+
+    color:var(--blue-light);
+
+    font-size:10px;
+    font-weight:800;
+
+    letter-spacing:.25em;
+
+    text-transform:uppercase;
+}
+
+.dt-final h2{
+    color:var(--white);
+
+    font-size:clamp(39px,5.1vw,72px);
+    line-height:.92;
+
+    letter-spacing:-.055em;
+
+    font-weight:850;
+}
+
+.dt-final h2 span{
+    color:var(--blue-light);
+}
+
+.dt-final p{
+    max-width:540px;
+
+    margin:25px auto 0;
+
+    color:var(--muted);
+
+    font-size:15px;
+    line-height:1.75;
+}
+
+.dt-cta{
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:11px;
+
+    margin-top:27px;
+
+    min-height:48px;
+
+    padding:0 20px;
+
+    border:1px solid rgba(114,182,255,.28);
+    border-radius:999px;
+
+    color:var(--white);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(49,136,237,.28),
+            rgba(49,136,237,.08)
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(114,182,255,.04),
+        0 8px 24px rgba(49,136,237,.10);
+
+    font-size:10px;
+    font-weight:800;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        background .3s ease,
+        box-shadow .3s ease;
+
+    animation:dt-cta-pulse 3.2s ease-in-out infinite;
+}
+
+.dt-cta::before{
+    content:"";
+    position:absolute;
+    z-index:-1;
+    top:0;
+    bottom:0;
+    left:-42%;
+    width:28%;
+    transform:skewX(-20deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);
+    animation:dt-cta-sheen 3.2s ease-in-out infinite;
+}
+
+@keyframes dt-cta-pulse{
+    0%,100%{ box-shadow:0 0 0 1px rgba(114,182,255,.04),0 8px 24px rgba(49,136,237,.10); }
+    50%{ box-shadow:0 0 0 1px rgba(114,182,255,.14),0 10px 30px rgba(49,136,237,.20); }
+}
+
+@keyframes dt-cta-sheen{
+    0%,35%{ left:-42%; }
+    68%,100%{ left:125%; }
+}
+
+.dt-cta::after{
+    content:"→";
+
+    color:var(--blue-light);
+
+    font-size:16px;
+
+    transition:
+        transform .3s ease;
+}
+
+.dt-cta:hover{
+    border-color:rgba(114,182,255,.58);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(49,136,237,.24),
+            rgba(49,136,237,.08)
+        );
+
+    box-shadow:
+        0 12px 35px rgba(49,136,237,.12);
+
+    transform:translateY(-2px);
+    animation-play-state:paused;
+}
+
+.dt-cta:hover::after{
+    transform:translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce){
+    .dt-cta,
+    .dt-cta::before{
+        animation:none;
+    }
+}
+
+
+/* =========================================================
+   SCROLL INDICATOR
+========================================================= */
+
+.dt-scroll{
+    position:absolute;
+
+    left:50%;
+    bottom:24px;
+
+    z-index:10;
+
+    transform:translateX(-50%);
+
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    color:rgba(255,255,255,.3);
+
+    font-size:8px;
+    font-weight:750;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+
+    transition:
+        opacity .5s ease;
+}
+
+.dt-scroll::after{
+    content:"";
+
+    width:26px;
+    height:1px;
+
+    background:rgba(255,255,255,.2);
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width:1100px){
+
+    .dt-title{
+        font-size:clamp(40px,6vw,64px);
+    }
+
+    .dt-output{
+        width:140px;
+    }
+
+    .dt-output:nth-child(1){
+        left:8%;
+    }
+
+    .dt-output:nth-child(2){
+        left:11%;
+    }
+
+    .dt-output:nth-child(4){
+        right:11%;
+    }
+
+    .dt-output:nth-child(5){
+        right:8%;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width:800px){
+
+    .dt-section{
+        min-height:690vh;
+    }
+
+    .dt-sticky{
+        min-height:600px;
+    }
+
+    .dt-brand{
+        top:23px;
+        left:20px;
+
+        font-size:9px;
+    }
+
+    .dt-progress{
+        top:24px;
+        right:20px;
+
+        font-size:8px;
+    }
+
+    .dt-progress-line{
+        width:45px;
+    }
+
+    .dt-intro{
+        left:20px;
+        top:22%;
+
+        width:calc(100% - 40px);
+
+        transform:translate3d(0,-10%,0);
+    }
+
+    .dt-kicker{
+        margin-bottom:16px;
+
+        font-size:9px;
+    }
+
+    .dt-title{
+        max-width:550px;
+
+        font-size:clamp(36px,9vw,58px);
+        line-height:.94;
+    }
+
+    .dt-intro-copy{
+        margin-top:19px;
+
+        max-width:480px;
+
+        font-size:13px;
+        line-height:1.65;
+    }
+
+    .dt-phases{
+        left:20px;
+        bottom:72px;
+
+        width:calc(100% - 40px);
+    }
+
+    .dt-phase h2{
+        font-size:23px;
+    }
+
+    .dt-phase p{
+        font-size:13px;
+        line-height:1.6;
+    }
+
+    .dt-system-label{
+        bottom:38px;
+
+        font-size:7px;
+    }
+
+    .dt-output{
+        width:125px;
+        min-height:43px;
+
+        padding:10px 11px;
+
+        border-radius:11px;
+    }
+
+    .dt-output:nth-child(1){
+        left:5%;
+        top:48%;
+    }
+
+    .dt-output:nth-child(2){
+        left:4%;
+        top:66%;
+    }
+
+    .dt-output:nth-child(3){
+        left:50%;
+        top:77%;
+    }
+
+    .dt-output:nth-child(4){
+        right:4%;
+        top:66%;
+    }
+
+    .dt-output:nth-child(5){
+        right:5%;
+        top:48%;
+    }
+
+    .dt-output-small{
+        font-size:7px;
+    }
+
+    .dt-output strong{
+        font-size:9px;
+    }
+
+    .dt-final{
+        width:calc(100% - 40px);
+    }
+
+    .dt-final h2{
+        font-size:clamp(36px,10vw,54px);
+    }
+
+    .dt-final p{
+        margin-top:19px;
+
+        font-size:13px;
+        line-height:1.65;
+    }
+
+    .dt-cta{
+        min-height:45px;
+
+        margin-top:23px;
+
+        padding:0 17px;
+
+        font-size:9px;
+    }
+
+    .dt-scroll{
+        bottom:19px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width:520px){
+
+    .dt-section{
+        min-height:650vh;
+    }
+
+    .dt-intro{
+        top:19%;
+    }
+
+    .dt-title{
+        font-size:clamp(32px,10.8vw,50px);
+    }
+
+    .dt-intro-copy{
+        max-width:390px;
+
+        font-size:12px;
+    }
+
+    .dt-phases{
+        bottom:65px;
+    }
+
+    .dt-phase-number{
+        margin-bottom:9px;
+
+        font-size:8px;
+    }
+
+    .dt-phase h2{
+        font-size:20px;
+    }
+
+    .dt-phase p{
+        margin-top:8px;
+
+        font-size:12px;
+    }
+
+    .dt-output{
+        width:108px;
+
+        padding:9px;
+
+        border-radius:10px;
+    }
+
+    .dt-output:nth-child(1){
+        left:2%;
+        top:47%;
+    }
+
+    .dt-output:nth-child(2){
+        left:2%;
+        top:64%;
+    }
+
+    .dt-output:nth-child(3){
+        top:75%;
+    }
+
+    .dt-output:nth-child(4){
+        right:2%;
+        top:64%;
+    }
+
+    .dt-output:nth-child(5){
+        right:2%;
+        top:47%;
+    }
+
+    .dt-output-small{
+        margin-bottom:3px;
+
+        font-size:6px;
+    }
+
+    .dt-output strong{
+        font-size:8px;
+    }
+
+    .dt-final h2{
+        font-size:clamp(32px,10.8vw,50px);
+    }
+
+    .dt-final p{
+        font-size:12px;
+    }
+}
+
+
+/* =========================================================
+   VERY SHORT SCREENS
+========================================================= */
+
+@media (max-height:650px) and (min-width:801px){
+
+    .dt-intro{
+        top:48%;
+    }
+
+    .dt-intro-copy{
+        margin-top:16px;
+
+        font-size:13px;
+    }
+
+    .dt-phases{
+        bottom:45px;
+    }
+
+    .dt-system-label{
+        bottom:22px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion:reduce){
+
+    html{
+        scroll-behavior:auto;
+    }
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ========================================================
+     DIGITAL TRANSFORMATION
+========================================================= -->
+
+<section
+    class="dt-section"
+    id="digital-transformation"
+>
+
+    <div class="dt-sticky">
+
+        <!-- Background -->
+        <div class="dt-bg"></div>
+
+
+        <!-- Canvas -->
+        <canvas id="dtCanvas"></canvas>
+
+
+        <!-- Brand -->
+        <div class="dt-brand">
+            <span class="dt-brand-dot"></span>
+            Innovexa Technologies
+        </div>
+
+
+        <!-- Progress -->
+        <div class="dt-progress">
+
+            <span id="dtProgressText">
+                00%
+            </span>
+
+            <div class="dt-progress-line">
+                <div
+                    class="dt-progress-fill"
+                    id="dtProgressFill"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INTRO
+        ================================================== -->
+
+        <div
+            class="dt-intro"
+            id="dtIntro"
+        >
+
+            <div class="dt-kicker">
+                The Digital Transformation
+            </div>
+
+            <h1 class="dt-title">
+
+                <span>
+                    FROM
+                </span>
+
+                <span class="accent">
+                    COMPLEX
+                </span>
+
+                <span>
+                    TO CONNECTED.
+                </span>
+
+            </h1>
+
+            <p class="dt-intro-copy">
+                Complexity shouldn't slow great ideas down.
+                We turn fragmented challenges into connected
+                digital experiences that move businesses forward.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             PHASES
+        ================================================== -->
+
+        <div
+            class="dt-phases"
+            id="dtPhases"
+        >
+
+            <article
+                class="dt-phase active"
+                data-phase="0"
+            >
+
+                <span class="dt-phase-number">
+                    01 — THE PROBLEM
+                </span>
+
+                <h2>
+                    Complexity hides the path forward.
+                </h2>
+
+                <p>
+                    Disconnected systems, unclear journeys and
+                    growing digital demands create friction
+                    where progress should begin.
+                </p>
+
+            </article>
+
+
+            <article
+                class="dt-phase"
+                data-phase="1"
+            >
+
+                <span class="dt-phase-number">
+                    02 — THE THINKING
+                </span>
+
+                <h2>
+                    We turn uncertainty into direction.
+                </h2>
+
+                <p>
+                    We connect the right ideas, people and
+                    technology around one clear digital vision.
+                </p>
+
+            </article>
+
+
+            <article
+                class="dt-phase"
+                data-phase="2"
+            >
+
+                <span class="dt-phase-number">
+                    03 — THE BUILD
+                </span>
+
+                <h2>
+                    Ideas become systems people can use.
+                </h2>
+
+                <p>
+                    Strategy becomes structure, structure becomes
+                    technology, and technology becomes something real.
+                </p>
+
+            </article>
+
+
+            <article
+                class="dt-phase"
+                data-phase="3"
+            >
+
+                <span class="dt-phase-number">
+                    04 — THE EXPERIENCE
+                </span>
+
+                <h2>
+                    Technology becomes simple and connected.
+                </h2>
+
+                <p>
+                    Every interaction has a purpose — creating
+                    digital experiences that feel natural,
+                    intelligent and ready to grow.
+                </p>
+
+            </article>
+
+        </div>
+
+
+        <!-- =================================================
+             SYSTEM LABEL
+        ================================================== -->
+
+        <div
+            class="dt-system-label"
+            id="dtSystemLabel"
+        >
+            COMPLEXITY → DIRECTION → STRUCTURE → EXPERIENCE
+        </div>
+
+
+        <!-- =================================================
+             OUTPUTS
+        ================================================== -->
+
+        <div
+            class="dt-outputs"
+            id="dtOutputs"
+        >
+
+            <div
+                class="dt-output"
+                data-output="mobile"
+            >
+
+                <span class="dt-output-small">
+                    Digital Product
+                </span>
+
+                <strong>
+                    MOBILE EXPERIENCE
+                </strong>
+
+            </div>
+
+
+            <div
+                class="dt-output"
+                data-output="web"
+            >
+
+                <span class="dt-output-small">
+                    Digital Product
+                </span>
+
+                <strong>
+                    WEB EXPERIENCE
+                </strong>
+
+            </div>
+
+
+            <div
+                class="dt-output"
+                data-output="digital"
+            >
+
+                <span class="dt-output-small">
+                    Ecosystem
+                </span>
+
+                <strong>
+                    DIGITAL EXPERIENCE
+                </strong>
+
+            </div>
+
+
+            <div
+                class="dt-output"
+                data-output="commerce"
+            >
+
+                <span class="dt-output-small">
+                    Commerce
+                </span>
+
+                <strong>
+                    E-COMMERCE
+                </strong>
+
+            </div>
+
+
+            <div
+                class="dt-output"
+                data-output="automation"
+            >
+
+                <span class="dt-output-small">
+                    Intelligence
+                </span>
+
+                <strong>
+                    INTELLIGENT AUTOMATION
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FINAL
+        ================================================== -->
+
+        <div
+            class="dt-final"
+            id="dtFinal"
+        >
+
+            <div class="dt-final-kicker">
+                THE OUTCOME
+            </div>
+
+            <h2>
+                MAKE <span>COMPLEXITY</span><br>
+                MOVE FORWARD.
+            </h2>
+
+            <p>
+                We connect ideas, technology and experiences
+                to create digital products built for what comes next.
+            </p>
+
+            <a
+                href="#portfolio"
+                class="dt-cta"
+            >
+                Explore our work
+            </a>
+
+        </div>
+
+
+        <!-- Scroll -->
+        <div
+            class="dt-scroll"
+            id="dtScroll"
+        >
+            Scroll to transform
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================
+     PORTFOLIO TARGET
+     Replace with your real Portfolio section.
+========================================================= -->
+
+<div
+    id="portfolio"
+    style="height:1px;"
+></div>
+
+
+<script>
+
+/* =========================================================
+   INNOVEXA TECHNOLOGIES
+   DIGITAL TRANSFORMATION ENGINE
+========================================================= */
+
+(function(){
+
+    "use strict";
+
+
+    /* ======================================================
+       ELEMENTS
+    ====================================================== */
+
+    const section =
+        document.getElementById("digital-transformation");
+
+    const canvas =
+        document.getElementById("dtCanvas");
+
+    const ctx =
+        canvas.getContext("2d", {
+            alpha:true,
+            desynchronized:true
+        });
+
+    const intro =
+        document.getElementById("dtIntro");
+
+    const phases =
+        [...document.querySelectorAll(".dt-phase")];
+
+    const outputs =
+        [...document.querySelectorAll(".dt-output")];
+
+    const finalPanel =
+        document.getElementById("dtFinal");
+
+    const systemLabel =
+        document.getElementById("dtSystemLabel");
+
+    const progressText =
+        document.getElementById("dtProgressText");
+
+    const progressFill =
+        document.getElementById("dtProgressFill");
+
+    const scrollIndicator =
+        document.getElementById("dtScroll");
+
+
+    /* ======================================================
+       STATE
+    ====================================================== */
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+
+    let targetProgress = 0;
+    let progress = 0;
+
+    let lastTime = performance.now();
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    let smoothMouseX = 0;
+    let smoothMouseY = 0;
+
+    let currentPhase = -1;
+
+    let reducedMotion =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+    let mobile =
+        window.innerWidth <= 800;
+
+    let tablet =
+        window.innerWidth > 800 &&
+        window.innerWidth <= 1100;
+
+
+    /* ======================================================
+       PARTICLE COUNTS
+    ====================================================== */
+
+    let particleCount =
+        reducedMotion
+            ? 90
+            : mobile
+                ? 135
+                : tablet
+                    ? 220
+                    : 380;
+
+
+    /* ======================================================
+       RANDOM
+       Deterministic random generator
+    ====================================================== */
+
+    let seed = 923847;
+
+    function random(){
+
+        seed =
+            (seed * 16807) %
+            2147483647;
+
+        return (
+            seed - 1
+        ) / 2147483646;
+    }
+
+
+    function randomRange(min,max){
+
+        return (
+            min +
+            random() *
+            (max - min)
+        );
+
+    }
+
+
+    /* ======================================================
+       PARTICLES
+    ====================================================== */
+
+    const particles = [];
+
+
+    function createParticles(){
+
+        particles.length = 0;
+
+        seed = 923847;
+
+        for(
+            let i = 0;
+            i < particleCount;
+            i++
+        ){
+
+            const angle =
+                random() *
+                Math.PI *
+                2;
+
+            const radius =
+                Math.pow(
+                    random(),
+                    .72
+                ) *
+                1.55;
+
+            const chaosX =
+                Math.cos(angle) *
+                radius;
+
+            const chaosY =
+                Math.sin(angle) *
+                radius;
+
+            const chaosZ =
+                randomRange(
+                    -.7,
+                    .7
+                );
+
+
+            /*
+             * Structured positions
+             */
+
+            const gridSize =
+                Math.ceil(
+                    Math.sqrt(
+                        particleCount
+                    )
+                );
+
+            const gx =
+                (
+                    i %
+                    gridSize
+                ) /
+                Math.max(
+                    1,
+                    gridSize - 1
+                ) -
+                .5;
+
+            const gy =
+                (
+                    Math.floor(
+                        i / gridSize
+                    ) /
+                    Math.max(
+                        1,
+                        gridSize - 1
+                    )
+                ) -
+                .5;
+
+
+            /*
+             * Architecture position
+             */
+
+            const architectureX =
+                gx *
+                randomRange(
+                    1.0,
+                    1.55
+                );
+
+            const architectureY =
+                gy *
+                randomRange(
+                    .7,
+                    1.25
+                );
+
+            const architectureZ =
+                randomRange(
+                    -.5,
+                    .5
+                );
+
+
+            /*
+             * Final core
+             */
+
+            const coreAngle =
+                random() *
+                Math.PI *
+                2;
+
+            const coreRadius =
+                Math.sqrt(
+                    random()
+                ) *
+                .42;
+
+            const finalX =
+                Math.cos(coreAngle) *
+                coreRadius;
+
+            const finalY =
+                Math.sin(coreAngle) *
+                coreRadius;
+
+            const finalZ =
+                randomRange(
+                    -.3,
+                    .3
+                );
+
+
+            particles.push({
+
+                chaosX,
+                chaosY,
+                chaosZ,
+
+                thinkingX:
+                    chaosX * .48,
+
+                thinkingY:
+                    chaosY * .48,
+
+                thinkingZ:
+                    chaosZ * .55,
+
+                buildX:
+                    architectureX,
+
+                buildY:
+                    architectureY,
+
+                buildZ:
+                    architectureZ,
+
+                finalX,
+                finalY,
+                finalZ,
+
+                size:
+                    randomRange(
+                        .65,
+                        1.65
+                    ),
+
+                alpha:
+                    randomRange(
+                        .3,
+                        .9
+                    ),
+
+                phase:
+                    random() *
+                    Math.PI *
+                    2,
+
+                speed:
+                    randomRange(
+                        .35,
+                        1.1
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    /* ======================================================
+       NETWORK NODES
+    ====================================================== */
+
+    const nodes = [];
+
+
+    function createNodes(){
+
+        nodes.length = 0;
+
+        const count =
+            mobile
+                ? 16
+                : tablet
+                    ? 24
+                    : 34;
+
+        seed = 741923;
+
+        for(
+            let i = 0;
+            i < count;
+            i++
+        ){
+
+            const angle =
+                random() *
+                Math.PI *
+                2;
+
+            const radius =
+                randomRange(
+                    .18,
+                    1.18
+                );
+
+            nodes.push({
+
+                x:
+                    Math.cos(angle) *
+                    radius,
+
+                y:
+                    Math.sin(angle) *
+                    radius *
+                    .65,
+
+                z:
+                    randomRange(
+                        -.5,
+                        .5
+                    ),
+
+                size:
+                    randomRange(
+                        .8,
+                        2.2
+                    )
+
+            });
+
+        }
+
+    }
+
+
+    /* ======================================================
+       RESIZE
+    ====================================================== */
+
+    function resize(){
+
+        width =
+            window.innerWidth;
+
+        height =
+            window.innerHeight;
+
+        dpr =
+            Math.min(
+                window.devicePixelRatio || 1,
+                2
+            );
+
+        canvas.width =
+            width * dpr;
+
+        canvas.height =
+            height * dpr;
+
+        canvas.style.width =
+            width + "px";
+
+        canvas.style.height =
+            height + "px";
+
+        ctx.setTransform(
+            dpr,
+            0,
+            0,
+            dpr,
+            0,
+            0
+        );
+
+        mobile =
+            width <= 800;
+
+        tablet =
+            width > 800 &&
+            width <= 1100;
+
+        particleCount =
+            reducedMotion
+                ? 90
+                : mobile
+                    ? 135
+                    : tablet
+                        ? 220
+                        : 380;
+
+        createParticles();
+        createNodes();
+
+    }
+
+
+    window.addEventListener(
+        "resize",
+        resize,
+        {
+            passive:true
+        }
+    );
+
+
+    /* ======================================================
+       MOUSE
+    ====================================================== */
+
+    window.addEventListener(
+        "mousemove",
+        function(e){
+
+            if(mobile){
+                return;
+            }
+
+            mouseX =
+                (
+                    e.clientX /
+                    width -
+                    .5
+                );
+
+            mouseY =
+                (
+                    e.clientY /
+                    height -
+                    .5
+                );
+
+        },
+        {
+            passive:true
+        }
+    );
+
+
+    window.addEventListener(
+        "mouseleave",
+        function(){
+
+            mouseX = 0;
+            mouseY = 0;
+
+        }
+    );
+
+
+    /* ======================================================
+       CLAMP
+    ====================================================== */
+
+    function clamp(
+        value,
+        min,
+        max
+    ){
+
+        return Math.max(
+            min,
+            Math.min(
+                max,
+                value
+            )
+        );
+
+    }
+
+
+    /* ======================================================
+       SMOOTHSTEP
+    ====================================================== */
+
+    function smoothstep(
+        edge0,
+        edge1,
+        value
+    ){
+
+        const x =
+            clamp(
+                (
+                    value -
+                    edge0
+                ) /
+                (
+                    edge1 -
+                    edge0
+                ),
+                0,
+                1
+            );
+
+        return (
+            x *
+            x *
+            (
+                3 -
+                2 *
+                x
+            )
+        );
+
+    }
+
+
+    /* ======================================================
+       LERP
+    ====================================================== */
+
+    function lerp(
+        a,
+        b,
+        t
+    ){
+
+        return (
+            a +
+            (
+                b -
+                a
+            ) *
+            t
+        );
+
+    }
+
+
+    /* ======================================================
+       SCROLL PROGRESS
+       Large readable zones.
+    ====================================================== */
+
+    function updateScroll(){
+
+        const rect =
+            section.getBoundingClientRect();
+
+        const scrollable =
+            section.offsetHeight -
+            window.innerHeight;
+
+        if(scrollable <= 0){
+
+            targetProgress = 0;
+
+            return;
+
+        }
+
+        targetProgress =
+            clamp(
+                -rect.top /
+                scrollable,
+                0,
+                1
+            );
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateScroll,
+        {
+            passive:true
+        }
+    );
+
+
+    /* ======================================================
+       PROJECT 3D
+    ====================================================== */
+
+    function project(
+        x,
+        y,
+        z,
+        cameraZ,
+        scale
+    ){
+
+        const depth =
+            Math.max(
+                .25,
+                cameraZ -
+                z
+            );
+
+        const perspective =
+            cameraZ /
+            depth;
+
+        return {
+
+            x:
+                width * .5 +
+                x *
+                scale *
+                perspective,
+
+            y:
+                height * .52 +
+                y *
+                scale *
+                perspective,
+
+            scale:
+                perspective
+
+        };
+
+    }
+
+
+    /* ======================================================
+       DRAW GLOW DOT
+    ====================================================== */
+
+    function drawDot(
+        x,
+        y,
+        radius,
+        alpha
+    ){
+
+        if(
+            x < -30 ||
+            x > width + 30 ||
+            y < -30 ||
+            y > height + 30
+        ){
+
+            return;
+
+        }
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            "rgba(105,175,255," +
+            alpha +
+            ")";
+
+        ctx.fill();
+
+    }
+
+
+    /* ======================================================
+       CHAOS
+    ====================================================== */
+
+    function drawChaos(
+        intensity,
+        time
+    ){
+
+        const cameraZ = 3.4;
+
+        const scale =
+            Math.min(
+                width,
+                height
+            ) *
+            .40;
+
+        for(
+            let i = 0;
+            i < particles.length;
+            i++
+        ){
+
+            const p =
+                particles[i];
+
+            const driftX =
+                Math.sin(
+                    time *
+                    .00025 *
+                    p.speed +
+                    p.phase
+                ) *
+                .045;
+
+            const driftY =
+                Math.cos(
+                    time *
+                    .00022 *
+                    p.speed +
+                    p.phase
+                ) *
+                .045;
+
+            const point =
+                project(
+                    p.chaosX +
+                    driftX,
+
+                    p.chaosY +
+                    driftY,
+
+                    p.chaosZ,
+
+                    cameraZ,
+                    scale
+                );
+
+            const alpha =
+                p.alpha *
+                intensity *
+                .62;
+
+            drawDot(
+                point.x,
+                point.y,
+                p.size *
+                point.scale,
+                alpha
+            );
+
+        }
+
+    }
+
+
+    /* ======================================================
+       NETWORK
+    ====================================================== */
+
+    function drawNetwork(
+        strength,
+        time
+    ){
+
+        const cameraZ = 3.0;
+
+        const scale =
+            Math.min(
+                width,
+                height
+            ) *
+            .46;
+
+        const projected = [];
+
+
+        for(
+            let i = 0;
+            i < nodes.length;
+            i++
+        ){
+
+            const n =
+                nodes[i];
+
+            const wave =
+                Math.sin(
+                    time *
+                    .0005 +
+                    i
+                ) *
+                .025;
+
+            projected.push(
+                project(
+                    n.x + wave,
+                    n.y,
+                    n.z,
+                    cameraZ,
+                    scale
+                )
+            );
+
+        }
+
+
+        /*
+         * Connections
+         */
+
+        for(
+            let i = 0;
+            i < projected.length;
+            i++
+        ){
+
+            for(
+                let j = i + 1;
+                j < projected.length;
+                j++
+            ){
+
+                const a =
+                    projected[i];
+
+                const b =
+                    projected[j];
+
+                const dx =
+                    a.x - b.x;
+
+                const dy =
+                    a.y - b.y;
+
+                const distance =
+                    Math.sqrt(
+                        dx * dx +
+                        dy * dy
+                    );
+
+                const maxDistance =
+                    mobile
+                        ? 105
+                        : 145;
+
+                if(
+                    distance >
+                    maxDistance
+                ){
+
+                    continue;
+
+                }
+
+                const alpha =
+                    (
+                        1 -
+                        distance /
+                        maxDistance
+                    ) *
+                    strength *
+                    .22;
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    a.x,
+                    a.y
+                );
+
+                ctx.lineTo(
+                    b.x,
+                    b.y
+                );
+
+                ctx.strokeStyle =
+                    "rgba(76,153,230," +
+                    alpha +
+                    ")";
+
+                ctx.lineWidth =
+                    .65;
+
+                ctx.stroke();
+
+            }
+
+        }
+
+
+        /*
+         * Nodes
+         */
+
+        for(
+            let i = 0;
+            i < projected.length;
+            i++
+        ){
+
+            const point =
+                projected[i];
+
+            drawDot(
+                point.x,
+                point.y,
+                nodes[i].size *
+                point.scale,
+                .42 *
+                strength
+            );
+
+        }
+
+    }
+
+
+    /* ======================================================
+       STREAMS
+    ====================================================== */
+
+    function drawStreams(
+        strength,
+        time
+    ){
+
+        const centerX =
+            width * .5;
+
+        const centerY =
+            height * .52;
+
+        const maxRadius =
+            Math.min(
+                width,
+                height
+            ) *
+            .38;
+
+        const streamCount =
+            mobile
+                ? 7
+                : 13;
+
+        for(
+            let i = 0;
+            i < streamCount;
+            i++
+        ){
+
+            const angle =
+                (
+                    i /
+                    streamCount
+                ) *
+                Math.PI *
+                2;
+
+            const wobble =
+                Math.sin(
+                    time *
+                    .0004 +
+                    i
+                ) *
+                .07;
+
+            const startRadius =
+                maxRadius *
+                (
+                    .5 +
+                    wobble
+                );
+
+            const endRadius =
+                maxRadius *
+                .10;
+
+            const sx =
+                centerX +
+                Math.cos(angle) *
+                startRadius;
+
+            const sy =
+                centerY +
+                Math.sin(angle) *
+                startRadius *
+                .62;
+
+            const ex =
+                centerX +
+                Math.cos(angle) *
+                endRadius;
+
+            const ey =
+                centerY +
+                Math.sin(angle) *
+                endRadius *
+                .62;
+
+            const cp1x =
+                centerX +
+                Math.cos(
+                    angle +
+                    .28
+                ) *
+                startRadius *
+                .56;
+
+            const cp1y =
+                centerY +
+                Math.sin(
+                    angle +
+                    .28
+                ) *
+                startRadius *
+                .34;
+
+            const cp2x =
+                centerX +
+                Math.cos(
+                    angle -
+                    .2
+                ) *
+                maxRadius *
+                .30;
+
+            const cp2y =
+                centerY +
+                Math.sin(
+                    angle -
+                    .2
+                ) *
+                maxRadius *
+                .20;
+
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                sx,
+                sy
+            );
+
+            ctx.bezierCurveTo(
+                cp1x,
+                cp1y,
+                cp2x,
+                cp2y,
+                ex,
+                ey
+            );
+
+            ctx.strokeStyle =
+                "rgba(64,146,231," +
+                (
+                    .16 *
+                    strength
+                ) +
+                ")";
+
+            ctx.lineWidth =
+                mobile
+                    ? .55
+                    : .85;
+
+            ctx.stroke();
+
+        }
+
+    }
+
+
+    /* ======================================================
+       ARCHITECTURE
+    ====================================================== */
+
+    function drawArchitecture(
+        strength,
+        time
+    ){
+
+        const cameraZ = 2.7;
+
+        const scale =
+            Math.min(
+                width,
+                height
+            ) *
+            .42;
+
+        const projected = [];
+
+
+        for(
+            let i = 0;
+            i < particles.length;
+            i++
+        ){
+
+            const p =
+                particles[i];
+
+            const pulse =
+                Math.sin(
+                    time *
+                    .0005 +
+                    p.phase
+                ) *
+                .008;
+
+            projected.push(
+                project(
+                    p.buildX +
+                    pulse,
+
+                    p.buildY,
+
+                    p.buildZ,
+
+                    cameraZ,
+                    scale
+                )
+            );
+
+        }
+
+
+        /*
+         * Draw structured connections
+         */
+
+        const connectionDistance =
+            mobile
+                ? 75
+                : 105;
+
+        for(
+            let i = 0;
+            i < projected.length;
+            i++
+        ){
+
+            const a =
+                projected[i];
+
+            for(
+                let j = i + 1;
+                j < projected.length;
+                j++
+            ){
+
+                const b =
+                    projected[j];
+
+                const dx =
+                    a.x - b.x;
+
+                const dy =
+                    a.y - b.y;
+
+                const distance =
+                    Math.sqrt(
+                        dx * dx +
+                        dy * dy
+                    );
+
+                if(
+                    distance >
+                    connectionDistance
+                ){
+
+                    continue;
+
+                }
+
+                const alpha =
+                    (
+                        1 -
+                        distance /
+                        connectionDistance
+                    ) *
+                    strength *
+                    .18;
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    a.x,
+                    a.y
+                );
+
+                ctx.lineTo(
+                    b.x,
+                    b.y
+                );
+
+                ctx.strokeStyle =
+                    "rgba(78,158,239," +
+                    alpha +
+                    ")";
+
+                ctx.lineWidth =
+                    .55;
+
+                ctx.stroke();
+
+            }
+
+        }
+
+
+        /*
+         * Draw particles
+         */
+
+        for(
+            let i = 0;
+            i < projected.length;
+            i++
+        ){
+
+            const p =
+                particles[i];
+
+            const point =
+                projected[i];
+
+            drawDot(
+                point.x,
+                point.y,
+                p.size *
+                point.scale,
+                p.alpha *
+                .72 *
+                strength
+            );
+
+        }
+
+    }
+
+
+    /* ======================================================
+       OUTPUT CONNECTIONS
+    ====================================================== */
+
+    function drawOutputConnections(
+        strength
+    ){
+
+        if(
+            strength <= .01
+        ){
+
+            return;
+
+        }
+
+        const centerX =
+            width * .5;
+
+        const centerY =
+            height * .52;
+
+
+        /*
+         * Approximate output centers.
+         */
+
+        const outputPositions = [
+
+            {
+                x:
+                    width *
+                    (
+                        mobile
+                            ? .17
+                            : .205
+                    ),
+
+                y:
+                    height *
+                    (
+                        mobile
+                            ? .50
+                            : .35
+                    )
+            },
+
+            {
+                x:
+                    width *
+                    (
+                        mobile
+                            ? .17
+                            : .295
+                    ),
+
+                y:
+                    height *
+                    (
+                        mobile
+                            ? .68
+                            : .69
+                    )
+            },
+
+            {
+                x:
+                    width *
+                    .50,
+
+                y:
+                    height *
+                    (
+                        mobile
+                            ? .77
+                            : .84
+                    )
+            },
+
+            {
+                x:
+                    width *
+                    (
+                        mobile
+                            ? .83
+                            : .705
+                    ),
+
+                y:
+                    height *
+                    (
+                        mobile
+                            ? .68
+                            : .69
+                    )
+            },
+
+            {
+                x:
+                    width *
+                    (
+                        mobile
+                            ? .83
+                            : .795
+                    ),
+
+                y:
+                    height *
+                    (
+                        mobile
+                            ? .50
+                            : .35
+                    )
+            }
+
+        ];
+
+
+        outputPositions.forEach(
+            function(point,index){
+
+                const dx =
+                    point.x -
+                    centerX;
+
+                const dy =
+                    point.y -
+                    centerY;
+
+                const bend =
+                    mobile
+                        ? .05
+                        : .12;
+
+                const cp1x =
+                    centerX +
+                    dx *
+                    .35 -
+                    dy *
+                    bend;
+
+                const cp1y =
+                    centerY +
+                    dy *
+                    .35 +
+                    dx *
+                    bend;
+
+                const cp2x =
+                    centerX +
+                    dx *
+                    .70 -
+                    dy *
+                    bend;
+
+                const cp2y =
+                    centerY +
+                    dy *
+                    .70 +
+                    dx *
+                    bend;
+
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    centerX,
+                    centerY
+                );
+
+                ctx.bezierCurveTo(
+                    cp1x,
+                    cp1y,
+                    cp2x,
+                    cp2y,
+                    point.x,
+                    point.y
+                );
+
+                ctx.strokeStyle =
+                    "rgba(80,160,244," +
+                    (
+                        .30 *
+                        strength
+                    ) +
+                    ")";
+
+                ctx.lineWidth =
+                    1;
+
+                ctx.stroke();
+
+
+                /*
+                 * Moving signal
+                 */
+
+                const signal =
+                    (
+                        performance.now() *
+                        .00025 +
+                        index *
+                        .17
+                    ) %
+                    1;
+
+                const t =
+                    signal;
+
+                const x =
+                    cubic(
+                        centerX,
+                        cp1x,
+                        cp2x,
+                        point.x,
+                        t
+                    );
+
+                const y =
+                    cubic(
+                        centerY,
+                        cp1y,
+                        cp2y,
+                        point.y,
+                        t
+                    );
+
+                drawDot(
+                    x,
+                    y,
+                    1.8,
+                    .8 *
+                    strength
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ======================================================
+       CUBIC
+    ====================================================== */
+
+    function cubic(
+        p0,
+        p1,
+        p2,
+        p3,
+        t
+    ){
+
+        const u =
+            1 - t;
+
+        return (
+            u*u*u*p0 +
+            3*u*u*t*p1 +
+            3*u*t*t*p2 +
+            t*t*t*p3
+        );
+
+    }
+
+
+    /* ======================================================
+       CORE
+    ====================================================== */
+
+    function drawCore(
+        strength,
+        time
+    ){
+
+        const centerX =
+            width * .5;
+
+        const centerY =
+            height * .52;
+
+        const minDimension =
+            Math.min(
+                width,
+                height
+            );
+
+        const radius =
+            minDimension *
+            (
+                .075 +
+                .018 *
+                Math.sin(
+                    time *
+                    .001
+                )
+            ) *
+            strength;
+
+
+        /*
+         * Outer glow
+         */
+
+        if(
+            strength > .02
+        ){
+
+            const gradient =
+                ctx.createRadialGradient(
+                    centerX,
+                    centerY,
+                    0,
+                    centerX,
+                    centerY,
+                    radius * 4
+                );
+
+            gradient.addColorStop(
+                0,
+                "rgba(49,136,237," +
+                (.17 * strength) +
+                ")"
+            );
+
+            gradient.addColorStop(
+                .35,
+                "rgba(49,136,237," +
+                (.055 * strength) +
+                ")"
+            );
+
+            gradient.addColorStop(
+                1,
+                "rgba(49,136,237,0)"
+            );
+
+            ctx.beginPath();
+
+            ctx.arc(
+                centerX,
+                centerY,
+                radius * 4,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle =
+                gradient;
+
+            ctx.fill();
+
+        }
+
+
+        /*
+         * Core ring
+         */
+
+        ctx.beginPath();
+
+        ctx.arc(
+            centerX,
+            centerY,
+            radius * 1.75,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.strokeStyle =
+            "rgba(105,175,255," +
+            (.26 * strength) +
+            ")";
+
+        ctx.lineWidth =
+            1;
+
+        ctx.stroke();
+
+
+        /*
+         * Core
+         */
+
+        const gradient =
+            ctx.createRadialGradient(
+                centerX -
+                radius * .25,
+                centerY -
+                radius * .25,
+                0,
+
+                centerX,
+                centerY,
+                radius
+            );
+
+        gradient.addColorStop(
+            0,
+            "rgba(255,255,255," +
+            (.95 * strength) +
+            ")"
+        );
+
+        gradient.addColorStop(
+            .22,
+            "rgba(114,182,255," +
+            (.9 * strength) +
+            ")"
+        );
+
+        gradient.addColorStop(
+            1,
+            "rgba(23,103,199," +
+            (.5 * strength) +
+            ")"
+        );
+
+        ctx.beginPath();
+
+        ctx.arc(
+            centerX,
+            centerY,
+            radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            gradient;
+
+        ctx.fill();
+
+    }
+
+
+    /* ======================================================
+       DRAW
+    ====================================================== */
+
+    function draw(time){
+
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        /*
+         * Mouse smoothing
+         */
+
+        smoothMouseX =
+            lerp(
+                smoothMouseX,
+                mouseX,
+                mobile
+                    ? .035
+                    : .055
+            );
+
+        smoothMouseY =
+            lerp(
+                smoothMouseY,
+                mouseY,
+                mobile
+                    ? .035
+                    : .055
+            );
+
+
+        /*
+         * Progress mapping
+         *
+         * 0.00 — 0.16
+         * Intro / Chaos
+         *
+         * 0.16 — 0.36
+         * Thinking
+         *
+         * 0.36 — 0.60
+         * Structure
+         *
+         * 0.60 — 0.78
+         * Build
+         *
+         * 0.78 — 1.00
+         * Experience / Final
+         */
+
+        const chaos =
+            1 -
+            smoothstep(
+                .08,
+                .24,
+                progress
+            );
+
+        const thinking =
+            smoothstep(
+                .13,
+                .30,
+                progress
+            ) *
+            (
+                1 -
+                smoothstep(
+                    .32,
+                    .48,
+                    progress
+                )
+            );
+
+        const structure =
+            smoothstep(
+                .28,
+                .47,
+                progress
+            ) *
+            (
+                1 -
+                smoothstep(
+                    .64,
+                    .78,
+                    progress
+                )
+            );
+
+        const build =
+            smoothstep(
+                .53,
+                .69,
+                progress
+            ) *
+            (
+                1 -
+                smoothstep(
+                    .77,
+                    .88,
+                    progress
+                )
+            );
+
+        const finalStrength =
+            smoothstep(
+                .78,
+                .94,
+                progress
+            );
+
+
+        /*
+         * Camera movement
+         */
+
+        const cameraZ =
+            lerp(
+                3.55,
+                2.45,
+                smoothstep(
+                    .18,
+                    .74,
+                    progress
+                )
+            );
+
+
+        /*
+         * Background particles
+         */
+
+        drawChaos(
+            chaos,
+            time
+        );
+
+
+        /*
+         * Network
+         */
+
+        drawNetwork(
+            thinking,
+            time
+        );
+
+
+        /*
+         * Streams
+         */
+
+        drawStreams(
+            Math.max(
+                thinking,
+                build
+            ),
+            time
+        );
+
+
+        /*
+         * Architecture
+         */
+
+        drawArchitecture(
+            structure +
+            build,
+            time
+        );
+
+
+        /*
+         * Core
+         */
+
+        drawCore(
+            Math.max(
+                build,
+                finalStrength
+            ),
+            time
+        );
+
+
+        /*
+         * Final connections
+         */
+
+        drawOutputConnections(
+            finalStrength
+        );
+
+
+        /*
+         * Subtle mouse parallax overlay
+         */
+
+        if(
+            !mobile &&
+            !reducedMotion
+        ){
+
+            const px =
+                smoothMouseX *
+                8 *
+                (
+                    .4 +
+                    finalStrength
+                );
+
+            const py =
+                smoothMouseY *
+                5 *
+                (
+                    .4 +
+                    finalStrength
+                );
+
+            /*
+             * Canvas itself cannot be shifted through
+             * transform without affecting crispness,
+             * so the parallax is intentionally subtle
+             * through a translucent center highlight.
+             */
+
+            const glow =
+                ctx.createRadialGradient(
+                    width * .5 + px,
+                    height * .52 + py,
+                    0,
+                    width * .5 + px,
+                    height * .52 + py,
+                    Math.min(
+                        width,
+                        height
+                    ) * .38
+                );
+
+            glow.addColorStop(
+                0,
+                "rgba(65,150,240,.025)"
+            );
+
+            glow.addColorStop(
+                1,
+                "rgba(65,150,240,0)"
+            );
+
+            ctx.fillStyle =
+                glow;
+
+            ctx.fillRect(
+                0,
+                0,
+                width,
+                height
+            );
+
+        }
+
+    }
+
+
+    /* ======================================================
+       UPDATE UI
+    ====================================================== */
+
+    function updateUI(){
+
+        const percentage =
+            Math.round(
+                progress *
+                100
+            );
+
+        progressText.textContent =
+            String(
+                percentage
+            ).padStart(
+                2,
+                "0"
+            ) +
+            "%";
+
+        progressFill.style.width =
+            percentage +
+            "%";
+
+
+        /*
+         * Intro fades gradually.
+         */
+
+        const introOpacity =
+            1 -
+            smoothstep(
+                .12,
+                .27,
+                progress
+            );
+
+        const introScale =
+            1 -
+            smoothstep(
+                .08,
+                .30,
+                progress
+            ) *
+            .035;
+
+        const introY =
+            smoothstep(
+                .08,
+                .30,
+                progress
+            ) *
+            -22;
+
+        intro.style.opacity =
+            introOpacity;
+
+        intro.style.transform =
+            "translate3d(0,calc(-50% + " +
+            introY +
+            "px),0) scale(" +
+            introScale +
+            ")";
+
+
+        /*
+         * Determine phase.
+         *
+         * Long zones deliberately leave enough
+         * time/scroll distance to read.
+         */
+
+        let phase = 0;
+
+        if(
+            progress >= .30 &&
+            progress < .49
+        ){
+
+            phase = 1;
+
+        }
+        else if(
+            progress >= .49 &&
+            progress < .68
+        ){
+
+            phase = 2;
+
+        }
+        else if(
+            progress >= .68 &&
+            progress < .84
+        ){
+
+            phase = 3;
+
+        }
+
+
+        if(
+            phase !== currentPhase
+        ){
+
+            currentPhase =
+                phase;
+
+            phases.forEach(
+                function(item,index){
+
+                    item.classList.toggle(
+                        "active",
+                        index === phase
+                    );
+
+                }
+            );
+
+        }
+
+
+        /*
+         * System label
+         */
+
+        if(
+            progress < .28
+        ){
+
+            systemLabel.textContent =
+                "COMPLEXITY → DIRECTION";
+
+        }
+        else if(
+            progress < .49
+        ){
+
+            systemLabel.textContent =
+                "DIRECTION → STRUCTURE";
+
+        }
+        else if(
+            progress < .68
+        ){
+
+            systemLabel.textContent =
+                "STRUCTURE → BUILD";
+
+        }
+        else if(
+            progress < .84
+        ){
+
+            systemLabel.textContent =
+                "BUILD → EXPERIENCE";
+
+        }
+        else{
+
+            systemLabel.textContent =
+                "ONE SYSTEM → MULTIPLE POSSIBILITIES";
+
+        }
+
+
+        /*
+         * Outputs appear slowly.
+         */
+
+        const outputsVisible =
+            smoothstep(
+                .69,
+                .82,
+                progress
+            );
+
+        outputs.forEach(
+            function(output,index){
+
+                const individualDelay =
+                    index *
+                    .035;
+
+                const local =
+                    clamp(
+                        (
+                            outputsVisible -
+                            individualDelay
+                        ) /
+                        .86,
+                        0,
+                        1
+                    );
+
+                output.classList.toggle(
+                    "visible",
+                    local > .35
+                );
+
+            }
+        );
+
+
+        /*
+         * Final panel.
+         */
+
+        const finalVisible =
+            progress >= .87;
+
+        finalPanel.classList.toggle(
+            "visible",
+            finalVisible
+        );
+
+
+        /*
+         * Scroll hint.
+         */
+
+        const scrollOpacity =
+            1 -
+            smoothstep(
+                .04,
+                .14,
+                progress
+            );
+
+        scrollIndicator.style.opacity =
+            scrollOpacity;
+
+
+        /*
+         * Hide lower information when final
+         * transformation takes over.
+         */
+
+        if(
+            finalVisible
+        ){
+
+            phases.forEach(
+                function(item){
+
+                    item.style.opacity =
+                        "0";
+
+                }
+            );
+
+            systemLabel.style.opacity =
+                "0";
+
+        }
+        else{
+
+            phases.forEach(
+                function(item,index){
+
+                    item.style.opacity =
+                        index === currentPhase
+                            ? ""
+                            : "";
+
+                }
+            );
+
+            systemLabel.style.opacity =
+                "1";
+
+        }
+
+    }
+
+
+    /* ======================================================
+       ANIMATION LOOP
+    ====================================================== */
+
+    function animate(time){
+
+        const delta =
+            Math.min(
+                40,
+                time -
+                lastTime
+            );
+
+        lastTime =
+            time;
+
+
+        /*
+         * Smooth scroll interpolation.
+         *
+         * Slow enough for cinematic motion but
+         * responsive enough to feel natural.
+         */
+
+        const smoothing =
+            reducedMotion
+                ? .18
+                : .065;
+
+        progress =
+            lerp(
+                progress,
+                targetProgress,
+                smoothing
+            );
+
+
+        if(
+            Math.abs(
+                progress -
+                targetProgress
+            ) < .0001
+        ){
+
+            progress =
+                targetProgress;
+
+        }
+
+
+        updateUI();
+
+        draw(time);
+
+        requestAnimationFrame(
+            animate
+        );
+
+    }
+
+
+    /* ======================================================
+       INITIALIZE
+    ====================================================== */
+
+    resize();
+
+    updateScroll();
+
+    progress =
+        targetProgress;
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    /* ======================================================
+       ACCESSIBILITY / REDUCED MOTION
+    ====================================================== */
+
+    const motionQuery =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        );
+
+    function handleMotionChange(event){
+
+        reducedMotion =
+            event.matches;
+
+        resize();
+
+    }
+
+    if(
+        motionQuery.addEventListener
+    ){
+
+        motionQuery.addEventListener(
+            "change",
+            handleMotionChange
+        );
+
+    }
+    else if(
+        motionQuery.addListener
+    ){
+
+        motionQuery.addListener(
+            handleMotionChange
+        );
+
+    }
+
+
+    /* ======================================================
+       LINK HANDLING
+    ====================================================== */
+
+    const cta =
+        document.querySelector(
+            ".dt-cta"
+        );
+
+    if(cta){
+
+        cta.addEventListener(
+            "click",
+            function(e){
+
+                const target =
+                    document.getElementById(
+                        "portfolio"
+                    );
+
+                if(
+                    target
+                ){
+
+                    e.preventDefault();
+
+                    target.scrollIntoView({
+                        behavior:
+                            reducedMotion
+                                ? "auto"
+                                : "smooth"
+                    });
+
+                }
+
+            }
+        );
+
+    }
+
+})();
+
+</script>
+
+</body>
+</html>
