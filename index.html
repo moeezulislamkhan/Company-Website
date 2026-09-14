@@ -183,13 +183,16 @@
     padding:12px 25px;
     font-size:14px;
     font-weight:700;
-    color:#04101f;
-    background:linear-gradient(120deg, var(--blue-2), var(--blue-1), var(--blue-2));
+    color:#06111d;
+    background:linear-gradient(135deg, #8fe8ff 0%, #4ba2ff 42%, #5b6dff 100%);
     background-size:200% auto;
     background-position:0% 50%;
+    border:1px solid rgba(255,255,255,0.28);
     border-radius:999px;
-    box-shadow:0 8px 22px -6px var(--blue-glow), inset 0 1px 0 rgba(255,255,255,0.35);
-    transition:transform .25s ease, box-shadow .25s ease, background-position .6s ease;
+    box-shadow:0 10px 28px -12px rgba(94,109,255,0.8), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -4px 14px rgba(34,76,184,0.38);
+    transform-style:preserve-3d;
+    transform:perspective(900px) rotateX(0deg) rotateY(0deg);
+    transition:transform .25s ease, box-shadow .25s ease, background-position .6s ease, border-color .25s ease;
     white-space:nowrap;
     overflow:hidden;
     animation:btnPulse 3.2s ease-in-out infinite;
@@ -211,15 +214,22 @@
   }
 
   .btn-premium:hover{
-    transform:translateY(-2px);
+    transform:perspective(900px) translateY(-2px) rotateX(9deg) rotateY(-10deg) scale(1.01);
     background-position:100% 50%;
-    box-shadow:0 14px 32px -6px var(--blue-glow), inset 0 1px 0 rgba(255,255,255,0.5);
+    border-color:rgba(255,255,255,0.5);
+    box-shadow:0 16px 34px -12px rgba(91,109,255,0.9), inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -4px 16px rgba(34,76,184,0.44);
     animation-play-state:paused;
   }
 
   @keyframes btnPulse{
-    0%, 100%{ box-shadow:0 8px 22px -6px var(--blue-glow), inset 0 1px 0 rgba(255,255,255,0.35); }
-    50%{ box-shadow:0 8px 30px -2px var(--blue-glow), inset 0 1px 0 rgba(255,255,255,0.4); }
+    0%, 100%{
+      transform:perspective(900px) rotateX(0deg) rotateY(-4deg) translateY(0);
+      box-shadow:0 10px 28px -12px rgba(94,109,255,0.8), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -4px 14px rgba(34,76,184,0.38);
+    }
+    50%{
+      transform:perspective(900px) rotateX(8deg) rotateY(4deg) translateY(-2px);
+      box-shadow:0 16px 36px -10px rgba(94,109,255,0.95), inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -4px 16px rgba(34,76,184,0.44);
+    }
   }
 
   .btn-premium svg{width:14px;height:14px;flex-shrink:0;position:relative;z-index:2;transition:transform .3s ease;}
@@ -228,6 +238,41 @@
 
   /* mobile CTA hidden on desktop by default — prevents duplicate button */
   .mobile-cta{display:none;}
+
+  .back-to-top{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    width:52px;
+    height:52px;
+    border:none;
+    border-radius:50%;
+    background:linear-gradient(135deg, #8fe8ff 0%, #4ba2ff 42%, #5b6dff 100%);
+    color:#04121c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 14px 30px -14px rgba(91,109,255,0.8), inset 0 1px 0 rgba(255,255,255,0.48), inset 0 -4px 12px rgba(22,80,170,0.4);
+    opacity:0;
+    pointer-events:none;
+    cursor:pointer;
+    transform:translateY(18px) scale(0.92) perspective(600px) rotateX(22deg);
+    transition:opacity .25s ease, transform .25s ease, box-shadow .25s ease;
+    z-index:100;
+  }
+
+  .back-to-top.visible{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0) scale(1) perspective(600px) rotateX(0deg);
+  }
+
+  .back-to-top:hover{
+    transform:translateY(-4px) scale(1.03) perspective(600px) rotateX(0deg) rotateY(-8deg);
+    box-shadow:0 18px 36px -14px rgba(91,109,255,0.9), inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -4px 12px rgba(22,80,170,0.42);
+  }
+
+  .back-to-top svg{width:20px;height:20px;}
 
   /* ---- hamburger ---- */
   .menu-toggle{
@@ -5126,21 +5171,21 @@
     </a>
 
     <nav class="main-nav" id="mainNav">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#service">Service</a>
-      <a href="#portfolio">Portfolio</a>
-      <a href="#blog">Blog</a>
-      <a href="#industries">Industries</a>
-      <a href="#contact" class="btn-premium mobile-cta">
-        
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Service</a>
+      <a href="industries.html">Industries</a>
+      <a href="projects.html">Portfolio</a>
+      <a href="reviews.html">Blog</a>
+      <a href="contact.html" class="btn-premium mobile-cta">
+
         <span>Get In Touch</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </nav>
 
     <div class="header-actions">
-      <a href="#contact" class="btn-premium desktop-cta">
+      <a href="contact.html" class="btn-premium desktop-cta">
         <span>Get In Touch</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
@@ -14603,7 +14648,7 @@
     </div>
 
     <div class="footer-col">
-      <h4>Engage</h4>
+      <h4><a href="contact.html">Engage</a></h4>
       <ul class="footer-contact">
         <li>
           <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -14632,7 +14677,14 @@
   </div>
 </footer>
 
+<button type="button" id="backToTop" class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="12" y1="19" x2="12" y2="5"></line>
+    <polyline points="5 12 12 5 19 12"></polyline>
+  </svg>
+</button>
 
+<script src="js/script.js"></script>
 <script>
   const menuToggle = document.getElementById('menuToggle');
   const mainNav = document.getElementById('mainNav');
