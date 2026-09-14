@@ -118,13 +118,9 @@
 
     if (alreadyShown) {
 
-        if (splash.parentNode) {
-
-            splash.parentNode.removeChild(
-                splash
-            );
-
-        }
+        window.location.replace(
+            'index.html'
+        );
 
         return;
 
@@ -200,8 +196,12 @@
 
                 }
 
+                window.location.replace(
+                    'index.html'
+                );
+
             },
-            850
+            500
         );
 
     }
