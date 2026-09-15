@@ -45,6 +45,26 @@
       shadow.appendChild(header.cloneNode(true));
       footerShadow.appendChild(footer.cloneNode(true));
 
+      var socialProfiles = {
+        Facebook: 'https://www.facebook.com/share/14mkxaJNSre/',
+        Instagram: 'https://www.instagram.com/innovexatechnologies_01?igsh=MWFoNDU5NzIyZDdqdg==',
+        LinkedIn: 'https://www.linkedin.com/company/innovexa-digital/',
+        X: 'https://x.com/innovexatech_01',
+        TikTok: 'https://vt.tiktok.com/ZSVKH9Ssy/',
+        WhatsApp: 'https://wa.me/923247943761',
+        GitHub: 'https://github.com/innovexatechnologies'
+      };
+      footerShadow.querySelectorAll('.social-icons a').forEach(function (link) {
+        var label = link.getAttribute('aria-label');
+        if (label === 'Twitter / X') label = 'X';
+        if (label === 'YouTube') label = 'GitHub';
+        if (socialProfiles[label]) {
+          link.href = socialProfiles[label];
+          link.setAttribute('aria-label', label);
+          link.title = label;
+        }
+      });
+
       shadow.querySelectorAll('a[href]').forEach(function (link) {
         var href = link.getAttribute('href');
         if (href && href.charAt(0) === '#') {
