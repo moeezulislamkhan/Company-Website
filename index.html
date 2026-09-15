@@ -5417,7 +5417,7 @@
          VIDEO INDICATOR
          =================================================== -->
 
-    <div class="hero-video-control">
+    <div class="hero-video-control" style="display:none;">
 
 
         <div class="video-progress" id="videoProgress">
@@ -8496,7 +8496,7 @@
 
 
         <!-- Progress -->
-        <div class="dt-progress">
+        <div class="dt-progress" style="display:none;">
 
             <span id="dtProgressText">
                 00%
@@ -9398,37 +9398,38 @@
        Large readable zones.
     ====================================================== */
 
+    let autoProgressStarted = false;
+    let autoProgressDelayMs = 0;
+    let autoProgressStartedAt = 0;
+
     function updateScroll(){
-
-        const rect =
-            section.getBoundingClientRect();
-
-        const scrollable =
-            section.offsetHeight -
-            window.innerHeight;
-
-        if(scrollable <= 0){
-
-            targetProgress = 0;
-
-            return;
-
-        }
-
-        targetProgress =
-            clamp(
-                -rect.top /
-                scrollable,
-                0,
-                1
-            );
-
+        // Manual scroll no longer controls the cinematic animation.
+        // The section auto-triggers after a short delay so it feels
+        // intentional without being tied to user scroll position.
     }
 
+    function updateAutoProgress(deltaMs){
+        if(!autoProgressStarted){
+            autoProgressStartedAt = performance.now();
+            autoProgressStarted = true;
+        }
+
+        const elapsed = performance.now() - autoProgressStartedAt;
+
+        if(elapsed < autoProgressDelayMs){
+            return;
+        }
+
+        const autoSpeed = 0.00013 * deltaMs;
+        targetProgress = Math.min(1, targetProgress + autoSpeed);
+    }
 
     window.addEventListener(
         "scroll",
-        updateScroll,
+        function(){
+            // Keep the section from depending on manual scroll behavior.
+            // The visual sequence continues on its own after a short idle pause.
+        },
         {
             passive:true
         }
@@ -10803,18 +10804,20 @@
                 100
             );
 
-        progressText.textContent =
-            String(
-                percentage
-            ).padStart(
-                2,
-                "0"
-            ) +
-            "%";
+        if(progressText && progressFill){
+            progressText.textContent =
+                String(
+                    percentage
+                ).padStart(
+                    2,
+                    "0"
+                ) +
+                "%";
 
-        progressFill.style.width =
-            percentage +
-            "%";
+            progressFill.style.width =
+                percentage +
+                "%";
+        }
 
 
         /*
@@ -10961,46 +10964,29 @@
          * Outputs appear slowly.
          */
 
-        const outputsVisible =
-            smoothstep(
-                .69,
-                .82,
-                progress
-            );
+        const finalVisible =
+            progress >= .87;
+
+        const revealThresholds = [
+            .57,
+            .64,
+            .72,
+            .80,
+            .88
+        ];
 
         outputs.forEach(
             function(output,index){
-
-                const individualDelay =
-                    index *
-                    .035;
-
-                const local =
-                    clamp(
-                        (
-                            outputsVisible -
-                            individualDelay
-                        ) /
-                        .86,
-                        0,
-                        1
-                    );
+                const shouldShow =
+                    progress >= revealThresholds[index] &&
+                    !finalVisible;
 
                 output.classList.toggle(
                     "visible",
-                    local > .35
+                    shouldShow
                 );
-
             }
         );
-
-
-        /*
-         * Final panel.
-         */
-
-        const finalVisible =
-            progress >= .87;
 
         finalPanel.classList.toggle(
             "visible",
@@ -11095,6 +11081,8 @@
             reducedMotion
                 ? .18
                 : .065;
+
+        updateAutoProgress(delta);
 
         progress =
             lerp(
@@ -11262,7 +11250,7 @@
 
         <!-- PROGRESS -->
 
-        <div class="signal-progress">
+        <div class="signal-progress" style="display:none;">
 
             <div
                 class="signal-progress-fill"
@@ -11464,7 +11452,7 @@
              STAGE
         ================================================== -->
 
-        <div class="signal-stage" id="signalStage">
+        <div class="signal-stage" id="signalStage" style="display:none;">
 
             <span
                 class="signal-stage-number"
@@ -11806,6 +11794,12 @@
 
     let animationId = null;
 
+    let autoProgressStarted = false;
+
+    let autoProgressStartedAt = 0;
+
+    let lastRenderTime = performance.now();
+
 
     /* ======================================================
        STAGES
@@ -11933,6 +11927,24 @@
             0,
             1
         );
+
+    }
+
+    function updateAutoProgress(deltaMs){
+
+        if(!autoProgressStarted){
+            autoProgressStartedAt = performance.now();
+            autoProgressStarted = true;
+        }
+
+        const elapsed = performance.now() - autoProgressStartedAt;
+
+        if(elapsed < 1800){
+            return;
+        }
+
+        const autoSpeed = 0.00011 * deltaMs;
+        targetProgress = Math.min(1, targetProgress + autoSpeed);
 
     }
 
@@ -13482,28 +13494,28 @@
 
 
         if(
-            progress < .18
+            progress < .22
         ){
 
             stage = 0;
 
         }
         else if(
-            progress < .38
+            progress < .42
         ){
 
             stage = 1;
 
         }
         else if(
-            progress < .58
+            progress < .62
         ){
 
             stage = 2;
 
         }
         else if(
-            progress < .78
+            progress < .82
         ){
 
             stage = 3;
@@ -13755,6 +13767,17 @@
         time
     ){
 
+        const deltaMs =
+            Math.min(
+                32,
+                time -
+                lastRenderTime
+            );
+
+        lastRenderTime = time;
+
+        updateAutoProgress(deltaMs);
+
         currentProgress =
             lerp(
                 currentProgress,
@@ -13964,9 +13987,10 @@
 
     function handleScroll(){
 
-        targetProgress =
-            calculateProgress();
-
+        // Keep the cinematic sequence running automatically.
+        // Manual scrolling is allowed, but the section no longer
+        // depends on scroll position to advance the reveal.
+        targetProgress = Math.min(1, targetProgress + 0.002);
 
         if(
             !scrollTick
@@ -14088,7 +14112,7 @@
 
 
     targetProgress =
-        calculateProgress();
+        0;
 
 
     currentProgress =
@@ -14499,10 +14523,76 @@
                INITIAL ANIMATION
             ====================================================== */
 
-            window.setTimeout(
-                activateMachine,
-                DROP_DELAY
-            );
+           /* =====================================================
+   SCROLL-BASED SECTION ACTIVATION
+   Animation starts ONLY when section enters viewport
+====================================================== */
+
+let animationStarted = false;
+
+const sectionObserver = new IntersectionObserver(
+    (entries) => {
+
+        entries.forEach((entry) => {
+
+            /*
+             * Start animation only when the section
+             * becomes visible on screen.
+             */
+
+            if (
+                entry.isIntersecting &&
+                !animationStarted
+            ) {
+
+                animationStarted = true;
+
+                /*
+                 * Small delay after section becomes visible
+                 * so the user can actually see the section.
+                 */
+
+                window.setTimeout(() => {
+                    activateMachine();
+                }, DROP_DELAY);
+
+                /*
+                 * Animation should run only once.
+                 */
+
+                sectionObserver.unobserve(
+                    entry.target
+                );
+            }
+
+        });
+
+    },
+    {
+        /*
+         * Animation starts when around 20% of the
+         * section is visible.
+         */
+
+        threshold: 0.20
+    }
+);
+
+
+/* =====================================================
+   OBSERVE SECTION
+====================================================== */
+
+const ideaCta =
+    document.getElementById("project-cta");
+
+if (ideaCta) {
+
+    sectionObserver.observe(
+        ideaCta
+    );
+
+}
 
 
             /* =====================================================
@@ -14606,6 +14696,7 @@
 
     </script>
 </div>
+
 <!-- ================= FOOTER ================= -->
 <footer class="site-footer" id="contact">
   <div class="footer-glow-2"></div>
