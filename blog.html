@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Blog | Innovexa Technologies</title>
+	<link rel="stylesheet" href="css/responsive.css">
 	<style>
 		#demoContent {
 			display: block;
@@ -32,7 +33,11 @@
 
 				const demoContent = document.getElementById('demoContent');
 				demoContent.addEventListener('load', () => {
-					demoContent.style.height = `${demoContent.contentDocument.documentElement.scrollHeight}px`;
+					const resizeDemo = () => {
+						demoContent.style.height = `${demoContent.contentDocument.documentElement.scrollHeight}px`;
+					};
+					resizeDemo();
+					new ResizeObserver(resizeDemo).observe(demoContent.contentDocument.documentElement);
 				});
 
 				const backToTop = document.importNode(indexDocument.querySelector('#backToTop'), true);
