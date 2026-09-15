@@ -12,7 +12,13 @@
   host.setAttribute('aria-live', 'polite');
   document.body.insertBefore(host, document.body.firstChild);
 
+  var footerHost = document.createElement('div');
+  footerHost.id = 'shared-shell-footer-host';
+  footerHost.setAttribute('aria-live', 'polite');
+  document.body.appendChild(footerHost);
+
   var shadow = host.attachShadow({ mode: 'open' });
+  var footerShadow = footerHost.attachShadow({ mode: 'open' });
   var baseUrl = new URL('index.html', document.baseURI);
 
   fetch(baseUrl.href)
@@ -34,9 +40,10 @@
           .replace(/:root\s*\{/g, ':host{')
           .replace(/body\s*\{/g, ':host{');
       }
-      shadow.appendChild(style);
+      shadow.appendChild(style.cloneNode(true));
+      footerShadow.appendChild(style);
       shadow.appendChild(header.cloneNode(true));
-      shadow.appendChild(footer.cloneNode(true));
+      footerShadow.appendChild(footer.cloneNode(true));
 
       shadow.querySelectorAll('a[href]').forEach(function (link) {
         var href = link.getAttribute('href');
@@ -73,6 +80,7 @@
     })
     .catch(function (error) {
       host.remove();
+      footerHost.remove();
       console.error(error);
     });
 })();
