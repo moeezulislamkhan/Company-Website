@@ -22,6 +22,12 @@
      02. MOBILE NAVIGATION
      ----------------------------------------- */
 
+  if (!document.querySelector('script[src$="shared-shell.js"]') && !document.getElementById('shared-shell-host')) {
+    var sharedShellScript = document.createElement('script');
+    sharedShellScript.src = new URL('shared-shell.js', document.currentScript.src).href;
+    document.head.appendChild(sharedShellScript);
+  }
+
   const navToggle = document.getElementById("navToggle");
   const mainNav = document.getElementById("mainNav");
 
