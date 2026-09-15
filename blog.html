@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blog | Innovexa Technologies</title>
+</head>
+<body>
+	<main></main>
+	<script>
+		fetch('index.html')
+			.then(response => response.text())
+			.then(source => {
+				const indexDocument = new DOMParser().parseFromString(source, 'text/html');
+				indexDocument.head.querySelectorAll('style').forEach(style => {
+					document.head.appendChild(document.importNode(style, true));
+				});
+
+				const header = document.importNode(indexDocument.querySelector('.site-header'), true);
+				document.body.insertBefore(header, document.body.firstChild);
+				document.body.appendChild(document.importNode(indexDocument.querySelector('.site-footer'), true));
+
+				const backToTop = document.importNode(indexDocument.querySelector('#backToTop'), true);
+				document.body.appendChild(backToTop);
+
+				const menuToggle = document.getElementById('menuToggle');
+				const mainNav = document.getElementById('mainNav');
+				menuToggle.addEventListener('click', () => {
+					menuToggle.classList.toggle('active');
+					mainNav.classList.toggle('open');
+				});
+				mainNav.querySelectorAll('a').forEach(link => {
+					link.addEventListener('click', () => {
+						menuToggle.classList.remove('active');
+						mainNav.classList.remove('open');
+					});
+				});
+				window.addEventListener('scroll', () => {
+					backToTop.classList.toggle('visible', window.scrollY > 500);
+				}, { passive: true });
+				backToTop.addEventListener('click', () => {
+					window.scrollTo({ top: 0, behavior: 'smooth' });
+				});
+			})
+			.catch(error => console.error('Unable to load the index header.', error));
+	</script>
+</body>
+</html>
