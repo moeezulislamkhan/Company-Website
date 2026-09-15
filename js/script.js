@@ -1,3 +1,10 @@
+var isHomePage = /(?:^|\/)index\.html?$/.test(window.location.pathname) || window.location.pathname.endsWith('/');
+if (!isHomePage && !document.querySelector('script[src$="shared-shell.js"]') && !document.querySelector('#shared-shell-host')) {
+  var sharedShellScript = document.createElement('script');
+  sharedShellScript.src = new URL('shared-shell.js', document.currentScript.src).href;
+  document.head.appendChild(sharedShellScript);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
