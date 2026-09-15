@@ -1195,7 +1195,7 @@ a{
 
 
         <!-- Progress -->
-        <div class="dt-progress">
+        <div class="dt-progress" style="display:none;">
 
             <span id="dtProgressText">
                 00%
@@ -2097,37 +2097,38 @@ a{
        Large readable zones.
     ====================================================== */
 
+    let autoProgressStarted = false;
+    let autoProgressDelayMs = 1700;
+    let autoProgressStartedAt = 0;
+
     function updateScroll(){
-
-        const rect =
-            section.getBoundingClientRect();
-
-        const scrollable =
-            section.offsetHeight -
-            window.innerHeight;
-
-        if(scrollable <= 0){
-
-            targetProgress = 0;
-
-            return;
-
-        }
-
-        targetProgress =
-            clamp(
-                -rect.top /
-                scrollable,
-                0,
-                1
-            );
-
+        // Manual scroll no longer controls the cinematic animation.
+        // The section auto-triggers after a short delay so it feels
+        // intentional without being tied to user scroll position.
     }
 
+    function updateAutoProgress(deltaMs){
+        if(!autoProgressStarted){
+            autoProgressStartedAt = performance.now();
+            autoProgressStarted = true;
+        }
+
+        const elapsed = performance.now() - autoProgressStartedAt;
+
+        if(elapsed < autoProgressDelayMs){
+            return;
+        }
+
+        const autoSpeed = 0.00013 * deltaMs;
+        targetProgress = Math.min(1, targetProgress + autoSpeed);
+    }
 
     window.addEventListener(
         "scroll",
-        updateScroll,
+        function(){
+            // Keep the section from depending on manual scroll behavior.
+            // The visual sequence continues on its own after a short idle pause.
+        },
         {
             passive:true
         }
@@ -3502,18 +3503,20 @@ a{
                 100
             );
 
-        progressText.textContent =
-            String(
-                percentage
-            ).padStart(
-                2,
-                "0"
-            ) +
-            "%";
+        if(progressText && progressFill){
+            progressText.textContent =
+                String(
+                    percentage
+                ).padStart(
+                    2,
+                    "0"
+                ) +
+                "%";
 
-        progressFill.style.width =
-            percentage +
-            "%";
+            progressFill.style.width =
+                percentage +
+                "%";
+        }
 
 
         /*
@@ -3660,46 +3663,29 @@ a{
          * Outputs appear slowly.
          */
 
-        const outputsVisible =
-            smoothstep(
-                .69,
-                .82,
-                progress
-            );
+        const finalVisible =
+            progress >= .87;
+
+        const revealThresholds = [
+            .57,
+            .64,
+            .72,
+            .80,
+            .88
+        ];
 
         outputs.forEach(
             function(output,index){
-
-                const individualDelay =
-                    index *
-                    .035;
-
-                const local =
-                    clamp(
-                        (
-                            outputsVisible -
-                            individualDelay
-                        ) /
-                        .86,
-                        0,
-                        1
-                    );
+                const shouldShow =
+                    progress >= revealThresholds[index] &&
+                    !finalVisible;
 
                 output.classList.toggle(
                     "visible",
-                    local > .35
+                    shouldShow
                 );
-
             }
         );
-
-
-        /*
-         * Final panel.
-         */
-
-        const finalVisible =
-            progress >= .87;
 
         finalPanel.classList.toggle(
             "visible",
@@ -3794,6 +3780,8 @@ a{
             reducedMotion
                 ? .18
                 : .065;
+
+        updateAutoProgress(delta);
 
         progress =
             lerp(

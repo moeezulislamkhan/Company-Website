@@ -1941,10 +1941,76 @@
                INITIAL ANIMATION
             ====================================================== */
 
-            window.setTimeout(
-                activateMachine,
-                DROP_DELAY
-            );
+           /* =====================================================
+   SCROLL-BASED SECTION ACTIVATION
+   Animation starts ONLY when section enters viewport
+====================================================== */
+
+let animationStarted = false;
+
+const sectionObserver = new IntersectionObserver(
+    (entries) => {
+
+        entries.forEach((entry) => {
+
+            /*
+             * Start animation only when the section
+             * becomes visible on screen.
+             */
+
+            if (
+                entry.isIntersecting &&
+                !animationStarted
+            ) {
+
+                animationStarted = true;
+
+                /*
+                 * Small delay after section becomes visible
+                 * so the user can actually see the section.
+                 */
+
+                window.setTimeout(() => {
+                    activateMachine();
+                }, DROP_DELAY);
+
+                /*
+                 * Animation should run only once.
+                 */
+
+                sectionObserver.unobserve(
+                    entry.target
+                );
+            }
+
+        });
+
+    },
+    {
+        /*
+         * Animation starts when around 20% of the
+         * section is visible.
+         */
+
+        threshold: 0.20
+    }
+);
+
+
+/* =====================================================
+   OBSERVE SECTION
+====================================================== */
+
+const ideaCta =
+    document.getElementById("project-cta");
+
+if (ideaCta) {
+
+    sectionObserver.observe(
+        ideaCta
+    );
+
+}
 
 
             /* =====================================================
